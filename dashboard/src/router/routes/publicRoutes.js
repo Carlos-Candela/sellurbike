@@ -1,17 +1,12 @@
-import { lazy } from "react";
 
-const Login = lazy(()=> import('../../views/auth/Login'));
-const Register = lazy(()=> import('../../views/auth/Register'));
+import Login from '"@/vies/auth/Login';
+import Register from '../../views/auth/Register';
 
 const publicRoutes = [
-    {
-        path : '/login',
-        element: <Login />
-    },
-    {
-        path : '/register',
-        element: <Register />
-    }
-]
+  
+  { path: '/login', element: <Login /> },
+  { path: '/register', element: Register },
+ 
+];
 
 export default publicRoutes;
