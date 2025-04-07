@@ -4,10 +4,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom'; 
 import {Grid} from 'react-loading-icons'
 
-
-
 const App = lazy(() => import('./App'));
-
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
