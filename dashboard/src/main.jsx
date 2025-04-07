@@ -4,7 +4,8 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { Grid } from "react-loading-icons";
 import { Provider } from "react-redux";
-import {store} from './store/index.js';
+import { store } from "./store/index.js";
+import { Toaster } from "react-hot-toast";
 
 const App = lazy(() => import("./App"));
 
@@ -19,6 +20,15 @@ createRoot(document.getElementById("root")).render(
         }
       >
         <App />
+        <Toaster
+          toastOptions={{
+            position: "top-right",
+            style: {
+              background: "#283046",
+              color: "white",
+            },
+          }}
+        />
       </Suspense>
     </Provider>
   </BrowserRouter>

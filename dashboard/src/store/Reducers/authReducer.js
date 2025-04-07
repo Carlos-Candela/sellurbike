@@ -1,6 +1,10 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk,createSlice} from "@reduxjs/toolkit";
 
-const authReducer = createSlice({
+export const admin_login = createAsyncThunk(
+    'auth/admin_login',
+)
+
+export const authReducer = createSlice({
     name: 'auth',
     initialState:{
         successMessage: '',
