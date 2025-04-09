@@ -8,25 +8,24 @@ class authControllers {
     const { email, password } = req.body;
     try {
       const admin = await adminModel.findOne({ email }).select("+password");
-      console.log(admin);
-
+      
       if (!admin) {
-        responseReturn(res, 404, { error: "Admin not found" });
+        return responseReturn(res, 404, { error: "Admin not found" });
       }
 
       const match = await bcrypt.compare(password, admin.password);
 
       if (!match) {
-        responseReturn(res, 401, { error: "Password not match" });
+       return responseReturn(res, 401, { error: "Password not match" });
       } else {
         const token = await createToken({ id: admin._id, role: admin.role });
         res.cookie("accesToken", token, {
           expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
-        responseReturn(res, 200, { token, message: "Login successfully" });
+        return responseReturn(res, 200, { token, message: "Login successfully" });
       }
     } catch (error) {
-      responseReturn(res, 500, { error: error.mesagge });
+      return responseReturn(res, 500, { error: error.mesagge });
     }
   };
 }
