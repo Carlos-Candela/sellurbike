@@ -44,6 +44,7 @@ const AdminLogin = () => {
                   type="email"
                   name="email"
                   id="email"
+                  required
                   className="w-full px-3 py-2 mt-1 
               text-gray-700 bg-gray-200 rounded-md focus:outline-none 
               focus:ring focus:ring-indigo-100 focus:bg-white"
@@ -62,6 +63,7 @@ const AdminLogin = () => {
                   type="password"
                   name="password"
                   id="password"
+                  required
                   className="w-full 
                                         px-3 py-2 mt-1 text-gray-700 bg-gray-200 rounded-md 
                                         focus:outline-none focus:ring focus:ring-indigo-100 focus:bg-white"
