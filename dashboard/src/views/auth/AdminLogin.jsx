@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import logo from "../../assets/sellurbike.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { admin_login } from "../../store/Reducers/authReducer";
+import {PropagateLoader} from "react-spinners";
+
 
 const AdminLogin = () => {
 
   const dispatch = useDispatch();
+  const {loader} = useSelector((state) => state.auth);
 
   const [formLoginData, setFormLoginData] = useState({
     email: "",
@@ -24,13 +27,23 @@ const AdminLogin = () => {
     dispatch(admin_login(formLoginData))
     //console.log(formLoginData);
   };
+
+  const loaderStyleOverride = {
+    display: "flex",
+    margin: "0 auto",
+    height: "24px",
+    justifyContent: "center",
+    alignItems: "center",
+  }
+
   return (
     <>
       <div className="min-w-screen min-h-screen bg-[#c9c4f4] flex justify-center items-center">
         <div className="w-[450px] text-[#ffffff] p-2">
           <div className="bg-[#6f68d1] p-4 rounded-md">
-            <img src={logo} alt="SellURBike" className="mx-auto" />
-            <form onSubmit={submit}>
+            <img src={logo} alt="SellURBike" className="mx-auto w-[250px] h-auto m-8" />
+            <form className='' onSubmit={submit}>
+              
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -70,13 +83,18 @@ const AdminLogin = () => {
                 />
               </div>
               <button
+                disabled={loader ? true : false}
                 type="submit"
                 className="w-full py-2 px-4 bg-[#161271] text-white 
             font-bold rounded-md hover:bg-[#232342] focus:outline-none 
             focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
               >
-                Iniciar Sesión
+                
+                {loader ? <PropagateLoader color='#ffffff' cssOverride={loaderStyleOverride} /> : "Iniciar Sesión"}
+                
+                
               </button>
+              
             </form>
           </div>
         </div>
