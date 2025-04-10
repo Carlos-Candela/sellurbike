@@ -10,4 +10,5 @@ const publicRoutes = [
   {path: '/register', element: <Register />},
   {path: '/admin/login', element: <AdminLogin />},
 ];
+
 export default publicRoutes;

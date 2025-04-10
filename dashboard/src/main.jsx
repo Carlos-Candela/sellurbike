@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 const App = lazy(() => import("./App"));
 
 createRoot(document.getElementById("root")).render(
+  
   <BrowserRouter>
     <Provider store={store}>
       <Suspense
@@ -32,4 +33,5 @@ createRoot(document.getElementById("root")).render(
       </Suspense>
     </Provider>
   </BrowserRouter>
+  
 );

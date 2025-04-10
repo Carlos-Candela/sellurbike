@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const { createToken } = require("../utiles/tokenCreate");
 
 class authControllers {
+  //Metodo login del administrador
+  //Recibe el correo y la contraseña del administrador y lo logea
   admin_login = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -26,6 +28,23 @@ class authControllers {
       }
     } catch (error) {
       return responseReturn(res, 500, { error: error.mesagge });
+    }
+  };//Fin del metodo login_admin
+
+  //Metodo para obtener el usuario logeado
+  //Recibe el id y el rol del usuario logeado y lo devuelve
+  getUser = async (req, res) => {
+    const {id,role} = req;
+    try {
+      if(role === "admin"){
+        const user = await adminModel.findById(id)
+        responseReturn(res,200,{userInfo: user})
+      }else{
+        console.log('Seller info')
+      }
+    }
+    catch(error){
+      console.log(error.message)
     }
   };
 }
