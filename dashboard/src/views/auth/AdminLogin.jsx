@@ -1,15 +1,13 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/sellurbike.png";
 import { useDispatch, useSelector } from "react-redux";
 import { admin_login, messageClear } from "../../store/Reducers/authReducer";
-import {PropagateLoader} from "react-spinners";
-import toast from 'react-hot-toast';
-
+import { PropagateLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const AdminLogin = () => {
-
   const dispatch = useDispatch();
-  const {loader, errorMessage} = useSelector((state) => state.auth);
+  const { loader, errorMessage } = useSelector((state) => state.auth);
 
   const [formLoginData, setFormLoginData] = useState({
     email: "",
@@ -25,7 +23,7 @@ const AdminLogin = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    dispatch(admin_login(formLoginData))
+    dispatch(admin_login(formLoginData));
     //console.log(formLoginData);
   };
 
@@ -35,12 +33,12 @@ const AdminLogin = () => {
     height: "24px",
     justifyContent: "center",
     alignItems: "center",
-  }
+  };
 
   useEffect(() => {
-    if(errorMessage){
-      toast.error(errorMessage)
-      dispatch(messageClear())
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
     }
   });
 
@@ -49,9 +47,12 @@ const AdminLogin = () => {
       <div className="min-w-screen min-h-screen bg-[#c9c4f4] flex justify-center items-center">
         <div className="w-[450px] text-[#ffffff] p-2">
           <div className="bg-[#6f68d1] p-4 rounded-md">
-            <img src={logo} alt="SellURBike" className="mx-auto w-[250px] h-auto m-8" />
-            <form className='' onSubmit={submit}>
-              
+            <img
+              src={logo}
+              alt="SellURBike"
+              className="mx-auto w-[250px] h-auto m-8"
+            />
+            <form className="" onSubmit={submit}>
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -97,12 +98,15 @@ const AdminLogin = () => {
             font-bold rounded-md hover:bg-[#232342] focus:outline-none 
             focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
               >
-                
-                {loader ? <PropagateLoader color='#ffffff' cssOverride={loaderStyleOverride} /> : "Iniciar Sesión"}
-                
-                
+                {loader ? (
+                  <PropagateLoader
+                    color="#ffffff"
+                    cssOverride={loaderStyleOverride}
+                  />
+                ) : (
+                  "Iniciar Sesión"
+                )}
               </button>
-              
             </form>
           </div>
         </div>
