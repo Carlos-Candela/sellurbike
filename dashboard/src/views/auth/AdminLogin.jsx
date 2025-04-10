@@ -4,10 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { admin_login, messageClear } from "../../store/Reducers/authReducer";
 import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loader, errorMessage } = useSelector((state) => state.auth);
+  const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
 
   const [formLoginData, setFormLoginData] = useState({
     email: "",
@@ -40,7 +42,12 @@ const AdminLogin = () => {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-  });
+    if(successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      navigate("/")
+    }
+  }, [errorMessage,successMessage, dispatch,navigate]);
 
   return (
     <>
