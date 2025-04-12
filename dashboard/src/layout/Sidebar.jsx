@@ -37,7 +37,7 @@ const Sidebar = () => {
                   className={`${
                     pathname === nav.path
                       ? "bg-blue-400 shadow-indigo-500/50 text-white duration-500 w-full font-bold"
-                      : "text-[#030811] duration-200"
+                      : "text-[#030811] duration-200 font-bold"
                   } px-[12px] py-[9px] flex items-center gap-2 p-2 rounded-md hover:bg-blue-200 transition-all hover:pl-4 transintion-all w-full mb-1`}
                 >
                   <span >{nav.icon}</span>
@@ -46,7 +46,7 @@ const Sidebar = () => {
               </li>
             ))}
             <li>
-              <button className='text-[#030811] duration-200
+              <button className='text-[#030811] duration-200 font-bold
                   px-[12px] py-[9px] flex items-center gap-2 p-2 rounded-md hover:bg-blue-200 transition-all hover:pl-4 transintion-all w-full mb-1'>
                     <span><IoMdLogOut/></span>
                     <span>Cerrar Sesion</span>
