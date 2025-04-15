@@ -23,7 +23,7 @@ const AdminDashboard = ()=> {
             },
         ],
         options: {
-            colors: ['#f9a825', '#f57c00', '#0288d1'],
+            colors: ['#68b2e4', '#f33232e2', '#a1dfa5'],
             plotOptions: {
                 radius: 30,
             },
@@ -35,7 +35,7 @@ const AdminDashboard = ()=> {
                 show: true,
                 curve: ['smooth', 'straight', 'stepline'],
                 lineCap: 'butt',
-                colors: ['#f9a825', '#f57c00', '#0288d1'],
+                colors: ['#181ee8', '#f57c00', '#0288d1'],
                 width: 0.5,
                 dashArray: 0,
             },
