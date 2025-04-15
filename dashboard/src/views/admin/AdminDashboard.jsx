@@ -45,6 +45,21 @@ const AdminDashboard = ()=> {
             legend: {
                 position: 'top',
             },
+            responsive: [
+                {
+                    breakpoint: 565,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                horizontal: true,
+                            },
+                        },
+                        chart: {
+                            height: 550,
+                        },
+                    },
+                },
+            ],
         },
     };
     return (
@@ -77,7 +92,7 @@ const AdminDashboard = ()=> {
                         <FaRegUser className='text-[#fae8e8] shadow-lg' />
                     </div>
                 </div>
-                <div className='flex justify-between items-center p-5 bg-[#7aa3c1] rounded-md gap-3'>
+                <div className='flex justify-between items-center p-5 bg-[#7bc3f6] rounded-md gap-3'>
                     <div className='flex flex-col justify-start items-start text-[#343333]'>
                         <h2 className='text-3xl font-bold'>3000</h2>
                         <span className='text-md font-medium'>Pedidos </span>
