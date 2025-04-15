@@ -3,9 +3,50 @@ import { MdOutlineEuro } from "react-icons/md";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { MdBorderColor } from "react-icons/md";
-
+import Chart from "react-apexcharts";
 
 const AdminDashboard = ()=> {
+    
+    const state = {
+        series: [
+            {
+                name: "Pedidos",
+                data: [450, 400, 300, 500, 200, 100, 666,800,100,150,600,700],
+            },
+            {
+                name: "Ganancias",
+                data: [200, 300, 400, 500, 600, 700, 400, 300, 500, 200, 100, 666],
+            },
+            {
+                name: "Vendedores",
+                data: [100, 200, 300, 400, 500, 600, 300, 400, 500, 600, 700, 400],
+            },
+        ],
+        options: {
+            colors: ['#f9a825', '#f57c00', '#0288d1'],
+            plotOptions: {
+                radius: 30,
+            },
+            chart: {
+                background: 'transparent',
+                foreColor: '#d0d2d6',
+            },
+            stroke: {
+                show: true,
+                curve: ['smooth', 'straight', 'stepline'],
+                lineCap: 'butt',
+                colors: ['#f9a825', '#f57c00', '#0288d1'],
+                width: 0.5,
+                dashArray: 0,
+            },
+            xaxis: {
+                categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            },
+            legend: {
+                position: 'top',
+            },
+        },
+    };
     return (
         <div className='px-2 md:px-7 py-5'>
             <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-7'>
@@ -45,6 +86,18 @@ const AdminDashboard = ()=> {
                         <MdBorderColor className='text-[#fae8e8] shadow-lg' />
                     </div>
                 </div>
+            </div>
+
+            <div className='w-full flex flex-wrap mt-7'>
+                <div className='w-full lg:w-7/12 lg:pr-3'>
+                    <div className='w-full bg-[#6a5fdf] p-4 rounded-md'>
+                        <Chart options={state.options} series={state.series} type='bar' height={350} />
+                    </div>
+                </div>
+
+            </div>
+            <div>
+
             </div>
         </div>
     );
