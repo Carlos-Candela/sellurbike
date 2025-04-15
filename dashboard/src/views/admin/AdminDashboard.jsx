@@ -3,8 +3,7 @@ import React from 'react';
 const AdminDashboard = ()=> {
     return (
         <div>
-            <h1>Admin Dashboard</h1>
-            
+            <h1 className='font-extrabold'>AdminDashboar</h1>
         </div>
     );
 }
