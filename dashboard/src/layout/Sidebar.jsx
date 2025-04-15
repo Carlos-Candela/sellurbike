@@ -4,7 +4,7 @@ import logo from "../assets/sellurbike.png";
 import { getNav } from "../navigation/index.js";
 import { IoMdLogOut } from "react-icons/io";
 
-const Sidebar = ({showSidebar, setShowSidebar}) => {
+const Sidebar = ({ showSidebar, setShowSidebar }) => {
   const { pathname } = useLocation();
   const [allNav, setAllNav] = useState([]);
   useEffect(() => {
@@ -14,11 +14,16 @@ const Sidebar = ({showSidebar, setShowSidebar}) => {
   //console.log(allNav);
   return (
     <div>
-      <div onClick={() => setShowSidebar(false)} className={`fixed duration-200 ${!showSidebar ? 'invisible' : 'visible'} w-screen h-screen bg-[#22292f80] top-0 left-0 z-10`}>
-
-      </div>
       <div
-        className={`w-[260px] fixed bg-blue-100 z-50 top-0 h-screen shadow-[0_0_15px_0_rgb(34_41_47_/5%)] transition-all ${showSidebar ? 'left-0' : '-left-[260px] lg:left-0'}`}
+        onClick={() => setShowSidebar(false)}
+        className={`fixed duration-200 ${
+          !showSidebar ? "invisible" : "visible"
+        } w-screen h-screen bg-[#5d81a380] top-0 left-0 z-10`}
+      ></div>
+      <div
+        className={`w-[260px] fixed bg-blue-100 z-50 top-0 h-screen shadow-[0_0_15px_0_rgb(34_41_47_/5%)] transition-all ${
+          showSidebar ? "left-0" : "-left-[260px] lg:left-0"
+        }`}
       >
         <div className="mb-2 h-[70px] flex justify-center items-center">
           <Link to="/" className="w-[170px] h-[40px]">
