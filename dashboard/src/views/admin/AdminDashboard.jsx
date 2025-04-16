@@ -198,6 +198,40 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+      <div className="w-full p-4 bg-[#6a5fdf] rounded-md mt-6">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-lg font-semibold text-[#d0d2d6] pb-3">
+            Productos Recientes
+          </h2>
+          <Link className="font-semibold text-sm text-[#d0d2d6]">Mostrar todos</Link>
+        </div>
+        <div className="relative overflow-x-auto">
+          <table className="w-full text-md text-[#d0d2d6] text-left">
+            <thead className="text-sm text-[#d0d2d6] border-slate-600 uppercase border-b">
+            <tr>
+              <th scope="col" className="px-6 py-3 text-left">Pedido Id</th>
+              <th scope="col" className="px-6 py-3 text-left">Precio</th>
+              <th scope="col" className="px-6 py-3 text-left">Estado del Pago</th>
+              <th scope="col" className="px-6 py-3 text-left">Estado del Pedido</th>
+              <th scope="col" className="px-6 py-3 text-left">Activo</th>
+            </tr>
+            </thead>
+            <tbody>
+              {
+                [1, 2, 3, 4, 5].map((d, i) => <tr key={i}>
+                <td scope="row" className="py-3 px-6 font-medium whitespace-nowrap">#234235</td>
+                <td scope="row" className="py-3 px-6 font-medium whitespace-nowrap">1000€</td>
+                <td scope="row" className="py-3 px-6 font-medium whitespace-nowrap">Pendiente</td>
+                <td scope="row" className="py-3 px-6 font-medium whitespace-nowrap">Pendiente</td>
+                <td scope="row" className="py-3 px-6 font-medium whitespace-nowrap">
+                  <Link>Vista</Link></td>
+              </tr>)
+              }
+            </tbody>
+          </table>
+
+        </div>
+      </div>
     </div>
   );
 };
