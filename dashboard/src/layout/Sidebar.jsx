@@ -49,7 +49,6 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
             ))}
             <li>
               <button
-              
                 className="text-[#030811] duration-200 font-bold
                   px-[12px] py-[9px] flex items-center gap-2 p-2 rounded-md hover:bg-blue-200 transition-all hover:pl-4 transintion-all w-full mb-1"
               >

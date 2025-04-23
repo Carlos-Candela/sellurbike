@@ -203,7 +203,7 @@ const AdminDashboard = () => {
           <h2 className="text-lg font-semibold text-[#d0d2d6] pb-3">
             Productos Recientes
           </h2>
-          <Link className="font-semibold text-sm text-[#d0d2d6]">Mostrar todos</Link>
+          <Link to='orders' className="font-semibold text-sm text-[#d0d2d6]">Mostrar todos</Link>
         </div>
         <div className="relative overflow-x-auto">
           <table className="w-full text-md text-[#d0d2d6] text-left">
