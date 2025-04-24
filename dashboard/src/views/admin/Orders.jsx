@@ -8,6 +8,7 @@ const Orders = () => {
   const [currentePage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
+  const [show,setShow] = useState(false);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
