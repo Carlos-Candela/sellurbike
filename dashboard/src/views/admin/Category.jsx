@@ -114,15 +114,24 @@ const Category = () => {
         </div>
         <div
           className={`w-[320px] lg:w-5/12 lg:relative lg:right-0 fixed 
-            ${show ? "right-0" : "-right-[340px]"} z-[9999] top-0 transition-all duration-500`}
+            ${
+              show ? "right-0" : "-right-[340px]"
+            } z-[9999] top-0 transition-all duration-500`}
         >
           <div className="w-full pl-5">
-            <div className={`bg-[#6a5fdf] ${show ? 'bg-[#868cd3]': 'bg-[#6a5fdf]' } h-screen lg:h-auto px-3 py-2 lg:rounded-md text-[#d0d2d6] transition-all duration-500`}>
+            <div
+              className={`bg-[#6a5fdf] ${
+                show ? "bg-[#868cd3]" : "bg-[#6a5fdf]"
+              } h-screen lg:h-auto px-3 py-2 lg:rounded-md text-[#d0d2d6] transition-all duration-500`}
+            >
               <div className="flex justify-between items-center mb-4">
                 <h1 className="text-[#d0d2d6] font-semibold text-xl mb-4 w-full text-center">
                   Añadir Categoria
                 </h1>
-                <div onClick={()=>setShow(false)} className=" w-[25px]  bg-red-500 hover:shadow-red-500/50 h-[25px] rounded-md block lg:hidden mb-4">
+                <div
+                  onClick={() => setShow(false)}
+                  className=" w-[25px]  bg-red-500 hover:shadow-red-500/50 h-[25px] rounded-md block lg:hidden mb-4"
+                >
                   <button className="flex justify-center items-center w-full h-full text-white cursor-pointer">
                     <IoMdCloseCircleOutline />
                   </button>
