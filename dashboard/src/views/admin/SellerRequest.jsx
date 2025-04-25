@@ -5,14 +5,16 @@ import Pagination from "../Pagination";
 
 import { GrView } from "react-icons/gr";
 
-const Sellers = () => {
+
+const SellerRequest = () => {
   const [currentePage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
   const [show, setShow] = useState(false);
   return (
+    
     <div className="px-2 lg:px-7 pt-5">
-      <h1 className="text-xl font-bold mb-4">Vendedores</h1>
+    <h1 className="text-xl font-bold mb-4">Solicitud Vendedores</h1>
       <div className="w-full p-4 bg-[#6a5fdf] rounded-lg shadow-lg">
         <div className="flex justify-between items-center">
           <select
@@ -37,27 +39,20 @@ const Sellers = () => {
                 <th scope="col" className="px-6 py-3 text-left">
                   No
                 </th>
-                <th scope="col" className="px-6 py-3 text-left">
-                  Imagen
-                </th>
+                
                 <th scope="col" className="px-6 py-3 text-left">
                   Nombre
-                </th>
-                <th scope="col" className="px-6 py-3 text-left">
-                  Nombre Tienda
-                </th>
-                <th scope="col" className="px-6 py-3 text-left">
-                  Estado del pago
                 </th>
                 <th scope="col" className="px-6 py-3 text-left">
                   Email
                 </th>
                 <th scope="col" className="px-6 py-3 text-left">
-                  Pais
+                  Estado del pago
                 </th>
                 <th scope="col" className="px-6 py-3 text-left">
-                  Provincia
+                  Estado
                 </th>
+               
                 <th scope="col" className="px-6 py-3 text-left">
                   Acción
                 </th>
@@ -65,66 +60,46 @@ const Sellers = () => {
             </thead>
             <tbody>
               {[1, 2, 3, 4, 5].map((d, i) => (
-                <tr key={i}>
+                <tr className="border-b border-slate-700" key={i}>
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
                     {d}
                   </td>
+                  
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
-                  >
-                    <img
-                      className="w-[50px] h-[50px] rounded-full shadow-lg"
-                      src={`http://localhost:5173/images/category/${d}.jpg`}
-                      alt=""
-                    />
-                  </td>
-                  <td
-                    scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
                     Carlos
                   </td>
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
-                    MyShop
+                    MyShop@gmail.com
                   </td>
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
                     Pendiente
                   </td>
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
-                    asdfass@gmail.com
+                    Inactivo
                   </td>
-                  <td
-                    scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
-                  >
-                    España
-                  </td>
-                  <td
-                    scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
-                  >
-                    Alicante
-                  </td>
+                 
 
                   <td
                     scope="row"
-                    className="py-1 px-6 font-medium whitespace-nowrap"
+                    className="py-2 px-6 font-medium whitespace-nowrap"
                   >
                     <div className="flex justify-start items-center gap-2">
-                      <Link className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                      <Link to={'/admin/dashboard/seller/details/2'} className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
                         <GrView />
                       </Link>
                     </div>
@@ -148,4 +123,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default SellerRequest;
