@@ -44,6 +44,57 @@ const SellerDetails = () => {
               </div>
             </div>
           </div>
+          <div className="w-4/12">
+            <div className="px-0 md:px-5 py-2">
+              <div className="py-2 text-lg">
+                <h2>Dirección</h2>
+              </div>
+              <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-[#8e92f8] rounded-md">
+                <div className="flex gap-2 font-bold text-black">
+                  <span className="font-bold">Nombre de la tienda:</span>
+                  <span className="text-[#d0d2d6]">John Doe</span>
+                </div>
+                <div className="flex gap-2 font-bold text-black">
+                  <span className="font-bold">Pais:</span>
+                  <span className="text-[#d0d2d6]">España</span>
+                </div>
+                <div className="flex gap-2 font-bold text-black">
+                  <span className="font-bold">Provincia:</span>
+                  <span className="text-[#d0d2d6]">Alicante</span>
+                </div>
+                <div className="flex gap-2 font-bold text-black">
+                  <span className="font-bold">Calle:</span>
+                  <span className="text-[#d0d2d6]">C/.kjañdkjfñakf</span>
+                </div>
+                <div className="flex gap-2 font-bold text-black">
+                  <span className="font-bold">Codigo postal:</span>
+                  <span className="text-[#d0d2d6]">03640</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <form>
+            <div className="flex gap-4 py-3 pl-4">
+              <select
+                className="px-4 py-2 border-1 hover:shadow-gray-800/50 outline-none bg-[#6a5fdf] text-[#d0d2d6] rounded-md shadow-lg"
+                name=""
+                id=""
+              >
+                <option value="">---Seleccionar Estado---</option>
+                <option value="">Activo</option>
+                <option value="">Inactivo</option>
+              </select>
+              <button
+                onClick=""
+                className="bg-red-500 shadow-lg hover:shadow-red-500/50 px-4 py-2 cursor-pointer text-white rounded-sm"
+              >
+                Enviar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
