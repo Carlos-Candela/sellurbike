@@ -49,7 +49,7 @@ const Orders = () => {
                         <div className="py-3 w-[25%] font-medium">Pendiente</div>
                         <div className="py-3 w-[25%] font-medium">Pendiente</div>
                         <div className="py-3 w-[25%] font-medium">
-                          <Link>Ver más</Link>
+                          <Link to='/admin/dashboard/order/details/3'>Ver más</Link>
                         </div>
                         <div className="py-3 w-[25%] font-medium"><LuDownload/></div>
                     </div>
