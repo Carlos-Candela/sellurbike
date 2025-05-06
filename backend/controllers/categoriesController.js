@@ -5,7 +5,7 @@ class CategoriesController {
 
     // Obtener todas las categorías
     getAllCategories = async (req, res) => {
-        console.log("Solicitud recibida para obtener todas las categorías");
+        
       try {
         const categories = await Category.find(); // Obtiene todas las categorías
         return responseReturn(res, 200, { categories });

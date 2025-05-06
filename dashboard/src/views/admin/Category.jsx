@@ -1,15 +1,43 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import axios from "axios";
 
 const Category = () => {
   const [currentePage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
   const [show, setShow] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [newCategory, setNewCategory] = useState({ name: ""});
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/categories")
+      .then((res) => {
+        console.log("Respuesta del backend:", res.data);
+        setCategories(res.data.categories || []);
+      })
+      .catch((err) => {
+        console.error("Error al obtener categorías:", err);
+        setCategories([]);
+      });
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      // Realiza la solicitud DELETE al backend
+      await axios.delete(`http://localhost:5000/api/categories/${id}`);
+
+      // Actualiza el estado eliminando la categoría del array
+      setCategories(categories.filter((category) => category._id !== id));
+    } catch (error) {
+      console.error("Error al eliminar la categoría:", error);
+    }
+  };
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -59,57 +87,57 @@ const Category = () => {
                 </tr>
               </thead>
               <tbody>
-                {[1, 2, 3, 4, 5].map((d, i) => (
-                  <tr key={i}>
-                    <td
-                      scope="row"
-                      className="py-1 px-6 font-medium whitespace-nowrap"
-                    >
-                      {d}
-                    </td>
-                    <td
-                      scope="row"
-                      className="py-1 px-6 font-medium whitespace-nowrap"
-                    >
-                      <img
-                        className="w-[50px] h-[50px] rounded-full shadow-lg"
-                        src={`http://localhost:5173/images/category/${d}.jpg`}
-                        alt=""
-                      />
-                    </td>
-                    <td
-                      scope="row"
-                      className="py-1 px-6 font-medium whitespace-nowrap"
-                    >
-                      Pendiente
-                    </td>
-
-                    <td
-                      scope="row"
-                      className="py-1 px-6 font-medium whitespace-nowrap"
-                    >
-                      <div className="flex justify-start items-center gap-2">
-                        <Link className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
-                          <FaEdit />
-                        </Link>
-                        <Link className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50">
-                          <FaTrash />
-                        </Link>
-                      </div>
+                {categories.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" className="text-center py-4 text-black">
+                      No hay categorías disponibles.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  categories.map((category, i) => (
+                    <tr key={i}>
+                      <td className="py-1 px-6 font-medium whitespace-nowrap">
+                        {i + 1}
+                      </td>
+                      <td className="py-1 px-6 font-medium whitespace-nowrap">
+                        <img
+                          className="w-[50px] h-[50px] rounded-full shadow-lg"
+                          src={`http://localhost:5173/images/category/${category.name}.jpg`}
+                          alt={category.name}
+                        />
+                      </td>
+                      <td className="py-1 px-6 font-medium whitespace-nowrap">
+                        {category.name}
+                      </td>
+                      <td className="py-1 px-6 font-medium whitespace-nowrap">
+                        <div className="flex justify-start items-center gap-2">
+                          <Link className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+                            <FaEdit />
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(category._id)}
+                            className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
           <div className="w-full justify-end flex mt-4">
-            <Pagination
-              pageNumber={currentePage}
-              setPageNumber={setCurrentPage}
-              totalItems={50}
-              parPage={parPage}
-              showItem={3}
-            />
+            {categories.length > parPage && (
+              <Pagination
+                pageNumber={currentePage}
+                setPageNumber={setCurrentPage}
+                totalItems={categories.length}
+                parPage={parPage}
+                showItem={3}
+              />
+            )}
           </div>
         </div>
         <div
