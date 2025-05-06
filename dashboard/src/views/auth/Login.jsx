@@ -3,6 +3,7 @@ import logo from "../../assets/sellurbike.png";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
+import logoApp from "../../assets/AppLogoSellurbike.png"
 
 const Login = () => {
   const [formLoginData, setFormLoginData] = useState({
@@ -23,13 +24,13 @@ const Login = () => {
     }
   return (
     <>
-      <div className="min-w-screen min-h-screen bg-[#c9c4f4] flex justify-center items-center">
+      <div className="min-w-screen min-h-screen bg-[#e5e3f3] flex justify-center items-center">
         <div className="w-[450px] text-[#ffffff] p-2">
-          <div className="bg-[#6f68d1] p-4 rounded-md">
-            <img src={logo} alt="SellURBike" className="mx-auto" />
-            <h2 className="text-xl mb-3 font-bold text-center">
-              Bienvenido a SellURBike
-            </h2>
+          <div className="bg-[#6f68d1] p-4 rounded-md shadow-xl">
+            <div className="w-full flex justify-center">
+            <img src={logoApp} alt="SellURBike" className="w-[40%] h-[40%] m-6 align-middle" />
+            </div>
+            
             <p className="flex justify-center items-center mb-3">
               Por favor, inicia sesión con tu cuenta.
             </p>

@@ -42,7 +42,7 @@ const products = [
     },
   ];
 
-  const categories = ["Todo", "Electrónica", "Moda", "Hogar", "Deportes", "Vehículos", "Libros"];
+  const categories = ["Todo", "Carretera", "Mtb", "Gravel", "Componentes", "Ruedas", "Accesorios"];
 
 
 const Home = () => {
@@ -52,26 +52,29 @@ const Home = () => {
     return (
         <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+      <header className="bg-white shadow-md px-6 py-4 flex justify-around items-center">
       <Link to="/" className="w-[170px] h-[40px]">
             <img src={logo} alt="SellURBike" className="w-full h-full" />
           </Link>
+          
         <nav className="space-x-4">
-          <a href="#" className="text-gray-700 hover:text-green-600">Inicio</a>
-          <a href="#" className="text-gray-700 hover:text-green-600">Categorías</a>
+        <Link to='/'>
+          <a href="#" className="text-gray-700 hover:text-indigo-600">Inicio</a>
+          </Link>
+          <a href="#" className="text-gray-700 hover:text-indigo-600">Categorías</a>
           <Link to='/login'>
-          <a href="#" className="text-gray-700 hover:text-green-600">Login</a>
+          <a href="#" className="text-gray-700 hover:text-indigo-600">Login</a>
           </Link>
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-100 to-pulple-700 text-center py-16 px-4">
+      <section className="bg-gradient-to-br from-indigo-300 to-indigo-900 text-center py-16 px-4">
         <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-800">
-          Compra y vende cerca de ti
+          Compra y vende tú bicicleta de la forma más segura.
         </h2>
         <p className="text-gray-600 mb-6">
-          Encuentra lo que buscas o deshazte de lo que ya no necesitas.
+          Encuentra tú bicicleta idea sin pagar de más.
         </p>
 
         {/* Search Bar */}
@@ -82,7 +85,7 @@ const Home = () => {
               placeholder="Buscar productos..."
               className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
             />
-            <button className="bg-green-600 text-white p-2 rounded-full hover:bg-green-700">
+            <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
               <Search className="w-5 h-5" />
             </button>
           </div>
@@ -97,7 +100,7 @@ const Home = () => {
               key={cat}
               className={`px-4 py-2 rounded-full text-sm border ${
                 selectedCategory === cat
-                  ? "bg-green-600 text-white border-green-600"
+                  ? "bg-indigo-700 text-white border-indigo-700"
                   : "bg-white text-gray-600 hover:bg-green-100 border-gray-300"
               }`}
               onClick={() => setSelectedCategory(cat)}
@@ -109,7 +112,8 @@ const Home = () => {
       </section>
 
       {/* Product Grid */}
-      <section className="py-10 px-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className='flex justify-center'>
+      <section className="w-[70%] py-10 px-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <div
             key={product.id}
@@ -118,16 +122,16 @@ const Home = () => {
             <img src={product.image} alt={product.title} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="font-semibold text-lg text-gray-800">{product.title}</h3>
-              <p className="text-green-600 font-bold mt-1">{product.price} €</p>
+              <p className="text-indigo-600 font-bold mt-1">{product.price} €</p>
               <p className="text-sm text-gray-500">{product.location}</p>
             </div>
           </div>
         ))}
       </section>
-
+      </div>
       {/* Footer */}
       <footer className="bg-gray-100 text-center text-gray-500 py-4 mt-auto">
-        © {new Date().getFullYear()} Wallaclone. Todos los derechos reservados.
+        © {new Date().getFullYear()} SellURBike. Todos los derechos reservados.
       </footer>
     </div>
     );
