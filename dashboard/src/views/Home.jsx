@@ -68,10 +68,10 @@ const Home = () => {
           <Link to='/login'>
           <a href="#" className="text-gray-700 hover:text-indigo-600">Login</a>
           </Link>
-          <button className='w-[130px] bg-indigo-300 p-2 border border-gray-500 rounded-full cursor-pointer hover:bg-indigo-400'>
+          <button className='bg-indigo-300 p-2 border border-gray-500 rounded-full cursor-pointer hover:bg-indigo-400'>
             <div className='flex justify-center items-center'>
-            <FaPlus className='pr-[3px]'/>
-            <h2 className='flex font-bold'>Añadir</h2>
+            <FaPlus className=' text-gray-700'/>
+            <h2 className='font-bold text-gray-700 hidden md:flex md:w-[70px] md:justify-center md:items-center'>Añadir</h2>
             </div>
           </button>
         </nav>
