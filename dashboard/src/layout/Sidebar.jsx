@@ -22,7 +22,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
       ></div>
       <div
         className={`w-[260px] fixed bg-blue-100 z-50 top-0 h-screen shadow-[0_0_15px_0_rgb(34_41_47_/5%)] transition-all ${
-          showSidebar ? "left-0" : "-left-[260px] lg:left-0"
+          showSidebar ? "left-0 duration-300"  : "-left-[260px] lg:left-0 duration-300"
         }`}
       >
         <div className="mb-2 h-[70px] flex justify-center items-center">
@@ -36,10 +36,11 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
               <li key={i}>
                 <Link
                   to={nav.path}
+                  onClick={() => setShowSidebar(false)}
                   className={`${
                     pathname === nav.path
-                      ? "bg-blue-400 shadow-indigo-500/50 text-white duration-500 w-full font-bold"
-                      : "text-[#030811] duration-200 font-bold"
+                      ? "bg-blue-400 shadow-indigo-500/50 text-white duration-300 w-full font-bold"
+                      : "text-[#030811] duration-300 font-bold"
                   } px-[12px] py-[9px] flex items-center gap-2 p-2 rounded-md hover:bg-blue-200 transition-all hover:pl-4 transintion-all w-full mb-1`}
                 >
                   <span>{nav.icon}</span>
