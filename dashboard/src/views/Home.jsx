@@ -60,10 +60,8 @@ const Home = () => {
             <img src={logo} alt="SellURBike" className="w-full h-full" />
           </Link>
           
-        <nav className="space-x-4">
-        <Link to='/'>
-          <a href="#" className="text-gray-700 hover:text-indigo-600">Inicio</a>
-          </Link>
+        <nav className="flex space-x-4 justify-center items-center">
+        
           <a href="#" className="text-gray-700 hover:text-indigo-600">Categorías</a>
           <Link to='/login'>
           <a href="#" className="text-gray-700 hover:text-indigo-600">Login</a>
@@ -78,9 +76,9 @@ const Home = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-indigo-300 to-indigo-900 text-center py-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-800">
-          Compra y vende tú bicicleta de la forma más segura.
+      <section className="bg-gradient-to-br from-indigo-300 to-indigo-700 text-center py-16 px-4">
+        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+          Compra y vende tú bicicleta
         </h2>
         <p className="text-gray-600 mb-6">
           Encuentra tú bicicleta idea sin pagar de más.
@@ -109,7 +107,7 @@ const Home = () => {
               key={cat}
               className={`px-4 py-2 rounded-full text-sm border ${
                 selectedCategory === cat
-                  ? "bg-indigo-700 text-white border-indigo-700"
+                  ? "bg-indigo-500 text-white border-indigo-500"
                   : "bg-white text-gray-600 hover:bg-green-100 border-gray-300"
               }`}
               onClick={() => setSelectedCategory(cat)}
