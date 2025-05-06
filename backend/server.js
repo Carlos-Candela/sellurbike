@@ -6,17 +6,21 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { dbConnect } = require("./utiles/db");
 
+
+
 app.use(
-  cors({
-    origin: ["http://localhost:5173"],
-    credentials: true,
-  })
+  cors(//{
+    //origin: ["http://localhost:5173"],
+    //credentials: true,
+  //}
+  )
 );
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/api", require("./routes/authRoutes"));
+app.use("/api/categories", require("./routes/categoriesRoutes"))
 app.get("/", (req, res) => {
   res.send("Mi backend esta corriendo.");
 });
@@ -24,3 +28,4 @@ app.get("/", (req, res) => {
 const port = process.env.PORT;
 dbConnect();
 app.listen(port, () => console.log(`Server is running on port ${port}`));
+
