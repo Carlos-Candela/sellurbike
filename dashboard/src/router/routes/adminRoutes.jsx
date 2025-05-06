@@ -12,6 +12,7 @@ const ChatSeller = lazy (() => import('../../views/admin/ChatSeller.jsx'))
 const OrderDetails = lazy (() => import('../../views/admin/OrderDetails.jsx'))
 
 const adminRoutes = [
+    
     {path: 'admin/dashboard', element: <AdminDashboard />, role:'admin'},
     {path: 'admin/dashboard/orders', element: <Orders />, role:'admin'},
     {path: 'admin/dashboard/category', element: <Category />, role:'admin'},
