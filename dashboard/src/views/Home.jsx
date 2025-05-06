@@ -3,6 +3,9 @@ import { Search } from 'lucide-react';
 import { useState } from 'react';
 import logo from "../assets/sellurbike.png";
 import { Link } from 'react-router-dom';
+import { FaPlus } from "react-icons/fa";
+
+
 // Datos de ejemplo de productos
 const products = [
     {
@@ -65,6 +68,12 @@ const Home = () => {
           <Link to='/login'>
           <a href="#" className="text-gray-700 hover:text-indigo-600">Login</a>
           </Link>
+          <button className='w-[130px] bg-indigo-300 p-2 border border-gray-500 rounded-full cursor-pointer hover:bg-indigo-400'>
+            <div className='flex justify-center items-center'>
+            <FaPlus className='pr-[3px]'/>
+            <h2 className='flex font-bold'>Añadir</h2>
+            </div>
+          </button>
         </nav>
       </header>
 
