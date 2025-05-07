@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserHeader from '../../layout/UserHeader';
 import { FaRegPlusSquare } from "react-icons/fa";
-
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCategories } from "../../store/Reducers/categoryReducer";
 
 function AddProduct() {
-  const [formData, setFormData] = useState({
+    const dispatch = useDispatch();
+    const { categories } = useSelector((state) => state.categories);
+  
+    const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
@@ -12,6 +16,10 @@ function AddProduct() {
     state: "pending",
     images: Array(6).fill(null), // Inicializa un array de 6 posiciones con `null`
   });
+
+  useEffect(() => {
+    dispatch(fetchCategories()); // Carga las categorías al montar el componente
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,15 +104,13 @@ function AddProduct() {
               <label htmlFor="category" className="block font-medium text-gray-700 mb-1">
                 Categoría
               </label>
-              <input
-                id="category"
-                name="category"
-                type="text"
-                required
-                onChange={handleChange}
-                placeholder="Ej: Ropa, Electrónica..."
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-              />
+              <select className="border border-gray-300 rounded px-4 py-2">
+      {categories.map((category) => (
+        <option key={category._id} value={category.name}>
+          {category.name}
+        </option>
+      ))}
+    </select>
             </div>
           </div>
 
