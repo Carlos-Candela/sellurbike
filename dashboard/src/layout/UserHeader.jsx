@@ -33,12 +33,14 @@ const UserHeader = () => {
         <Link to="/login">
           <a href="#" className="text-gray-700 hover:text-indigo-600 hidden md:block">Login</a>
         </Link>
+        <Link to='/seller/add-product'>
         <button className="bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400">
           <div className="flex justify-center items-center">
             <FaPlus className="text-gray-700" />
             <h2 className="font-bold text-gray-700 hidden md:flex md:w-[70px] md:justify-center md:items-center">Añadir</h2>
           </div>
         </button>
+        </Link>
       </nav>
     </header>
   );

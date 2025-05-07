@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../../assets/sellurbike.png";
+
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
@@ -27,10 +27,14 @@ const Login = () => {
       <div className="min-w-screen min-h-screen bg-[#e5e3f3] flex justify-center items-center">
         <div className="w-[450px] text-[#ffffff] p-2">
           <div className="bg-[#6f68d1] p-4 rounded-md shadow-xl">
+          <Link to='/'>
             <div className="w-full flex justify-center">
-            <img src={logoApp} alt="SellURBike" className="w-[40%] h-[40%] m-6 align-middle" />
-            </div>
             
+            
+            <img src={logoApp} alt="SellURBike" className="w-[40%] h-[40%] m-6 align-middle" />
+           
+            </div>
+            </Link>
             <p className="flex justify-center items-center mb-3">
               Por favor, inicia sesión con tu cuenta.
             </p>
