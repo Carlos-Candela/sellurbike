@@ -1,10 +1,12 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import { useState } from 'react';
-import logo from "../assets/sellurbike.png";
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 import UserHeader from '../layout/UserHeader';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCategories } from '../store/Reducers/categoryReducer';
+
 
 
 // Datos de ejemplo de productos
@@ -46,12 +48,19 @@ const products = [
     },
   ];
 
-  const categories = ["Todo", "Carretera", "Mtb", "Gravel", "Componentes", "Ruedas", "Accesorios"];
 
 
 const Home = () => {
-      
-      const [selectedCategory, setSelectedCategory] = useState("Todo");
+  const dispatch = useDispatch();
+  const { categories, loader, errorMessage } = useSelector((state) => state.categories); // Accede al estado global de categorías
+
+  const [selectedCategory, setSelectedCategory] = useState("Todo");
+
+  // Cargar las categorías desde el estado global al montar el componente
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -72,19 +81,19 @@ const Home = () => {
       {/* Categories */}
       <section className="bg-white py-4 px-6">
         <div className="flex flex-wrap gap-2 justify-center">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              className={`px-4 py-2 rounded-full text-sm border ${
-                selectedCategory === cat
-                  ? "bg-indigo-500 text-white border-indigo-500"
-                  : "bg-white text-gray-600 hover:bg-green-100 border-gray-300"
-              }`}
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
+        {categories.map((cat, index) => (
+  <button
+    key={cat._id || index} // Usa `_id` como clave única, o el índice como respaldo
+    className={`px-4 py-2 rounded-full text-sm border ${
+      selectedCategory === cat.name
+        ? "bg-indigo-500 text-white border-indigo-500"
+        : "bg-white text-gray-600 hover:bg-green-100 border-gray-300"
+    }`}
+    onClick={() => setSelectedCategory(cat.name)}
+  >
+    {cat.name}
+  </button>
+))}
         </div>
       </section>
 

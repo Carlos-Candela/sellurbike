@@ -7,9 +7,9 @@ import { FaPlus } from "react-icons/fa";
 
 const UserHeader = () => {
   return (
-    <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+    <header className="bg-white shadow-md px-2 py-2 flex justify-between items-center">
       {/* Logo */}
-      <Link to="/" className="w-[120px] h-[40px] md:w-[170px]">
+      <Link to="/" className="w-[40px] h-[40px] md:w-[170px]">
         <img
           src={logo}
           alt="SellURBike"
@@ -18,12 +18,12 @@ const UserHeader = () => {
         <img
           src={logoApp}
           alt="AppLogoSellURBike"
-          className="w-[50px] h-[50px] md:hidden ml-4" // Logo de la app visible en pantallas pequeñas
+          className="w-[40px] h-[40px] md:hidden" // Logo de la app visible en pantallas pequeñas
         />
       </Link>
 
       {/* Search Bar */}
-      <div className="flex-grow max-w-xl mx-auto ml-3 mr-3">
+      <div className="flex-grow max-w-lg min-w-0.6 mx-auto ml-2 mr-3">
         <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
           <input
             type="text"
@@ -31,16 +31,16 @@ const UserHeader = () => {
             className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
           />
           <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
-            <Search className="w-5 h-5" />
+            <Search className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex space-x-4 justify-center items-center">
-        <a href="#" className="text-gray-700 hover:text-indigo-600 hidden md:block">Categorías</a>
-        <Link to="/login">
-          <a href="#" className="text-gray-700 hover:text-indigo-600 hidden md:block">Login</a>
+        
+        <Link to="/login" className='text-gray-400'>
+          Login
         </Link>
         <Link to='/seller/add-product'>
           <button className="bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400">
