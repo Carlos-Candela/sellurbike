@@ -4,6 +4,7 @@ import { useState } from 'react';
 import logo from "../assets/sellurbike.png";
 import { Link } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import UserHeader from '../layout/UserHeader';
 
 
 // Datos de ejemplo de productos
@@ -55,25 +56,7 @@ const Home = () => {
     return (
         <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-md px-6 py-4 flex justify-around items-center">
-      <Link to="/" className="w-[170px] h-[40px]">
-            <img src={logo} alt="SellURBike" className="w-full h-full" />
-          </Link>
-          
-        <nav className="flex space-x-4 justify-center items-center">
-        
-          <a href="#" className="text-gray-700 hover:text-indigo-600">Categorías</a>
-          <Link to='/login'>
-          <a href="#" className="text-gray-700 hover:text-indigo-600">Login</a>
-          </Link>
-          <button className='bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400'>
-            <div className='flex justify-center items-center'>
-            <FaPlus className=' text-gray-700'/>
-            <h2 className='font-bold text-gray-700 hidden md:flex md:w-[70px] md:justify-center md:items-center'>Añadir</h2>
-            </div>
-          </button>
-        </nav>
-      </header>
+      <UserHeader/>
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-indigo-300 to-indigo-700 text-center py-16 px-4">
@@ -83,21 +66,8 @@ const Home = () => {
         <p className="text-gray-600 mb-6">
           Encuentra tú bicicleta idea sin pagar de más.
         </p>
-
-        {/* Search Bar */}
-        <div className="max-w-xl mx-auto">
-          <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
-            <input
-              type="text"
-              placeholder="Buscar productos..."
-              className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
-            />
-            <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
-              <Search className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
       </section>
+        
 
       {/* Categories */}
       <section className="bg-white py-4 px-6">
