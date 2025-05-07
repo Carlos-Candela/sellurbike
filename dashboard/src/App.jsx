@@ -8,7 +8,7 @@ function App() {
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);
   //console.log(allRoutes);
   useEffect(() => {
-    const privateRoutes = getRoutes(); // ✅ un array
+    const privateRoutes = getRoutes();
     setAllRoutes([...publicRoutes, ...privateRoutes]);
   }, []);
   //console.log(allRoutes);

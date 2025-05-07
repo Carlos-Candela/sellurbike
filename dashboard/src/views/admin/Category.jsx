@@ -5,35 +5,26 @@ import Pagination from "../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import axios from "axios";
+import { fetchCategories } from "../../store/Reducers/categoryReducer";
+import { useSelector, useDispatch } from "react-redux";
 
 const Category = () => {
+  const dispatch = useDispatch();
   const [currentePage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
   const [show, setShow] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const { categories, loader, errorMessage } = useSelector((state) => state.categories);
   const [newCategory, setNewCategory] = useState({ name: ""});
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/categories")
-      .then((res) => {
-        console.log("Respuesta del backend:", res.data);
-        setCategories(res.data.categories || []);
-      })
-      .catch((err) => {
-        console.error("Error al obtener categorías:", err);
-        setCategories([]);
-      });
-  }, []);
+    dispatch(fetchCategories()); // Despacha la acción para obtener las categorías
+  }, [dispatch]);
 
   const handleDelete = async (id) => {
     try {
-      // Realiza la solicitud DELETE al backend
       await axios.delete(`http://localhost:5000/api/categories/${id}`);
-
-      // Actualiza el estado eliminando la categoría del array
-      setCategories(categories.filter((category) => category._id !== id));
+      dispatch(fetchCategories()); // Vuelve a cargar las categorías después de eliminar
     } catch (error) {
       console.error("Error al eliminar la categoría:", error);
     }
