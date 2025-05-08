@@ -23,7 +23,7 @@ const UserHeader = () => {
       </Link>
 
       {/* Search Bar */}
-      <div className="flex-grow max-w-lg min-w-0.6 mx-auto ml-2 mr-3">
+      <div className="flex-grow max-w-lg min-w-0.6 mx-auto ml-2 mr-3 pl-6 pr-3">
         <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
           <input
             type="text"
