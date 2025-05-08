@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import UserHeader from '../../layout/UserHeader';
+import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategories } from "../../store/Reducers/categoryReducer";
+import UserSidebar from "../../layout/UserSidebar";
 
 function AddProduct() {
-    const dispatch = useDispatch();
-    const { categories } = useSelector((state) => state.categories);
-  
-    const [formData, setFormData] = useState({
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categories);
+
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
@@ -53,47 +54,27 @@ function AddProduct() {
   return (
     <div>
       <UserHeader />
-      <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Subir nuevo producto</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="title" className="block font-medium text-gray-700 mb-1">
-              Título
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              required
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="description" className="block font-medium text-gray-700 mb-1">
-              Descripción
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              required
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2 h-28 resize-none focus:outline-none focus:ring focus:ring-blue-200"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
+      <div className="flex">
+        <div>
+          {" "}
+          <UserSidebar />
+        </div>
+        <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">
+            Subir nuevo producto
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="price" className="block font-medium text-gray-700 mb-1">
-                Precio (€)
+              <label
+                htmlFor="title"
+                className="block font-medium text-gray-700 mb-1"
+              >
+                Título
               </label>
               <input
-                id="price"
-                name="price"
-                type="number"
-                min="0"
-                step="0.01"
+                id="title"
+                name="title"
+                type="text"
                 required
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
@@ -101,68 +82,111 @@ function AddProduct() {
             </div>
 
             <div>
-              <label htmlFor="category" className="block font-medium text-gray-700 mb-1">
-                Categoría
+              <label
+                htmlFor="description"
+                className="block font-medium text-gray-700 mb-1"
+              >
+                Descripción
               </label>
-              <select className="border border-gray-300 rounded px-4 py-2">
-      {categories.map((category) => (
-        <option key={category._id} value={category.name}>
-          {category.name}
-        </option>
-      ))}
-    </select>
+              <textarea
+                id="description"
+                name="description"
+                required
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded px-3 py-2 h-28 resize-none focus:outline-none focus:ring focus:ring-blue-200"
+              />
             </div>
-          </div>
 
-          <div>
-            <label className="block font-medium text-gray-700 mb-1">
-              Fotos del producto (máximo 6)
-            </label>
-            <div className="grid grid-cols-3 gap-4">
-              {formData.images.map((image, index) => (
-                <div key={index} className="relative w-full h-24 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
-                  {image ? (
-                    <>
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt={`Imagen ${index + 1}`}
-                        className="w-full h-full object-cover rounded-md"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute w-[25px] h-[25px] top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-800"
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="price"
+                  className="block font-medium text-gray-700 mb-1"
+                >
+                  Precio (€)
+                </label>
+                <input
+                  id="price"
+                  name="price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="category"
+                  className="block font-medium text-gray-700 mb-1"
+                >
+                  Categoría
+                </label>
+                <select className="border border-gray-300 rounded px-4 py-2">
+                  {categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block font-medium text-gray-700 mb-1">
+                Fotos del producto (máximo 6)
+              </label>
+              <div className="grid grid-cols-3 gap-4">
+                {formData.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative w-full h-24 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100"
+                  >
+                    {image ? (
+                      <>
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt={`Imagen ${index + 1}`}
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(index)}
+                          className="absolute w-[25px] h-[25px] top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-800"
+                        >
+                          ✕
+                        </button>
+                      </>
+                    ) : (
+                      <label
+                        htmlFor={`image-${index}`}
+                        className="cursor-pointer text-gray-500 hover:text-gray-700"
                       >
-                        ✕
-                      </button>
-                    </>
-                  ) : (
-                    <label
-                      htmlFor={`image-${index}`}
-                      className="cursor-pointer text-gray-500 hover:text-gray-700"
-                    >
-                      <FaRegPlusSquare className="text-2xl"/>
-                      <input
-                        id={`image-${index}`}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={(e) => handleImageUpload(e, index)}
-                      />
-                    </label>
-                  )}
-                </div>
-              ))}
+                        <FaRegPlusSquare className="text-2xl" />
+                        <input
+                          id={`image-${index}`}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleImageUpload(e, index)}
+                        />
+                      </label>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
-          >
-            Subir producto
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            >
+              Subir producto
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
