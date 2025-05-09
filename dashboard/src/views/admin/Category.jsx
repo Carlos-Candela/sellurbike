@@ -17,14 +17,13 @@ const Category = () => {
   const { categories, loader, errorMessage } = useSelector((state) => state.categories);
   const [newCategory, setNewCategory] = useState({ name: ""});
 
-  useEffect(() => {
-    dispatch(fetchCategories()); // Despacha la acción para obtener las categorías
-  }, [dispatch]);
+ useEffect(()=>{
+  dispatch(fetchCategories());
+ },[categories])
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/categories/${id}`);
-      dispatch(fetchCategories()); // Vuelve a cargar las categorías después de eliminar
     } catch (error) {
       console.error("Error al eliminar la categoría:", error);
     }
