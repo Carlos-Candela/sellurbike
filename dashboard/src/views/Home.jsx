@@ -47,7 +47,7 @@ const products = [
 ];
 
 const Home = () => {
-  const dispatch = useDispatch();
+  
   const { categories, loader, errorMessage } = useSelector(
     (state) => state.categories
   ); // Accede al estado global de categorías
@@ -55,9 +55,7 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   // Cargar las categorías desde el estado global al montar el componente
-  useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+
 
   return (
     <div className="min-h-screen flex flex-col">
