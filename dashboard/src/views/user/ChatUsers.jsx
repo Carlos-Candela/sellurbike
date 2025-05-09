@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import UserHeader from "../../layout/UserHeader";
 import UserSidebar from "../../layout/UserSidebar";
+import UserMobileSidebar from "../../layout/UserMobileSidebar";
 
 const ChatUsers = () => {
   const users = [
@@ -47,10 +48,12 @@ const ChatUsers = () => {
       <UserHeader />
       <div className="flex w-full h-[calc(100vh-130px)] md:h-screen">
         <div className="flex w-full h-full">
+          <div className="hidden sm:flex">
           <UserSidebar />
+          </div>
           <div className="h-[100%] flex w-screen">
         {/* Left Sidebar - List of users */}
-        <div className="w-1/4 border-r border-gray-300 bg-white overflow-y-auto">
+        <div className="w-2/4 lg:w-1/4 border-r border-gray-300 bg-white overflow-y-auto">
           <h2 className="text-lg font-bold p-4">Chats</h2>
           <ul>
             {users.map((user) => (
@@ -128,6 +131,7 @@ const ChatUsers = () => {
       
       
     </div>
+    <UserMobileSidebar/>
     </div>
   );
 };

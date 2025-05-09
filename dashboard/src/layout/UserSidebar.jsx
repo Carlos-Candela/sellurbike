@@ -1,52 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { FaShoppingCart, FaDollarSign, FaBox, FaComments, FaHeart, FaCog, FaStar, FaHome, FaCompass, FaPlus, FaUser } from "react-icons/fa";
+import React from "react";
 import { Link } from "react-router-dom";
+import { FaShoppingCart, FaDollarSign, FaBox, FaComments, FaHeart, FaCog, FaStar, FaHome, FaCompass, FaPlus, FaUser } from "react-icons/fa";
 
 const UserSidebar = () => {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  if (isMobile) {
-    return (
-      <div className="fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around items-center border-t-2 border-gray-300 py-2">
-        <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
-          <FaHome className="text-xl" />
-          <span className="text-xs">Inicio</span>
-        </button>
-        <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
-          <FaCompass className="text-xl" />
-          <span className="text-xs">Explorar</span>
-        </button>
-        <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
-          <FaPlus className="text-xl" />
-          <span className="text-xs">Añadir</span>
-        </button>
-        <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
-          <FaComments className="text-xl" />
-          <span className="text-xs">Chat</span>
-        </button>
-        <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
-          <FaUser className="text-xl" />
-          <span className="text-xs">Perfil</span>
-        </button>
-      </div>
-    );
-  }
 
   return (
-    <div className="w-[250px] h-screen bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
+    <div className="w-[250px] h-full bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
       {/* Sección superior: Imagen, nombre y valoración del usuario */}
       <div className="flex flex-col items-center">
         <img

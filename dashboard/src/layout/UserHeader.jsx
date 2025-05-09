@@ -42,7 +42,7 @@ const UserHeader = () => {
         <Link to="/login" className='text-gray-400'>
           Login
         </Link>
-        <Link to='/seller/add-product'>
+        <Link to='/user/add-product'>
           <button className="bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400">
             <div className="flex justify-center items-center">
               <FaPlus className="text-gray-700" />
