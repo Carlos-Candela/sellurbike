@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchCategories } from "../../store/Reducers/categoryReducer";
+import { useSelector } from "react-redux";
+
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
 
 function AddProduct() {
-  const dispatch = useDispatch();
+  
   const { categories } = useSelector((state) => state.categories);
 
   const [formData, setFormData] = useState({
@@ -19,9 +19,7 @@ function AddProduct() {
     images: Array(6).fill(null), // Inicializa un array de 6 posiciones con `null`
   });
 
-  useEffect(() => {
-    dispatch(fetchCategories()); // Carga las categorías al montar el componente
-  }, [dispatch]);
+ 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
