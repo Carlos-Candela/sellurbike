@@ -1,6 +1,8 @@
 import React, { useState} from "react";
 import UserHeader from "../../layout/UserHeader";
 import Pagination from "../Pagination";
+import UserSidebar from "../../layout/UserSidebar";
+
 const AllProducts = () => {
     const sampleProducts = [
         {
@@ -51,8 +53,12 @@ const AllProducts = () => {
   return (
     <div>
       <UserHeader />
-      <div className="max-w-5xl mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold mb-4">Productos del usuario</h2>
+      <div className="flex">
+        <div>
+          <UserSidebar />
+        </div>
+        <div className="max-w-5xl mx-auto px-4 py-6">
+      <h2 className="text-2xl font-bold mb-4">Todos</h2>
       <div className="flex justify-center items-center gap-2 mb-6">
       <select
               onChange={(e) => setParpage(parseInt(e.target.value))}
@@ -114,8 +120,15 @@ const AllProducts = () => {
             )}
           </div>
     </div>
+      </div>
     </div>
   );
 };
+
+
+
+
+
+
 
 export default AllProducts;
