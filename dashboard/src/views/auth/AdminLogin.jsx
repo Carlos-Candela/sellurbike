@@ -5,11 +5,14 @@ import { admin_login, messageClear } from "../../store/Reducers/authReducer";
 import { PropagateLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { loaderStyleOverride } from "../../../utils/utils";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
+  const { loader, errorMessage, successMessage } = useSelector(
+    (state) => state.auth
+  );
 
   const [formLoginData, setFormLoginData] = useState({
     email: "",
@@ -29,25 +32,18 @@ const AdminLogin = () => {
     //console.log(formLoginData);
   };
 
-  const loaderStyleOverride = {
-    display: "flex",
-    margin: "0 auto",
-    height: "24px",
-    justifyContent: "center",
-    alignItems: "center",
-  };
 
   useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
     }
-    if(successMessage) {
+    if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      navigate("/admin/dashboard")
+      navigate("/admin/dashboard");
     }
-  }, [errorMessage,successMessage, dispatch,navigate]);
+  }, [errorMessage, successMessage, dispatch, navigate]);
 
   return (
     <>

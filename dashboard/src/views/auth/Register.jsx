@@ -3,28 +3,59 @@ import logo from "../../assets/sellurbike.png";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { PropagateLoader } from "react-spinners";
+import { loaderStyleOverride } from "../../../utils/utils";
+import { user_register } from "../../store/Reducers/authReducer";
+import toast from "react-hot-toast";
 
 const Register = () => {
 
-  const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
+  const dispatch = useDispatch();
+  
+  const { loader } = useSelector((state) => state.auth);
+
+const [formData, setFormData] = useState({
+  name: "",
+  surname: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  terms: false, 
+});
 
   const inputHandle = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-  }
-  
+  };
+
   const submit = (e) => {
+
     e.preventDefault();
-    console.log(formData);
-  }
+    
+    if (formData.name === "" || formData.surname === "" || formData.email === "" || formData.password === "") {
+      toast.error("Por favor, complete todos los campos");
+      return;
+    }
+    if (!formData.email.includes("@")) {
+      toast.error("Por favor, ingrese un correo electrónico válido");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
+      return;
+    }
+    if (!formData.terms) {
+      toast.error("Por favor, acepte los términos y condiciones");
+      return;
+    }
+    const {confirmPassword, terms, ...dataToSend} = formData
+    dispatch(user_register(dataToSend));
+  };
+
+
 
   return (
     <div className="min-w-screen min-h-screen bg-[#c9c4f4] flex justify-center items-center">
@@ -131,7 +162,9 @@ const Register = () => {
             <div>
               <label htmlFor="terms" className="inline-flex items-center mb-4">
                 <input
+                  onChange={inputHandle}
                   type="checkbox"
+                  checked={formData.terms}
                   name="terms"
                   id="terms"
                   className="rounded border-gray-300 text-[#6f68d1] shadow-sm focus:ring-[#6f68d1] focus:ring-offset-[#6f68d1] focus:ring-offset-2 focus:ring focus:outline-none"
@@ -157,12 +190,20 @@ const Register = () => {
               </label>
             </div>
             <button
+              disabled={loader ? true : false}
               type="submit"
               className="w-full py-2 px-4 bg-[#161271] text-white 
             font-bold rounded-md hover:bg-[#232342] focus:outline-none 
             focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
             >
-              Registrarse
+              {loader ? (
+                <PropagateLoader
+                  color="#ffffff"
+                  cssOverride={loaderStyleOverride}
+                />
+              ) : (
+                "Registrarse"
+              )}
             </button>
             <div>
               <p className="text-center mt-4 text-white">

@@ -1,4 +1,5 @@
 const adminModel = require("../models/adminModel");
+const userModel = require("../models/userModel")
 const { responseReturn } = require("../utiles/response");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../utiles/tokenCreate");
@@ -29,7 +30,34 @@ class authControllers {
     } catch (error) {
       return responseReturn(res, 500, { error: error.mesagge });
     }
-  };//Fin del metodo login_admin
+  };
+  //Fin del metodo login_admin
+
+
+  //Metodo para registrar un usuario
+  //Recibe el nombre, el correo y la contraseña del usuario y lo registra
+    user_register = async (req,res) =>{
+      console.log("Register user")
+      console.log(req.body)
+      const {name,surname,email,password} = req.body
+      try{
+        const user = await userModel.findOne({email})
+        if(user){
+          return responseReturn(res, 404, { error: "El email ya existe." });
+        }else{
+          const user = await userModel.create({
+            name,
+            surname,
+            email,
+            password: await bcrypt.hash(password, 10),
+            method: "manual"
+          })
+          console.log(user)
+        }
+      }catch(error){
+          console.log(error)
+      }
+    }
 
   //Metodo para obtener el usuario logeado
   //Recibe el id y el rol del usuario logeado y lo devuelve

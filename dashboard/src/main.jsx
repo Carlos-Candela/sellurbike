@@ -7,9 +7,12 @@ import { Provider } from "react-redux";
 import { store } from "./store/index.js";
 import { Toaster } from "react-hot-toast";
 
-const App = lazy(() => import("./App"));
 
-createRoot(document.getElementById("root")).render(
+const App = lazy(() => import("./App"));
+const container = document.getElementById("root");
+if (!container._reactRootContainer) {
+const root = createRoot(document.getElementById("root"));
+root.render(
   
   <BrowserRouter>
     <Provider store={store}>
@@ -35,3 +38,4 @@ createRoot(document.getElementById("root")).render(
   </BrowserRouter>
   
 );
+}
