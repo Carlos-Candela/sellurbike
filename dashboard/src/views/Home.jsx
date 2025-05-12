@@ -50,30 +50,30 @@ const products = [
 
 const Home = () => {
   
-  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth.userInfo); // Accede al estado global del usuario
   
-  const { categories, loader, errorMessage } = useSelector(
+  const { categories} = useSelector(
     (state) => state.categories
   ); // Accede al estado global de categorías
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    // Verifica si el usuario está logueado
-    
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      navigate("/login"); // Redirige al login si no está logueado
-    }else{
-      if(userInfo.role === "admin"){
-        navigate("/admin/dashboard")
-      }else if(userInfo.role === "seller"){
-        navigate("/")
-      }
+  const token = localStorage.getItem("accessToken");
+
+  if (!token) {
+    navigate("/login"); // Redirige al login si no está logueado
+  } else if (userInfo) {
+    // Verifica el rol del usuario y redirige según corresponda
+    if (userInfo.role === "admin") {
+      navigate("/admin/dashboard");
+    } else if (userInfo.role === "seller") {
+      navigate("/");
     }
-  }, [dispatch, navigate]);
+  }
+}, [userInfo, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">
