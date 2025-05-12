@@ -1,11 +1,13 @@
 import React from "react";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import UserHeader from "../layout/UserHeader";
-import { useSelector, useDispatch } from "react-redux";
 import { fetchCategories } from "../store/Reducers/categoryReducer";
+import { useNavigate } from "react-router-dom";
+
 
 // Datos de ejemplo de productos
 const products = [
@@ -48,14 +50,26 @@ const products = [
 
 const Home = () => {
   
+   const dispatch = useDispatch();
+   const navigate = useNavigate();
+
+  
   const { categories, loader, errorMessage } = useSelector(
     (state) => state.categories
   ); // Accede al estado global de categorías
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Cargar las categorías desde el estado global al montar el componente
-
+  useEffect(() => {
+    // Verifica si el usuario está logueado
+    
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      navigate("/login"); // Redirige al login si no está logueado
+    }else{
+      console.log("IMPLEMENTAR SI ES ROLE ADMIN: REDIGIR A ADMIN/DAHSBOARD Y SI ES ROL USER: REDIRIGIR A /")
+    }
+  }, [dispatch, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col">

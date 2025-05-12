@@ -4,8 +4,12 @@ import logoApp from "../assets/AppLogoSellurbike.png";
 import logo from "../assets/sellurbike.png";
 import { Link } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 const UserHeader = () => {
+
+  const {token} = useSelector((state)=> state.auth)
+  const { userInfo } = useSelector((state) => state.auth);
   return (
     <header className="bg-white shadow-md px-2 py-2 flex justify-between items-center">
       {/* Logo */}
@@ -37,11 +41,17 @@ const UserHeader = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex space-x-4 justify-center items-center">
+      <nav className="flex space-x-4 justify-center items-center w-full">
         
-        <Link to="/login" className='text-gray-400'>
-          Login
-        </Link>
+        <div className='flex flex-col items-center '>
+        <img
+          src={`http://localhost:5173/images/${userInfo.image}`} // Reemplaza con la URL de la imagen del usuario
+          alt={`${userInfo.name}`}
+          className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
+        />
+        <h2 className="text-xs font-semibold text-gray-800">{`${userInfo.name}`}</h2>
+        </div>
+
         <Link to='/user/add-product'>
           <button className="bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400">
             <div className="flex justify-center items-center">
