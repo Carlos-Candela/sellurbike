@@ -41,7 +41,7 @@ const UserHeader = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="flex space-x-4 justify-center items-center w-full">
+      <nav className="flex space-x-4 justify-center items-center ">
         
         <div className='flex flex-col items-center '>
         <img
