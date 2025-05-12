@@ -7,6 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import UserHeader from "../layout/UserHeader";
 import { fetchCategories } from "../store/Reducers/categoryReducer";
 import { useNavigate } from "react-router-dom";
+import UserMobileSidebar from "../layout/UserMobileSidebar";
 
 
 // Datos de ejemplo de productos
@@ -140,6 +141,7 @@ const Home = () => {
       <footer className="bg-gray-100 text-center text-gray-500 py-4 mt-auto">
         © {new Date().getFullYear()} SellURBike. Todos los derechos reservados.
       </footer>
+      <UserMobileSidebar/>
     </div>
   );
 };
