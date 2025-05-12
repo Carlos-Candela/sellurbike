@@ -13,7 +13,7 @@ const UserHeader = () => {
   return (
     <header className=" bg-white shadow-md px-2 py-2 flex justify-between items-center">
       {/* Logo */}
-      <Link to="/" className="w-[40px] h-[40px] md:w-[170px]">
+      <Link to="/" className="w-[40px] h-[40px] md:w-[170px] ml-2 mr-2">
         <img
           src={logo}
           alt="SellURBike"
@@ -27,8 +27,8 @@ const UserHeader = () => {
       </Link>
 
       {/* Search Bar */}
-      <div className="flex-grow max-w-full sm:max-w-sm mx-auto ml-2 mr-3 pl-2 pr-2">
-  <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
+<div className="flex-grow max-w-[200px] sm:max-w-[500px] mx-auto ml-2 mr-2">
+  <div className="flex items-center bg-white rounded-full shadow-md p-1 w-full">
     <input
       type="text"
       placeholder="Buscar productos..."
@@ -41,15 +41,15 @@ const UserHeader = () => {
 </div>
 
       {/* Navigation */}
-      <nav className="flex space-x-4 justify-center items-center ">
+      <nav className="flex space-x-4 justify-center items-center">
         
-        <div className='flex flex-col items-center '>
+        <div className='flex flex-col items-center justify-center'>
         <img
           src={`http://localhost:5173/images/${userInfo.image}`} // Reemplaza con la URL de la imagen del usuario
           alt={`${userInfo.name}`}
           className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
         />
-        <h2 className="text-xs font-semibold text-gray-800">{`${userInfo.name}`}</h2>
+        <h2 className="text-xs font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
         </div>
 
         <Link to='/user/add-product'>
