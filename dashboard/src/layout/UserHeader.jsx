@@ -11,7 +11,7 @@ const UserHeader = () => {
   const {token} = useSelector((state)=> state.auth)
   const { userInfo } = useSelector((state) => state.auth);
   return (
-    <header className="bg-white shadow-md px-2 py-2 flex justify-between items-center">
+    <header className=" bg-white shadow-md px-2 py-2 flex justify-between items-center">
       {/* Logo */}
       <Link to="/" className="w-[40px] h-[40px] md:w-[170px]">
         <img
@@ -27,18 +27,18 @@ const UserHeader = () => {
       </Link>
 
       {/* Search Bar */}
-      <div className="flex-grow max-w-lg min-w-0.6 mx-auto ml-2 mr-3 pl-6 pr-3">
-        <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
-          />
-          <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
-            <Search className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
+      <div className="flex-grow max-w-full sm:max-w-sm mx-auto ml-2 mr-3 pl-2 pr-2">
+  <div className="flex items-center bg-white rounded-full shadow-md p-2 w-full">
+    <input
+      type="text"
+      placeholder="Buscar productos..."
+      className="flex-grow px-2 py-1 rounded-l-full focus:outline-none text-sm"
+    />
+    <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
+      <Search className="w-4 h-4" />
+    </button>
+  </div>
+</div>
 
       {/* Navigation */}
       <nav className="flex space-x-4 justify-center items-center ">
