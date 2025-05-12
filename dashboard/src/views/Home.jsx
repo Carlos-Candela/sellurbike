@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import UserHeader from "../layout/UserHeader";
-import { fetchCategories } from "../store/Reducers/categoryReducer";
 import { useNavigate } from "react-router-dom";
 import UserMobileSidebar from "../layout/UserMobileSidebar";
 
@@ -51,9 +50,9 @@ const products = [
 
 const Home = () => {
   
-   const dispatch = useDispatch();
-   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.auth.userInfo); // Accede al estado global del usuario
   
   const { categories, loader, errorMessage } = useSelector(
     (state) => state.categories
@@ -68,7 +67,11 @@ const Home = () => {
     if (!token) {
       navigate("/login"); // Redirige al login si no está logueado
     }else{
-      console.log("IMPLEMENTAR SI ES ROLE ADMIN: REDIGIR A ADMIN/DAHSBOARD Y SI ES ROL USER: REDIRIGIR A /")
+      if(userInfo.role === "admin"){
+        navigate("/admin/dashboard")
+      }else if(userInfo.role === "seller"){
+        navigate("/")
+      }
     }
   }, [dispatch, navigate]);
 

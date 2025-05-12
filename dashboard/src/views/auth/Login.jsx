@@ -32,7 +32,7 @@ const Login = () => {
     const submit = (e) => {
       e.preventDefault();
       dispatch(user_login(formLoginData));
-      console.log(formLoginData);
+            
     }
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const Login = () => {
           if (successMessage) {
             toast.success(successMessage);
             dispatch(messageClear());
-            
+            navigate("/");
           }
         }, [errorMessage, successMessage, dispatch, navigate]);
   return (

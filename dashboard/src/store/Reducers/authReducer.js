@@ -27,7 +27,7 @@ export const user_login = createAsyncThunk(
       const { data } = await api.post("/user-login", info, {
         withCredentials: true,
       });
-      //console.log(data);
+      //console.log(data)
       localStorage.setItem("accessToken", data.token)
       
       return fulfillWithValue(data);
@@ -146,7 +146,7 @@ export const authReducer = createSlice({
       })
       .addCase(user_login.fulfilled, (state, { payload }) => {
         state.loader = false;
-        state.userInfo = payload.userInfo;
+        state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
         
