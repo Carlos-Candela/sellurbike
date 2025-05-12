@@ -1,0 +1,15 @@
+const {Schema, model} = require('mongoose');
+
+const userCustomerSchema = new Schema({
+    myId: {
+        type: String,
+        required: true,
+    },
+    myFriends: {
+        type: Array,
+        default: [],
+    },  
+    
+},{timestamps: true});
+
+module.exports = model("user_customers", userCustomerSchema);

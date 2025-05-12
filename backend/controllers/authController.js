@@ -1,10 +1,12 @@
 const adminModel = require("../models/adminModel");
 const userModel = require("../models/userModel")
+const userCustomerModel = require("../models/chat/userCustomerModel");
 const { responseReturn } = require("../utiles/response");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../utiles/tokenCreate");
 
 class authControllers {
+
   //Metodo login del administrador
   //Recibe el correo y la contraseña del administrador y lo logea
   admin_login = async (req, res) => {
@@ -41,6 +43,7 @@ class authControllers {
       console.log(req.body)
       const {name,surname,email,password} = req.body
       try{
+
         const user = await userModel.findOne({email})
         if(user){
           return responseReturn(res, 404, { error: "El email ya existe." });
@@ -52,14 +55,22 @@ class authControllers {
             password: await bcrypt.hash(password, 10),
             method: "manual"
           })
-          console.log(user)
+          await userCustomerModel.create({
+            myId: user._id
+          })
+          const token = await createToken({id: user._id, role: user.role})
+          res.cookie("accesToken", token,{expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)});
+          responseReturn(res, 201,{token, message: "Registro completado con exito."} )
         }
       }catch(error){
-          console.log(error)
+          responseReturn(res, 500, {error: "Error interno del servidor"})
       }
     }
+    //Fin del metodo user_register
 
-  //Metodo para obtener el usuario logeado
+
+
+  //Metodo para obtener el usuario logeado y si es admin o seller
   //Recibe el id y el rol del usuario logeado y lo devuelve
   getUser = async (req, res) => {
     const {id,role} = req;
@@ -75,5 +86,6 @@ class authControllers {
       console.log(error.message)
     }
   };
+  //Fin del metodo getUser
 }
 module.exports = new authControllers();
