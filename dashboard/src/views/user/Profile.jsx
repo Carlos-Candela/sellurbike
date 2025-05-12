@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UserHeader from '../../layout/UserHeader';
 import UserSidebar from '../../layout/UserSidebar';
+import UserMobileSidebar from '../../layout/UserMobileSidebar';
 
 const Profile = () => {
     const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ const Profile = () => {
         <div>
             <UserHeader />
       <div className="flex">
-        <div>
+        <div className="hidden sm:block">
           <UserSidebar />
         </div>
         <div className="w-full p-6 bg-gray-100 min-h-screen">
@@ -188,6 +189,7 @@ const Profile = () => {
             </div>
         </div>
         </div>
+        <UserMobileSidebar />
         </div>
     );
 };

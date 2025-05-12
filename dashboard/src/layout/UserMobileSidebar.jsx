@@ -21,14 +21,18 @@ const UserMobileSidebar = () => {
                   <span className="text-xs">Añadir</span>
                 </button>
                 </Link>
+                <Link to="/user/chat">
                 <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
                   <FaComments className="text-xl" />
                   <span className="text-xs">Chat</span>
                 </button>
+                </Link>
+                <Link to = "/user/profile">
                 <button className="flex flex-col items-center text-gray-700 hover:text-blue-500">
                   <FaUser className="text-xl" />
                   <span className="text-xs">Perfil</span>
                 </button>
+                </Link>
               </div>
     );
 };

@@ -79,7 +79,7 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-indigo-300 to-indigo-700 text-center py-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-extrabold mb-4 text-gray-900">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-900 transition-all">
           Compra y vende tú bicicleta
         </h2>
         <p className="text-gray-600 mb-6">
@@ -112,8 +112,10 @@ const Home = () => {
       </section>
 
       {/* Product Grid */}
-      <div className="flex justify-center">
-        <section className="w-[70%] py-10 px-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-gray-700 text-center transition-all duration-300">Productos recientes</h2>
+      <div className="flex justify-center ">
+        
+        <section className="w-[70%] py-10 px-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           {products.map((product) => (
             <div
               key={product.id}

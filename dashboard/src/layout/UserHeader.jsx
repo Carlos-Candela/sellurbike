@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 
+
 const UserHeader = () => {
 
   const {token} = useSelector((state)=> state.auth)
@@ -42,7 +43,7 @@ const UserHeader = () => {
 
       {/* Navigation */}
       <nav className="flex space-x-4 justify-center items-center">
-        
+        <Link to='/user/profile'>
         <div className='flex flex-col items-center justify-center'>
         <img
           src={`http://localhost:5173/images/${userInfo.image}`} // Reemplaza con la URL de la imagen del usuario
@@ -51,7 +52,7 @@ const UserHeader = () => {
         />
         <h2 className="text-xs font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
         </div>
-
+        </Link>
         <Link to='/user/add-product'>
           <button className="bg-indigo-300 p-2 border border-gray-300 rounded-full cursor-pointer hover:bg-indigo-400">
             <div className="flex justify-center items-center">

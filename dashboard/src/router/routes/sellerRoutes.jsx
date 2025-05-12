@@ -15,6 +15,7 @@ const sellerRoutes = [
     {path: '/user/products', element: <AllProducts />, role: 'seller', status:'active'},
     {path: '/user/orders', element: <Orders />, role: 'seller', status:'active'},
     {path: '/user/chat/:customerId', element: <ChatUsers />, role: 'seller', status:'active'},
+    {path: '/user/chat', element: <ChatUsers />, role: 'seller', status:'active'},
     {path: '/user/profile', element: <Profile />, role: 'seller', status:'active'},
     {path: '/user/edit-product/:productId', element: <EditProduct />, role: 'seller', status:'active'},
 ];
