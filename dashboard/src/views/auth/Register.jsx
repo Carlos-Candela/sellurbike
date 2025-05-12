@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/sellurbike.png";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
@@ -8,12 +8,14 @@ import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import { user_register } from "../../store/Reducers/authReducer";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { admin_login, messageClear } from "../../store/Reducers/authReducer";
 
 const Register = () => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const { loader } = useSelector((state) => state.auth);
+  const { loader, errorMessage, successMessage } = useSelector((state) => state.auth);
 
 const [formData, setFormData] = useState({
   name: "",
@@ -55,7 +57,17 @@ const [formData, setFormData] = useState({
     dispatch(user_register(dataToSend));
   };
 
-
+  useEffect(() => {
+      if (errorMessage) {
+        toast.error(errorMessage);
+        dispatch(messageClear());
+      }
+      if (successMessage) {
+        toast.success(successMessage);
+        dispatch(messageClear());
+        
+      }
+    }, [errorMessage, successMessage, dispatch, navigate]);
 
   return (
     <div className="min-w-screen min-h-screen bg-[#c9c4f4] flex justify-center items-center">

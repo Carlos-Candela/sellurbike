@@ -65,11 +65,5 @@ export const allNav = [
         role: "admin",
         path: "/admin/dashboard/chat-sellers",
     },
-    {
-        id:1,
-        title: "Dashboard",
-        icon: <MdOutlineDashboard />,
-        role: "seller",
-        path: "/admin/dashboard",
-    }
+    
 ]

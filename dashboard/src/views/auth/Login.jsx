@@ -1,11 +1,22 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import logoApp from "../../assets/AppLogoSellurbike.png"
+import { PropagateLoader } from "react-spinners";
+import { loaderStyleOverride } from "../../../utils/utils";
+import toast from "react-hot-toast";
+import { user_login, messageClear } from "../../store/Reducers/authReducer";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+    const { loader, errorMessage, successMessage } = useSelector(
+      (state) => state.auth
+    );
   const [formLoginData, setFormLoginData] = useState({
     email: "",
     password: "",
@@ -20,8 +31,21 @@ const Login = () => {
     
     const submit = (e) => {
       e.preventDefault();
+      dispatch(user_login(formLoginData));
       console.log(formLoginData);
     }
+
+    useEffect(() => {
+          if (errorMessage) {
+            toast.error(errorMessage);
+            dispatch(messageClear());
+          }
+          if (successMessage) {
+            toast.success(successMessage);
+            dispatch(messageClear());
+            
+          }
+        }, [errorMessage, successMessage, dispatch, navigate]);
   return (
     <>
       <div className="min-w-screen min-h-screen bg-[#e5e3f3] flex justify-center items-center">
@@ -76,12 +100,20 @@ const Login = () => {
                 />
               </div>
               <button
+                disabled={loader ? true : false}
                 type="submit"
                 className="w-full py-2 px-4 bg-[#161271] text-white 
             font-bold rounded-md hover:bg-[#232342] focus:outline-none 
             focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
               >
-                Iniciar Sesión
+                {loader ? (
+                  <PropagateLoader
+                    color="#ffffff"
+                    cssOverride={loaderStyleOverride}
+                  />
+                ) : (
+                  "Iniciar Sesión"
+                )}
               </button>
               <div>
                 <p className="text-center mt-4 text-white">
