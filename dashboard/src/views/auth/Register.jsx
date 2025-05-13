@@ -9,7 +9,7 @@ import { loaderStyleOverride } from "../../../utils/utils";
 import { user_register } from "../../store/Reducers/authReducer";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { admin_login, messageClear } from "../../store/Reducers/authReducer";
+import {  messageClear } from "../../store/Reducers/authReducer";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const [formData, setFormData] = useState({
       if (successMessage) {
         toast.success(successMessage);
         dispatch(messageClear());
-        
+        navigate('/');
       }
     }, [errorMessage, successMessage, dispatch, navigate]);
 
