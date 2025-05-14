@@ -3,23 +3,23 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { categoryAdd } from "../../store/Reducers/categoryReducer";
+import { categoryAdd, get_category } from "../../store/Reducers/categoryReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import api from "../../api/api"
 import toast from "react-hot-toast";
 import { messageClear } from '../../store/Reducers/categoryReducer';
+import Search from "../../components/Search"
+
 
 const Category = () => {
 
   const dispatch = useDispatch();
 
-  const { loader, successMessage, errorMessage } = useSelector((state) => state.categories);
+  const { loader, successMessage, errorMessage, categories } = useSelector((state) => state.categories);
 
-  const categories = []
-
-  const [currentePage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
   const [show, setShow] = useState(false);
@@ -65,9 +65,18 @@ const add_category = (e) => {
               dispatch(messageClear());
               setState({name: "",image: ""});
               setImage("")
-              console.log(state)
+              
             }
           }, [errorMessage, successMessage]);
+
+  useEffect(() => {
+    const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
+      searchValue
+    }
+    dispatch(get_category(obj))
+  },[searchValue, currentPage, parPage])
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -82,22 +91,7 @@ const add_category = (e) => {
       </div>
       <div className="flex flex-wrap w-full">
         <div className="w-full lg:w-7/12 bg-[#6a5fdf] rounded-lg shadow-md p-4">
-          <div className="flex justify-between items-center">
-            <select
-              onChange={(e) => setParpage(parseInt(e.target.value))}
-              className="px-4 py-2 border-1 hover:shadow-gray-800/50 outline-none bg-[#6a5fdf] text-[#d0d2d6] rounded-md shadow-lg"
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className="px-4 py-2 border-1 hover:shadow-gray-800/50 outline-none bg-[#6a5fdf] text-[#d0d2d6] rounded-md shadow-lg"
-            ></input>
-          </div>
+          <Search setParpage={setParpage} setSearchValue={setSearchValue} searchValue={searchValue} />
           <div className="relative overflow-x-auto">
             <table className="w-full text-md text-[#d0d2d6] text-left">
               <thead className="text-sm text-[#d0d2d6] border-slate-600 uppercase border-b">
@@ -123,7 +117,7 @@ const add_category = (e) => {
                       No hay categorías disponibles.
                     </td>
                   </tr>
-                ) : ( <p>falta map categorias</p>/*
+                ) : ( 
                   categories.map((category, i) => (
                     <tr key={i}>
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
@@ -132,7 +126,7 @@ const add_category = (e) => {
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
                         <img
                           className="w-[50px] h-[50px] rounded-xl shadow-lg"
-                          src={`http://localhost:5173/images/category/${category.name}.jpg`}
+                          src={`${category.image}`}
                           alt={category.name}
                         />
                       </td>
@@ -154,20 +148,20 @@ const add_category = (e) => {
                       </td>
                     </tr>
                   ))
-               */ )}
+                )}
               </tbody>
             </table>
           </div>
           <div className="w-full justify-end flex mt-4">
-            {categories.length > parPage && (
+            
               <Pagination
-                pageNumber={currentePage}
+                pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
                 totalItems={categories.length}
                 parPage={parPage}
                 showItem={3}
               />
-            )}
+            
           </div>
         </div>
         <div

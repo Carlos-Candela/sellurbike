@@ -22,10 +22,6 @@ app.use(cookieParser());
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/categoriesRoutes"))
 
-app.get("/", (req, res) => {
-  res.send("Mi backend esta corriendo.");
-});
-
 const port = process.env.PORT;
 dbConnect();
 app.listen(port, () => console.log(`Server is running on port ${port}`));
