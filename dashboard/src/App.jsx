@@ -10,7 +10,7 @@ function App() {
   const dispatch = useDispatch();
 
   const {token}= useSelector((state)=> state.auth)
-  const categories = useSelector((state) => state.categories.categories);
+  const categories = []
 
   useEffect(()=>{
     if(token){
@@ -18,9 +18,7 @@ function App() {
     }
   }, [token])
 
-  useEffect(() => {
-    dispatch(fetchCategories()); // Fetch categories on app load
-  }, [dispatch]);
+
 
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);
   useEffect(() => {

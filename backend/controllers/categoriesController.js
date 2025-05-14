@@ -1,74 +1,103 @@
-const Category = require("../models/categoryModel"); // Modelo de categorías
+const categoryModel = require("../models/categoryModel"); // Modelo de categorías
 const { responseReturn } = require("../utiles/response"); // Utilidad para respuestas
+const formidable = require("formidable"); // Middleware para manejar formularios
+const cloudinary = require("cloudinary").v2; // Librería para manejar Cloudinary
 
 class CategoriesController {
+  // Obtener todas las categorías
+  getAllCategories = async (req, res) => {
+    console.log("Esta mirando las categorias en BD");
+    
+  };
 
-    // Obtener todas las categorías
-    getAllCategories = async (req, res) => {
+  // Crear una nueva categoría
+  createCategory = async (req, res) => {
+    const form = formidable();
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        responseReturn(res, 404, { error: "algo salio mal" });
+      } else {
+        let { name } = fields;
+        let { image } = files;
+        name = name.trim();
+        const slug = name.split(" ").join("-").toLowerCase();
+
+        cloudinary.config({
+          cloud_name: process.env.cloud_name,
+          api_key: process.env.api_key_cloud,
+          api_secret: process.env.api_secret_cloud,
+          secure: true,
+        });
         
-      try {
-        const categories = await Category.find(); // Obtiene todas las categorías
-        return responseReturn(res, 200, { categories });
+        try {
+          // Verificar si ya existe una categoría con el mismo nombre o slug
+          const existingCategory = await categoryModel.findOne({ slug });
+          if (existingCategory) {
+            return responseReturn(res, 400, { error: "Ya existe una categoría con este nombre." });
+          }
+
+          // Continuar con la creación de la categoría si no existe
+          const result = await cloudinary.uploader.upload(image.filepath, {folder: "categories"})
+          if (result) {
+            const category = await categoryModel.create({
+              name,
+              slug,
+              image: result.url
+            })
+            responseReturn( res, 201, { category,
+              message: "Categoría creada con éxito."})
+          } else {
+            responseReturn(res, 404, { error: "Fallo al subir la imagen." });
+          }
+        } catch (error) {
+          responseReturn(res, 500, { error: "Fallo interno del servidor." });
+        }
         
-      } catch (error) {
-        return responseReturn(res, 500, { error: error.message });
       }
-    };
-  
-    // Crear una nueva categoría
-    createCategory = async (req, res) => {
-      const { name } = req.body;
-      try {
-        // Verifica si la categoría ya existe
-        const existingCategory = await Category.findOne({ name });
-        if (existingCategory) {
-          return responseReturn(res, 400, { error: "La categoría ya existe" });
-        }
-  
-        const newCategory = new Category({ name });
-        await newCategory.save();
-        return responseReturn(res, 201, { message: "Categoría creada con éxito", category: newCategory });
-      } catch (error) {
-        return responseReturn(res, 500, { error: error.message });
+    });
+  };
+
+  // Actualizar una categoría
+  updateCategory = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    try {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        id,
+        { name },
+        { new: true } // Devuelve el documento actualizado
+      );
+
+      if (!updatedCategory) {
+        return responseReturn(res, 404, { error: "Categoría no encontrada" });
       }
-    };
-  
-    // Actualizar una categoría
-    updateCategory = async (req, res) => {
-      const { id } = req.params;
-      const { name } = req.body;
-      try {
-        const updatedCategory = await Category.findByIdAndUpdate(
-          id,
-          { name },
-          { new: true } // Devuelve el documento actualizado
-        );
-  
-        if (!updatedCategory) {
-          return responseReturn(res, 404, { error: "Categoría no encontrada" });
-        }
-  
-        return responseReturn(res, 200, { message: "Categoría actualizada con éxito", category: updatedCategory });
-      } catch (error) {
-        return responseReturn(res, 500, { error: error.message });
+
+      return responseReturn(res, 200, {
+        message: "Categoría actualizada con éxito",
+        category: updatedCategory,
+      });
+    } catch (error) {
+      return responseReturn(res, 500, { error: error.message });
+    }
+  };
+
+  // Eliminar una categoría
+  deleteCategory = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const deletedCategory = await Category.findByIdAndDelete(id);
+
+      if (!deletedCategory) {
+        return responseReturn(res, 404, { error: "Categoría no encontrada" });
       }
-    };
-  
-    // Eliminar una categoría
-    deleteCategory = async (req, res) => {
-      const { id } = req.params;
-      try {
-        const deletedCategory = await Category.findByIdAndDelete(id);
-  
-        if (!deletedCategory) {
-          return responseReturn(res, 404, { error: "Categoría no encontrada" });
-        }
-  
-        return responseReturn(res, 200, { message: "Categoría eliminada con éxito" });
-      } catch (error) {
-        return responseReturn(res, 500, { error: error.message });
-      }
-    };
-  }
-  
-  module.exports = new CategoriesController();
+
+      return responseReturn(res, 200, {
+        message: "Categoría eliminada con éxito",
+      });
+    } catch (error) {
+      return responseReturn(res, 500, { error: error.message });
+    }
+  };
+}
+
+module.exports = new CategoriesController();

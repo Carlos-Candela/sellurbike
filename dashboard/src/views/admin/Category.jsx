@@ -1,33 +1,73 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import axios from "axios";
-import { fetchCategories } from "../../store/Reducers/categoryReducer";
+import { categoryAdd } from "../../store/Reducers/categoryReducer";
 import { useSelector, useDispatch } from "react-redux";
+import { PropagateLoader } from "react-spinners";
+import { loaderStyleOverride } from "../../../utils/utils";
+import api from "../../api/api"
+import toast from "react-hot-toast";
+import { messageClear } from '../../store/Reducers/categoryReducer';
 
 const Category = () => {
+
   const dispatch = useDispatch();
+
+  const { loader, successMessage, errorMessage } = useSelector((state) => state.categories);
+
+  const categories = []
+
   const [currentePage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
   const [show, setShow] = useState(false);
-  const { categories, loader, errorMessage } = useSelector((state) => state.categories);
   const [newCategory, setNewCategory] = useState({ name: ""});
+  const [imageShow, setImage] = useState('');
 
- useEffect(()=>{
-  dispatch(fetchCategories());
- },[categories])
+const [state, setState]= useState({
+  name: "",
+  image: "",
+})
+
+
+const imageHandle = (e)=>{
+  const files = e.target.files
+  if(files.length > 0){
+    setImage(URL.createObjectURL(files[0]))
+    setState({...state,image: files[0]})
+  }
+}
+
+const add_category = (e) => {
+  e.preventDefault();
+  
+  dispatch(categoryAdd(state))
+}
+
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`);
+      await api.delete(`/categories/${id}`);
     } catch (error) {
       console.error("Error al eliminar la categoría:", error);
     }
   };
+
+  useEffect(() => {
+            if (errorMessage) {
+              toast.error(errorMessage);
+              dispatch(messageClear());
+            }
+            if (successMessage) {
+              toast.success(successMessage);
+              dispatch(messageClear());
+              setState({name: "",image: ""});
+              setImage("")
+              console.log(state)
+            }
+          }, [errorMessage, successMessage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -83,7 +123,7 @@ const Category = () => {
                       No hay categorías disponibles.
                     </td>
                   </tr>
-                ) : (
+                ) : ( <p>falta map categorias</p>/*
                   categories.map((category, i) => (
                     <tr key={i}>
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
@@ -91,7 +131,7 @@ const Category = () => {
                       </td>
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
                         <img
-                          className="w-[50px] h-[50px] rounded-full shadow-lg"
+                          className="w-[50px] h-[50px] rounded-xl shadow-lg"
                           src={`http://localhost:5173/images/category/${category.name}.jpg`}
                           alt={category.name}
                         />
@@ -114,7 +154,7 @@ const Category = () => {
                       </td>
                     </tr>
                   ))
-                )}
+               */ )}
               </tbody>
             </table>
           </div>
@@ -155,13 +195,15 @@ const Category = () => {
                   </button>
                 </div>
               </div>
-              <form>
+              <form onSubmit={add_category}>
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-semibold" htmlFor="name">
                       Nombre
                     </label>
                     <input
+                      onChange={(e)=> setState({...state, name: e.target.value})}
+                      value={state.name}
                       id="name"
                       type="text"
                       placeholder="Nombre de la categoria"
@@ -173,12 +215,19 @@ const Category = () => {
                       className="flex justify-center items-center flex-col h-[238px] cursor-pointer border border-dashed hover:border-indigo-200 w-full border-[#d0d2d6]"
                       htmlFor="image"
                     >
-                      <span>
+                      {
+                        imageShow ? <img className="w-full h-full" src={imageShow} alt="categoryImg" /> : 
+                        <>
+                        <span>
                         <FaImage className="text-5xl text-[#d0d2d6] mb-2" />
-                      </span>
-                      <span>Selecciona la imagen</span>
+                        </span>
+                        <span>Selecciona la imagen</span>
+                        </>
+                      }
+                      
                     </label>
                     <input
+                      onChange={imageHandle}
                       id="image"
                       name="image"
                       type="file"
@@ -187,11 +236,21 @@ const Category = () => {
                     />
                   </div>
                   <button
-                    type="submit"
-                    className="bg-red-600 px-4 py-2 rounded-md hover:shadow-lg hover:shadow-red-500/50"
-                  >
-                    Añadir Categoria
-                  </button>
+                disabled={loader ? true : false}
+                type="submit"
+                className="w-full py-2 px-4 bg-[#161271] text-white 
+            font-bold rounded-md hover:bg-[#232342] focus:outline-none 
+            focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
+              >
+                {loader ? (
+                  <PropagateLoader
+                    color="#ffffff"
+                    cssOverride={loaderStyleOverride}
+                  />
+                ) : (
+                  "Añadir Categoria"
+                )}
+              </button>
                 </div>
               </form>
             </div>

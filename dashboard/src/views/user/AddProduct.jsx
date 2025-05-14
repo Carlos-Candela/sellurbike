@@ -8,7 +8,7 @@ import UserMobileSidebar from "../../layout/UserMobileSidebar";
 
 function AddProduct() {
   
-  const { categories } = useSelector((state) => state.categories);
+  const categories = []
 
   const [formData, setFormData] = useState({
     title: "",

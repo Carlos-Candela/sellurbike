@@ -1,12 +1,22 @@
 const {Schema, model} = require('mongoose');
 
-const adminSchema = new Schema({
+const categorySchema = new Schema({
     name: {
     type: String,
     required: true,
-    unique: true,
-    trim: true,
+    },
+    image: {
+        type: String,
+        required: true,
+    },
+    slug: {
+        type: String,
+        required: true
     }
-});
+}, {timestamps: true});
 
-module.exports = model("categories", adminSchema);
+categorySchema.index({
+    name: 'text'
+})
+
+module.exports = model("categories", categorySchema);

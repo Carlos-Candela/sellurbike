@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/api", require("./routes/authRoutes"));
-app.use("/api/categories", require("./routes/categoriesRoutes"))
+app.use("/api", require("./routes/categoriesRoutes"))
 
 app.get("/", (req, res) => {
   res.send("Mi backend esta corriendo.");

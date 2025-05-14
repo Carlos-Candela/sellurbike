@@ -54,9 +54,7 @@ const Home = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth.userInfo); // Accede al estado global del usuario
   
-  const { categories} = useSelector(
-    (state) => state.categories
-  ); // Accede al estado global de categorías
+  const categories = []
 
   const [selectedCategory, setSelectedCategory] = useState("");
 

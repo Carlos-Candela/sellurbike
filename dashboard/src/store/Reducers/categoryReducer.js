@@ -1,48 +1,69 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../api/api";
 
 // Thunk para obtener las categorías desde la base de datos
 export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/categories");
-      return data.categories; // Devuelve las categorías obtenidas
+      const { data } = await api.get("/categories");
+      return data; // Devuelve las categorías obtenidas
     } catch (error) {
-      return rejectWithValue(error.response.data || "Error al obtener categorías");
+      return rejectWithValue(error.response.data);
     }
   }
 );
 
+export const categoryAdd = createAsyncThunk(
+  "categories/categoryAdd",
+  async ({name,image}, {rejectWithValue,fulfillWithValue}) => {
+    
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("image", image);
+      const {data}= await api.post('category-add', formData, {withCredentials: true})
+      // console.log(data)
+      return fulfillWithValue(data)
+    }catch (error){
+      return rejectWithValue(error.response.data )
+    }
+  }
+)
+
 // Slice para manejar el estado de las categorías
-const categorySlice = createSlice({
+const categoryReducer = createSlice({
   name: "categories",
   initialState: {
     categories: [], // Lista de categorías
     loader: false, // Indicador de carga
     errorMessage: "", // Mensaje de error
+    successMessage:"",  // Mensaje de éxito
   },
   reducers: {
-    clearError: (state) => {
-      state.errorMessage = ""; // Limpia el mensaje de error
+    messageClear: (state, _) => {
+      state.errorMessage = "";
+      state.successMessage = "";
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategories.pending, (state) => {
-        state.loader = true; // Activa el indicador de carga
-      })
-      .addCase(fetchCategories.fulfilled, (state, { payload }) => {
-        state.loader = false; // Desactiva el indicador de carga
-        state.categories = payload; // Almacena las categorías en el estado
-      })
-      .addCase(fetchCategories.rejected, (state, { payload }) => {
-        state.loader = false; // Desactiva el indicador de carga
-        state.errorMessage = payload || "Error al cargar las categorías"; // Maneja el error
-      });
+            .addCase(categoryAdd.pending, (state, { payload }) => {
+              state.loader = true;
+            })
+            .addCase(categoryAdd.rejected, (state, { payload }) => {
+              state.loader = false;
+              state.errorMessage = payload.error;
+            })
+            .addCase(categoryAdd.fulfilled, (state, { payload }) => {
+              state.loader = false;
+              state.successMessage = payload.message;
+              state.categories = [...state.categories, payload.category];
+              
+            })
   },
 });
 
 // Exporta las acciones y el reducer
-export const { clearError } = categorySlice.actions;
-export default categorySlice.reducer;
+export const { messageClear } = categoryReducer.actions;
+export default categoryReducer.reducer;
