@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +54,7 @@ const Home = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth.userInfo); // Accede al estado global del usuario
   
-  const categories = []
+  const categories = useSelector((state) => state.categories.categories); // Accede a las categorías desde el estado global
 
   const [selectedCategory, setSelectedCategory] = useState("");
 

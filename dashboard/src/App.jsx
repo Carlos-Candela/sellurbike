@@ -3,14 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import Router from './router/Router';
 import publicRoutes from './router/routes/publicRoutes';
 import { getRoutes } from './router/routes';
-import { fetchCategories } from './store/Reducers/categoryReducer';
 import { get_user_info } from './store/Reducers/authReducer';
+import { get_category } from './store/Reducers/categoryReducer';
+
+
 
 function App() {
   const dispatch = useDispatch();
-
+  const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState("");
+    const [parPage, setParpage] = useState(1000);
+    
+    const { categories } = useSelector((state) => state.categories);
   const {token}= useSelector((state)=> state.auth)
-  const categories = []
+  
 
   useEffect(()=>{
     if(token){
@@ -18,6 +24,15 @@ function App() {
     }
   }, [token])
 
+  useEffect(() => {
+        const obj = {
+          parPage: parseInt(parPage),
+          page: parseInt(currentPage),
+          searchValue
+        }
+        dispatch(get_category(obj))
+        
+    },[searchValue, currentPage, parPage])
 
 
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);

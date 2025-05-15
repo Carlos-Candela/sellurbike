@@ -1,18 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-// Thunk para obtener las categorías desde la base de datos
-export const fetchCategories = createAsyncThunk(
-  "categories/fetchCategories",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await api.get("/categories");
-      return data; // Devuelve las categorías obtenidas
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
 
 export const categoryAdd = createAsyncThunk(
   "categories/categoryAdd",
@@ -37,9 +25,7 @@ export const categoryAdd = createAsyncThunk(
 export const get_category = createAsyncThunk(
   "categories/get_category",
   async ({parPage,page, searchValue}, {rejectWithValue,fulfillWithValue}) => {
-    
     try {
-      
       const {data}= await api.get(`/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`, {withCredentials: true})
       //console.log(data)
       return fulfillWithValue(data)

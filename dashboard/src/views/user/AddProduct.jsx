@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
-import { useSelector } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
+import { get_category } from "../../store/Reducers/categoryReducer";
 
 function AddProduct() {
   
-  const categories = []
-
+  
+ 
   const [formData, setFormData] = useState({
     title: "",
     description: "",

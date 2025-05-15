@@ -42,7 +42,6 @@ const imageHandle = (e)=>{
 
 const add_category = (e) => {
   e.preventDefault();
-  
   dispatch(categoryAdd(state))
 }
 
@@ -76,6 +75,7 @@ const add_category = (e) => {
       searchValue
     }
     dispatch(get_category(obj))
+    
   },[searchValue, currentPage, parPage])
 
   return (
