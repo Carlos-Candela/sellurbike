@@ -1,17 +1,21 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-import { add_product } from "../../store/Reducers/productReducer";
+import { add_product, messageClear } from "../../store/Reducers/productReducer";
+import { PropagateLoader } from "react-spinners";
+import { loaderStyleOverride } from "../../../utils/utils";
+import toast from "react-hot-toast";
 
 function AddProduct() {
-
   const dispatch = useDispatch();
   // Accede a las categorías desde el estado global
-  const categories = useSelector((state) => state.categories.categories); 
-
+  const categories = useSelector((state) => state.categories.categories);
+  const { loader, successMessage, errorMessage } = useSelector(
+    (state) => state.product
+  );
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -28,10 +32,9 @@ function AddProduct() {
   }, [categories, formData.category]); // Agrega formData.category como dependencia
 
   const handleChange = (e) => {
-  const { name, value } = e.target;
-
-  setFormData((prev) => ({ ...prev, [name]: value }));
-};
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleImageUpload = (e, index) => {
     const file = e.target.files[0]; // Obtén el archivo seleccionado
@@ -52,6 +55,25 @@ function AddProduct() {
     });
   };
 
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        category: "",
+        state: "pending",
+        images: Array(6).fill(null),
+      });
+    }
+  }, [errorMessage, successMessage]);
+
   const add = (e) => {
     e.preventDefault();
     const formDataToSubmit = new FormData();
@@ -61,21 +83,18 @@ function AddProduct() {
     formDataToSubmit.append("category", formData.category);
     formDataToSubmit.append("state", formData.state);
     for (let i = 0; i < formData.images.length; i++) {
-      formDataToSubmit.append('images', formData.images[i]);
+      formDataToSubmit.append("images", formData.images[i]);
     }
-    
-    dispatch(add_product(formDataToSubmit))
-    
+
+    dispatch(add_product(formDataToSubmit));
   };
-  
+
   return (
     <div>
-        
       <UserHeader />
-      
+
       <div className="flex">
         <div className="hidden sm:block">
-          
           <UserSidebar />
         </div>
         <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg pb-20">
@@ -93,6 +112,7 @@ function AddProduct() {
               <input
                 id="title"
                 name="title"
+                value={formData.title}
                 type="text"
                 required
                 onChange={handleChange}
@@ -108,6 +128,7 @@ function AddProduct() {
                 Descripción
               </label>
               <textarea
+              value={formData.description}
                 id="description"
                 name="description"
                 required
@@ -125,6 +146,7 @@ function AddProduct() {
                   Precio (€)
                 </label>
                 <input
+                value={formData.price}
                   id="price"
                   name="price"
                   type="number"
@@ -143,14 +165,14 @@ function AddProduct() {
                 >
                   Categoría
                 </label>
-                <select 
-                  name="category" 
+                <select
+                  name="category"
                   id="category"
                   value={formData.category} // Sincroniza el valor del select con el estado
                   onChange={handleChange}
                   className="border border-gray-300 rounded px-4 py-2"
                 >
-                  {categories.map((element,i) => (
+                  {categories.map((element, i) => (
                     <option key={i} value={element.name}>
                       {element.name}
                     </option>
@@ -205,17 +227,26 @@ function AddProduct() {
             </div>
 
             <button
+              disabled={loader ? true : false}
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="w-full py-2 px-4 bg-[#161271] text-white 
+            font-bold rounded-md hover:bg-[#232342] focus:outline-none 
+            focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
             >
-              Añadir Producto
+              {loader ? (
+                <PropagateLoader
+                  color="#ffffff"
+                  cssOverride={loaderStyleOverride}
+                />
+              ) : (
+                "Añadir Producto"
+              )}
             </button>
           </form>
         </div>
       </div>
-      
-      <UserMobileSidebar/>
-      
+
+      <UserMobileSidebar />
     </div>
   );
 }
