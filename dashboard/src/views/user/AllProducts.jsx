@@ -97,11 +97,11 @@ const AllProducts = () => {
           <div className="w-full justify-end flex mt-4">
             
               <Pagination
-                pageNumber={currentPage}
-                setPageNumber={setCurrentPage}
-                totalItems={products.length}
-                parPage={parPage}
-                showItem={3}
+                pageNumber={currentPage} // Página actual
+                setPageNumber={setCurrentPage} // Función para cambiar la página
+                totalItems={totalProduct} // Total de productos (debería venir del backend)
+                parPage={parPage} // Productos por página
+                showItem={3} // Número de botones de página visibles
               />
             
           </div>

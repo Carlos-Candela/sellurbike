@@ -9,16 +9,18 @@ const Pagination = ({
   parPage,
   showItem,
 }) => {
-  let totalPage = Math.ceil(totalItems / parPage);
-  let startPage = pageNumber;
-  let dif = totalPage - pageNumber;
-  if (dif < showItem) {
-    startPage = totalPage - showItem + 1;
-  }
-  let endPage = startPage < 0 ? showItem : showItem + startPage;
+  const totalPage = Math.ceil(totalItems / parPage);
 
-  if (startPage <= 0) {
-    startPage = 1;
+  // Asegúrate de que `showItem` no sea mayor que `totalPage`
+  const visiblePages = Math.min(showItem, totalPage);
+
+  // Calcula el rango de páginas visibles
+  let startPage = Math.max(1, pageNumber - Math.floor(visiblePages / 2));
+  let endPage = Math.min(totalPage, startPage + visiblePages - 1);
+
+  // Ajusta `startPage` si `endPage` está cerca del final
+  if (endPage - startPage + 1 < visiblePages) {
+    startPage = Math.max(1, endPage - visiblePages + 1);
   }
 
   const createBtn = () => {
@@ -26,7 +28,7 @@ const Pagination = ({
     for (let i = startPage; i <= endPage; i++) {
       btns.push(
         <li
-        key={i}
+          key={i}
           onClick={() => setPageNumber(i)}
           className={`${
             pageNumber === i
@@ -41,27 +43,35 @@ const Pagination = ({
     return btns;
   };
 
+  if (totalPage <= 1) return null; // No mostrar paginación si solo hay una página
+
   return (
     <ul className="flex gap-3">
-      {pageNumber > 1 && (
-        <li
-          onClick={() => setPageNumber(pageNumber - 1)}
-          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 cursor-pointer"
-        >
-          <MdOutlineArrowLeft></MdOutlineArrowLeft>
-        </li>
-      )}
+      <li
+        onClick={() => setPageNumber(pageNumber - 1)}
+        className={`w-[33px] h-[33px] rounded-full flex justify-center items-center ${
+          pageNumber === 1
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-slate-300 cursor-pointer"
+        }`}
+        disabled={pageNumber === 1}
+      >
+        <MdOutlineArrowLeft />
+      </li>
 
       {createBtn()}
 
-      {pageNumber < totalPage && (
-        <li
-          onClick={() => setPageNumber(pageNumber + 1)}
-          className="w-[33px] h-[33px] rounded-full flex justify-center items-center bg-slate-300 cursor-pointer"
-        >
-          <MdOutlineArrowRight />
-        </li>
-      )}
+      <li
+        onClick={() => setPageNumber(pageNumber + 1)}
+        className={`w-[33px] h-[33px] rounded-full flex justify-center items-center ${
+          pageNumber === totalPage
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-slate-300 cursor-pointer"
+        }`}
+        disabled={pageNumber === totalPage}
+      >
+        <MdOutlineArrowRight />
+      </li>
     </ul>
   );
 };
