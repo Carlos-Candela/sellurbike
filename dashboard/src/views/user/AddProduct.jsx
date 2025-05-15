@@ -4,11 +4,11 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-import { get_category } from "../../store/Reducers/categoryReducer";
+
 
 function AddProduct() {
   
-  
+  const categories = useSelector((state) => state.categories.categories); // Accede a las categorías desde el estado global
  
   const [formData, setFormData] = useState({
     title: "",
