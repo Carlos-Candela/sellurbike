@@ -10,46 +10,51 @@ class productController {
         const { userId: id } = req;
         const form = formidable({ multiples: true });
         form.parse(req, async (err, fields, files) => {
-        
-            let {name,category,description,price,state} = fields
-            const {images} = files
-            name = name.trim()
-            const slug = name.split(' ').join('-')
-            
-            cloudinary.config({
-            cloud_name: process.env.cloud_name,
-            api_key: process.env.api_key_cloud,
-            api_secret: process.env.api_secret_cloud,
-            secure: true,
-            });
+    if (err) {
+        return responseReturn(res, 400, { error: "Error al procesar el formulario." });
+    }
 
-            try {
-                
-                let allImageUrl = [];
-                for (let index = 0; index < images.length; index++) {
-                    const result = await cloudinary.uploader.upload(images[index].filepath, {folder: 'products'});
-                    allImageUrl = [...allImageUrl, result.url]
-                }
-                
-                
-                
-                await productModel.create({
-                    sellerId: id,
-                    name,
-                    slug,
-                    category:category.trim(),
-                    description: description.trim(),
-                    state,
-                    price: parseInt(price),
-                    images: allImageUrl,
-                    
-                })
-                responseReturn( res, 201, { message: "Producto creado con éxito."})
-            } catch (error) {
-                responseReturn( res, 500, { error: error.message})
-            }
+    let { name, category, description, price, state } = fields;
+    let { images } = files;
 
+    // Manejar el caso de una sola imagen
+    const imageArray = Array.isArray(images) ? images : [images];
+
+    name = name.trim();
+    const slug = name.split(' ').join('-');
+
+    cloudinary.config({
+        cloud_name: process.env.cloud_name,
+        api_key: process.env.api_key_cloud,
+        api_secret: process.env.api_secret_cloud,
+        secure: true,
+    });
+
+    try {
+        // Subir imágenes a Cloudinary
+        const uploadPromises = imageArray.map(image =>
+            cloudinary.uploader.upload(image.filepath, { folder: 'products' })
+        );
+        const results = await Promise.all(uploadPromises);
+        const allImageUrl = results.map(result => result.url);
+
+        // Crear el producto en la base de datos
+        await productModel.create({
+            sellerId: id,
+            name,
+            slug,
+            category: category.trim(),
+            description: description.trim(),
+            state,
+            price: parseInt(price),
+            images: allImageUrl,
         });
+
+        responseReturn(res, 201, { message: "Producto creado con éxito." });
+    } catch (error) {
+        responseReturn(res, 500, { error: error.message });
+    }
+});
     };
     //End method
 }
