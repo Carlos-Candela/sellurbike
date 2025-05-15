@@ -4,9 +4,11 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-
+import { add_product } from "../../store/Reducers/productReducer";
 
 function AddProduct() {
+
+  const dispatch = useDispatch();
   // Accede a las categorías desde el estado global
   const categories = useSelector((state) => state.categories.categories); 
 
@@ -27,7 +29,7 @@ function AddProduct() {
 
   const handleChange = (e) => {
   const { name, value } = e.target;
-  console.log(`Campo cambiado: ${name} => ${value}`); // 👈 Verifica si cambia
+
   setFormData((prev) => ({ ...prev, [name]: value }));
 };
 
@@ -52,10 +54,20 @@ function AddProduct() {
 
   const add = (e) => {
     e.preventDefault();
-    console.log("Producto a subir:", formData);
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("name", formData.title);
+    formDataToSubmit.append("description", formData.description);
+    formDataToSubmit.append("price", formData.price);
+    formDataToSubmit.append("category", formData.category);
+    formDataToSubmit.append("state", formData.state);
+    for (let i = 0; i < formData.images.length; i++) {
+      formDataToSubmit.append('images', formData.images[i]);
+    }
+    
+    dispatch(add_product(formDataToSubmit))
+    
   };
-console.log("Categorías disponibles:", categories);
-
+  
   return (
     <div>
         
