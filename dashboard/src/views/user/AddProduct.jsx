@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,9 +7,9 @@ import UserMobileSidebar from "../../layout/UserMobileSidebar";
 
 
 function AddProduct() {
-  
-  const categories = useSelector((state) => state.categories.categories); // Accede a las categorías desde el estado global
- 
+  // Accede a las categorías desde el estado global
+  const categories = useSelector((state) => state.categories.categories); 
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -19,12 +19,17 @@ function AddProduct() {
     images: Array(6).fill(null), // Inicializa un array de 6 posiciones con `null`
   });
 
- 
+  useEffect(() => {
+    if (categories.length > 0 && !formData.category) {
+      setFormData((prev) => ({ ...prev, category: categories[0].name }));
+    }
+  }, [categories, formData.category]); // Agrega formData.category como dependencia
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const { name, value } = e.target;
+  console.log(`Campo cambiado: ${name} => ${value}`); // 👈 Verifica si cambia
+  setFormData((prev) => ({ ...prev, [name]: value }));
+};
 
   const handleImageUpload = (e, index) => {
     const file = e.target.files[0]; // Obtén el archivo seleccionado
@@ -45,10 +50,11 @@ function AddProduct() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const add = (e) => {
     e.preventDefault();
     console.log("Producto a subir:", formData);
   };
+console.log("Categorías disponibles:", categories);
 
   return (
     <div>
@@ -64,7 +70,7 @@ function AddProduct() {
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Añadir nuevo articulo
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={add} className="space-y-5">
             <div>
               <label
                 htmlFor="title"
@@ -125,10 +131,16 @@ function AddProduct() {
                 >
                   Categoría
                 </label>
-                <select className="border border-gray-300 rounded px-4 py-2">
-                  {categories.map((category) => (
-                    <option key={category._id} value={category.name}>
-                      {category.name}
+                <select 
+                  name="category" 
+                  id="category"
+                  value={formData.category} // Sincroniza el valor del select con el estado
+                  onChange={handleChange}
+                  className="border border-gray-300 rounded px-4 py-2"
+                >
+                  {categories.map((element,i) => (
+                    <option key={i} value={element.name}>
+                      {element.name}
                     </option>
                   ))}
                 </select>

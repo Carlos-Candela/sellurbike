@@ -26,9 +26,9 @@ function App() {
 
   useEffect(() => {
         const obj = {
-          parPage: parseInt(parPage),
-          page: parseInt(currentPage),
-          searchValue
+          parPage: '',
+          page: '',
+          searchValue: ''
         }
         dispatch(get_category(obj))
         
