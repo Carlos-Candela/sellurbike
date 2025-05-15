@@ -4,12 +4,15 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-import { add_product, messageClear } from "../../store/Reducers/productReducer";
+import { add_product, get_products, messageClear } from "../../store/Reducers/productReducer";
 import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function AddProduct() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   // Accede a las categorías desde el estado global
   const categories = useSelector((state) => state.categories.categories);
@@ -70,7 +73,8 @@ function AddProduct() {
         category: "",
         state: "pending",
         images: Array(6).fill(null),
-      });
+      });     
+      
     }
   }, [errorMessage, successMessage]);
 
@@ -97,7 +101,14 @@ function AddProduct() {
         <div className="hidden sm:block">
           <UserSidebar />
         </div>
-        <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg pb-20">
+        <div className="max-w-2xl mx-auto mt-1 p-6 bg-white shadow-md rounded-lg pb-20">
+          <Link to='/user/products'>
+          <button className="w-auto mb-4 py-2 px-4 bg-[#161271] text-white 
+            font-bold rounded-md hover:bg-[#232342] focus:outline-none 
+            focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer">
+            Todos mis productos
+          </button>
+          </Link>
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Añadir nuevo articulo
           </h2>

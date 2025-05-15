@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Rutas para las productos
 router.post("/product-add", authMiddleware,productController.add_product); 
+router.get("/products-get", authMiddleware, productController.products_get);
 
 
 module.exports = router;

@@ -4,55 +4,53 @@ const formidable = require("formidable"); // Middleware para manejar formularios
 const cloudinary = require("cloudinary").v2; // Librería para manejar Cloudinary
 
 class CategoriesController {
-
-
   // Obtener categoria buscada
   get_category = async (req, res) => {
+    const { page, searchValue, parPage } = req.query;
 
-    const {page, searchValue, parPage} = req.query
-    
     try {
-      let skipPage = '';
+      let skipPage = "";
       if (page && parPage) {
-        skipPage = parseInt(parPage) * (parseInt(page)-1)
+        skipPage = parseInt(parPage) * (parseInt(page) - 1);
       }
       if (searchValue && page && parPage) {
-        const categories = await categoryModel.find({
-          $text: {$search: searchValue}
-        }).skip(skipPage).limit(parPage).sort({createAt: -1})
-        const totalCategory = await categoryModel.find({
-          $text: {$search: searchValue}
-        }).countDocuments()
+        const categories = await categoryModel
+          .find({
+            $text: { $search: searchValue },
+          })
+          .skip(skipPage)
+          .limit(parPage)
+          .sort({ createAt: -1 });
+        const totalCategory = await categoryModel
+          .find({
+            $text: { $search: searchValue },
+          })
+          .countDocuments();
         responseReturn(res, 200, {
           categories,
           totalCategory,
         });
-      } 
-      else if (searchValue === "" && page && parPage){
-        const categories = await categoryModel.find({
-          
-        }).skip(skipPage).limit(parPage).sort({createAt: -1})
-        const totalCategory = await categoryModel.find({
-          
-        }).countDocuments()
+      } else if (searchValue === "" && page && parPage) {
+        const categories = await categoryModel
+          .find({})
+          .skip(skipPage)
+          .limit(parPage)
+          .sort({ createAt: -1 });
+        const totalCategory = await categoryModel.find({}).countDocuments();
         responseReturn(res, 200, {
           categories,
           totalCategory,
         });
-      }
-      
-      else {
-        const categories = await categoryModel.find({       }).sort({createAt: -1})
-            const totalCategory = await categoryModel.find({        }).countDocuments()
-        responseReturn(res, 200, {categories,totalCategory,});
+      } else {
+        const categories = await categoryModel.find({}).sort({ createAt: -1 });
+        const totalCategory = await categoryModel.find({}).countDocuments();
+        responseReturn(res, 200, { categories, totalCategory });
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
   // End method
-
-
 
   // Crear una nueva categoría
   createCategory = async (req, res) => {
@@ -72,31 +70,36 @@ class CategoriesController {
           api_secret: process.env.api_secret_cloud,
           secure: true,
         });
-        
+
         try {
           // Verificar si ya existe una categoría con el mismo nombre o slug
           const existingCategory = await categoryModel.findOne({ name });
           if (existingCategory) {
-            return responseReturn(res, 400, { error: "Ya existe una categoría con este nombre." });
+            return responseReturn(res, 400, {
+              error: "Ya existe una categoría con este nombre.",
+            });
           }
 
           // Continuar con la creación de la categoría si no existe
-          const result = await cloudinary.uploader.upload(image.filepath, {folder: "categories"})
+          const result = await cloudinary.uploader.upload(image.filepath, {
+            folder: "categories",
+          });
           if (result) {
             const category = await categoryModel.create({
               name,
               slug,
-              image: result.url
-            })
-            responseReturn( res, 201, { category,
-              message: "Categoría creada con éxito."})
+              image: result.url,
+            });
+            responseReturn(res, 201, {
+              category,
+              message: "Categoría creada con éxito.",
+            });
           } else {
             responseReturn(res, 404, { error: "Fallo al subir la imagen." });
           }
         } catch (error) {
           responseReturn(res, 500, { error: "Fallo interno del servidor." });
         }
-        
       }
     });
   };

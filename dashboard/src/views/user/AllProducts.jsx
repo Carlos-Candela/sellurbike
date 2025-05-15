@@ -1,56 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserHeader from "../../layout/UserHeader";
 import Pagination from "../Pagination";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {get_products} from '../../store/Reducers/productReducer'
 
 const AllProducts = () => {
-  const sampleProducts = [
-    {
-      id: 1,
-      name: "Bicicleta de montaña",
-      price: "150€",
-      image: "https://placehold.co/150x150",
-    },
-    {
-      id: 2,
-      name: "Silla de oficina ergonómica",
-      price: "70€",
-      image: "https://placehold.co/150x150",
-    },
-    {
-      id: 3,
-      name: "iPhone 12",
-      price: "500€",
-      image: "https://placehold.co/150x150",
-    },
-    {
-      id: 4,
-      name: "Mesa de comedor",
-      price: "120€",
-      image: "https://placehold.co/150x150",
-    },
-    {
-      id: 5,
-      name: "Zapatos Nike Air",
-      price: "60€",
-      image: "https://placehold.co/150x150",
-    },
-    {
-      id: 6,
-      name: "Cámara réflex Canon",
-      price: "300€",
-      image: "https://placehold.co/150x150",
-    },
-  ];
-  const [currentePage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
+  
+    const { products, totalProduct } = useSelector((state) => state.product);
+  
+    
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
 
-  const filteredProducts = sampleProducts.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  
+  useEffect(() => {
+      const obj = {
+        parPage: parseInt(parPage),
+        page: parseInt(currentPage),
+        searchValue
+      }
+      dispatch(get_products(obj))
+      
+    },[dispatch,searchValue, currentPage, parPage])
+    //console.log(products)
 
   return (
     <div>
@@ -75,21 +52,25 @@ const AllProducts = () => {
               type="text"
               placeholder="Buscar productos..."
               className="w-full p-2 border border-gray-300 rounded-xl"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-            {filteredProducts.map((product) => (
+            {products.map((product,i) => (
               <div
-                key={product.id}
+                key={i}
                 className="relative bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition w-[80%] sm:w-[85%] md:w-[95%]"
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-40 object-cover"
-                />
+             <img
+      src={
+        product.images && product.images.length > 0
+          ? product.images[0]
+          : "/images/no-photos.png" // Ruta de la imagen predeterminada
+      }
+      alt={product.name || "Imagen predeterminada"}
+      className="w-full h-40 object-cover"
+    />
                 <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between">
                   <Link to={`/user/edit-product/${product.id}`}>
                   <button
@@ -114,15 +95,15 @@ const AllProducts = () => {
             ))}
           </div>
           <div className="w-full justify-end flex mt-4">
-            {sampleProducts.length > parPage && (
+            
               <Pagination
-                pageNumber={currentePage}
+                pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
-                totalItems={sampleProducts.length}
+                totalItems={products.length}
                 parPage={parPage}
                 showItem={3}
               />
-            )}
+            
           </div>
         </div>
       </div>
