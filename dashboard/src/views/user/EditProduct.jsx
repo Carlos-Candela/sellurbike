@@ -6,7 +6,10 @@ import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import {Link, useParams} from 'react-router-dom'
 import {get_category} from '../../store/Reducers/categoryReducer'
-import {get_product} from '../../store/Reducers/productReducer'
+import {get_product, update_product} from '../../store/Reducers/productReducer'
+import { PropagateLoader } from "react-spinners";
+import { loaderStyleOverride } from "../../../utils/utils";
+import toast from "react-hot-toast";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -14,7 +17,7 @@ const EditProduct = () => {
   
   const { categories } = useSelector((state) => state.categories);
 
-  const {product} = useSelector((state)=>state.product)
+  const {product, loader, errorMessage, successMessage} = useSelector((state)=>state.product)
 
   const [formData, setFormData] = useState({
     title: "",
@@ -25,6 +28,19 @@ const EditProduct = () => {
     images: Array(6).fill(null)
   });
 
+  const update = (e)=> {
+    e.preventDefault()
+    const obj = {
+      title: formData.title,
+      description: formData.description,
+      price: formData.price,
+      category: formData.category,
+      state: formData.state,
+      productId: productId,
+      images: formData.images
+    }
+    dispatch(update_product(obj))
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -49,10 +65,6 @@ const EditProduct = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Producto a subir:", formData);
-  };
 
   useEffect(() => {
           const obj = {
@@ -82,6 +94,18 @@ useEffect(() => {
   });
 }, [product]);
 
+useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      
+    }
+  }, [errorMessage, successMessage]);
+
   return (
     <div>
       <UserHeader />
@@ -94,7 +118,7 @@ useEffect(() => {
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Editar Producto
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={update} className="space-y-5">
             <div>
               <label
                 htmlFor="title"
@@ -219,10 +243,20 @@ useEffect(() => {
             </div>
 
             <button
+              disabled={loader ? true : false}
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="w-full py-2 px-4 bg-[#161271] text-white 
+            font-bold rounded-md hover:bg-[#232342] focus:outline-none 
+            focus:ring focus:ring-indigo-100 focus:bg-white cursor-pointer"
             >
-              Actualizar Producto
+              {loader ? (
+                <PropagateLoader
+                  color="#ffffff"
+                  cssOverride={loaderStyleOverride}
+                />
+              ) : (
+                "Actualizar producto"
+              )}
             </button>
           </form>
         </div>

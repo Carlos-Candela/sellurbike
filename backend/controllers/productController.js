@@ -107,6 +107,25 @@ product_get = async(req, res)=>{
 }
 //End method
 
+
+
+//FALTARIA IMPLEMENTAR EL CAMBIO Y ACTUALIZACION DE LAS IMAGENES
+product_update = async (req, res)=>{
+  let { title:name, category, description, price, state, productId, images } = req.body;
+  
+  name = name.trim();
+  const slug = name.split(" ").join("-");
+
+  try {
+    await productModel.findByIdAndUpdate(productId,{
+      name, category, description, price, state
+    })
+    const product = await productModel.findById(productId)
+    responseReturn(res, 201,{product,  message: "Producto actualizado con éxito." });
+  } catch (error) {
+    responseReturn(res, 500,{ error: error.message });
+  }
+}
 }
 
 module.exports = new productController();
