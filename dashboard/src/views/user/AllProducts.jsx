@@ -74,7 +74,7 @@ const AllProducts = () => {
                 <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between">
                   <Link to={`/user/edit-product/${product._id}`}>
                   <button
-                    onClick={() => handleEdit(product._id)}
+                    
                     className="px-3 py-1 bg-gradient-to-br from-indigo-200 to-indigo-500 text-black rounded-full text-sm hover:bg-blue-900"
                   >
                     Editar

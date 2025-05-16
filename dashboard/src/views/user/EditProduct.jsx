@@ -30,7 +30,7 @@ const EditProduct = () => {
     state: "",
     images: Array(6).fill(null)
   });
-  console.log(formData.images)
+  
   
   const update = (e)=> {
     e.preventDefault()
