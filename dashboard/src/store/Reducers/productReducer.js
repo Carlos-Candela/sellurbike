@@ -39,7 +39,7 @@ export const get_product = createAsyncThunk(
   async (productId, {rejectWithValue,fulfillWithValue}) => {
     try {
       const {data}= await api.get(`/product-get/${productId}`, {withCredentials: true})
-      console.log(data)
+      //console.log(data)
       return fulfillWithValue(data)
     }catch (error){
       return rejectWithValue(error.response.data )
@@ -53,6 +53,45 @@ export const update_product = createAsyncThunk(
   async (product, {rejectWithValue,fulfillWithValue}) => {
     try {
       const {data}= await api.post(`/product-update`,product, {withCredentials: true})
+      //console.log(data)
+      return fulfillWithValue(data)
+    }catch (error){
+      return rejectWithValue(error.response.data )
+    }
+  }
+)
+//End method
+
+export const product_image_update = createAsyncThunk(
+  "product/product_image_update",
+  async ({oldImage, newImage, productId}, {rejectWithValue,fulfillWithValue}) => {
+    try {
+      const formData = new FormData()
+      formData.append('oldImage', oldImage)
+      formData.append('newImage', newImage)
+      formData.append('productId', productId)
+
+      const {data}= await api.post(`/product-image-update`,formData, {withCredentials: true})
+      //console.log(data)
+      return fulfillWithValue(data)
+    }catch (error){
+      return rejectWithValue(error.response.data )
+    }
+  }
+)
+//End method
+
+
+export const product_image_delete = createAsyncThunk(
+  "product/product_image_delete",
+  async ({imageUrl, productId}, {rejectWithValue,fulfillWithValue}) => {
+    
+    try {
+      const formData = new FormData()
+      formData.append('imageUrl', imageUrl);
+      formData.append('productId', productId)
+
+      const {data}= await api.post(`/product-image-delete`,formData, {withCredentials: true})
       console.log(data)
       return fulfillWithValue(data)
     }catch (error){
@@ -60,6 +99,7 @@ export const update_product = createAsyncThunk(
     }
   }
 )
+
 
 
 // Slice para manejar el estado de las productos
@@ -111,6 +151,12 @@ const productReducer = createSlice({
               state.loader = false;
               state.successMessage = payload.message;
               state.product = payload.product  
+            })
+            .addCase(product_image_update.fulfilled, (state, { payload }) => {
+              state.successMessage = payload.message;
+              state.product = payload.product
+              state.errorMessage = payload.error;
+              state.successMessage = payload.message;  
             })
   },
 });

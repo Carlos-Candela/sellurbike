@@ -6,10 +6,13 @@ import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import {Link, useParams} from 'react-router-dom'
 import {get_category} from '../../store/Reducers/categoryReducer'
-import {get_product, update_product, messageClear} from '../../store/Reducers/productReducer'
+import {get_product, update_product, messageClear, product_image_update, product_image_delete} from '../../store/Reducers/productReducer'
 import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
+import { LiaExchangeAltSolid } from "react-icons/lia";
+
+
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -27,7 +30,7 @@ const EditProduct = () => {
     state: "",
     images: Array(6).fill(null)
   });
-
+  console.log(formData.images)
   const update = (e)=> {
     e.preventDefault()
     const obj = {
@@ -58,14 +61,27 @@ const EditProduct = () => {
   };
 
   const handleRemoveImage = (index) => {
+    const imageUrl = formData.images[index]
+    dispatch(product_image_delete({imageUrl,productId}))
+
     setFormData((prev) => {
       const updatedImages = [...prev.images];
-      updatedImages[index] = null; // Elimina la imagen estableciendo el índice como null
+      updatedImages[index] = null;
       return { ...prev, images: updatedImages };
     });
   };
 
+  const changeImage = (img, files) => {
+    if(files.length > 0){
+      dispatch(product_image_update({
+        oldImage: img,
+        newImage: files[0],
+        productId
+      }))
+    }
+  }
 
+  
   useEffect(() => {
           const obj = {
             parPage: '',
@@ -221,6 +237,19 @@ useEffect(() => {
                         >
                           ✕
                         </button>
+                        {/* Botón para cambiar imagen */}
+    <label
+      className="absolute w-[25px] h-[25px] top-1 left-1 bg-blue-500 text-white rounded-full p-1 text-xs hover:bg-blue-800 cursor-pointer flex items-center justify-center"
+      title="Cambiar imagen"
+    >
+      <LiaExchangeAltSolid/>
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={e => changeImage(image, e.target.files)}
+      />
+      </label>
                       </>
                     ) : (
                       <label

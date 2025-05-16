@@ -39,16 +39,20 @@ function AddProduct() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageUpload = (e, index) => {
-    const file = e.target.files[0]; // Obtén el archivo seleccionado
-    if (file) {
-      setFormData((prev) => {
-        const updatedImages = [...prev.images];
-        updatedImages[index] = file; // Actualiza la imagen en la posición correspondiente
-        return { ...prev, images: updatedImages };
-      });
-    }
-  };
+  const handleImageUpload = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    setFormData((prev) => {
+      const updatedImages = [...prev.images];
+      // Buscar el primer índice vacío (null)
+      const firstEmptyIndex = updatedImages.findIndex(img => img === null);
+      if (firstEmptyIndex !== -1) {
+        updatedImages[firstEmptyIndex] = URL.createObjectURL(file);
+      }
+      return { ...prev, images: updatedImages };
+    });
+  }
+};
 
   const handleRemoveImage = (index) => {
     setFormData((prev) => {
@@ -228,7 +232,7 @@ function AddProduct() {
                           type="file"
                           accept="image/*"
                           className="hidden"
-                          onChange={(e) => handleImageUpload(e, index)}
+                          onChange={handleImageUpload}
                         />
                       </label>
                     )}
