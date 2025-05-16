@@ -121,8 +121,10 @@ class productController {
   };
   //End method
 
-  //FALTARIA IMPLEMENTAR EL CAMBIO Y ACTUALIZACION DE LAS IMAGENES
+  //FALTARIA IMPLEMENTAR EL AÑADIR NUEVAS IMAGENES
   product_update = async (req, res) => {
+    
+    
     let {
       title: name,
       category,
@@ -130,11 +132,13 @@ class productController {
       price,
       state,
       productId,
-      images,
+      images
     } = req.body;
-
+    console.log(images)
     name = name.trim();
     const slug = name.split(" ").join("-");
+    
+    
 
     try {
       await productModel.findByIdAndUpdate(productId, {
@@ -163,46 +167,46 @@ class productController {
       const { oldImage } = fields;
       const {productId} = fields
       const { newImage } = files;
-      console.log(productId)
+      
       if (error) {
         responseReturn(res, 400, { error: error.message });
       } else {
         try {
-  cloudinary.config({
-    cloud_name: process.env.cloud_name,
-    api_key: process.env.api_key_cloud,
-    api_secret: process.env.api_secret_cloud,
-    secure: true,
-  });
-  const result = await cloudinary.uploader.upload(newImage.filepath, {
-    folder: "products",
-  });
+      cloudinary.config({
+        cloud_name: process.env.cloud_name,
+        api_key: process.env.api_key_cloud,
+        api_secret: process.env.api_secret_cloud,
+        secure: true,
+      });
+      const result = await cloudinary.uploader.upload(newImage.filepath, {
+        folder: "products",
+      });
 
-  if (!result) {
-    return responseReturn(res, 404, { error: "Fallo al actualizar imagenes" });
-  }
+      if (!result) {
+        return responseReturn(res, 404, { error: "Fallo al actualizar imagenes" });
+      }
 
-  // Buscar el producto y comprobar existencia
-  const product = await productModel.findById(productId);
-  if (!product) {
-    return responseReturn(res, 404, { error: "Producto no encontrado." });
-  }
-  if (!product.images || !Array.isArray(product.images)) {
-    return responseReturn(res, 404, { error: "El producto no tiene imágenes." });
-  }
+      // Buscar el producto y comprobar existencia
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return responseReturn(res, 404, { error: "Producto no encontrado." });
+      }
+      if (!product.images || !Array.isArray(product.images)) {
+        return responseReturn(res, 404, { error: "El producto no tiene imágenes." });
+      }
 
-  const index = product.images.findIndex((img) => img === oldImage);
-  if (index === -1) {
-    return responseReturn(res, 404, { error: "Imagen anterior no encontrada en el producto." });
-  }
+      const index = product.images.findIndex((img) => img === oldImage);
+      if (index === -1) {
+        return responseReturn(res, 404, { error: "Imagen anterior no encontrada en el producto." });
+      }
 
-  product.images[index] = result.url;
-  await productModel.findByIdAndUpdate(productId, { images: product.images });
+      product.images[index] = result.url;
+      await productModel.findByIdAndUpdate(productId, { images: product.images });
 
-  const updatedProduct = await productModel.findById(productId);
-  responseReturn(res, 200, {
-    product: updatedProduct,
-    message: "Imagenes actualizadas con éxito.",
+      const updatedProduct = await productModel.findById(productId);
+      responseReturn(res, 200, {
+        product: updatedProduct,
+        message: "Imagenes actualizadas con éxito.",
   });
 } catch (error) {
   responseReturn(res, 404, { error: error.message });
@@ -217,8 +221,6 @@ class productController {
 
     form.parse(req, async (error, fields, files) => {
       const {imageUrl, productId} = fields
-      console.log(imageUrl)
-      console.log(productId)
       
       if (error) {
         responseReturn(res, 400, { error: error.message });
@@ -240,7 +242,7 @@ class productController {
   }
 
   product.images[index] = null;
-  console.log(product.images)
+  
   await productModel.findByIdAndUpdate(productId, { images: product.images });
 
   const updatedProduct = await productModel.findById(productId);

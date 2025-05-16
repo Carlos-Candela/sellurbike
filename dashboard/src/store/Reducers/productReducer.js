@@ -92,7 +92,7 @@ export const product_image_delete = createAsyncThunk(
       formData.append('productId', productId)
 
       const {data}= await api.post(`/product-image-delete`,formData, {withCredentials: true})
-      console.log(data)
+      //console.log(data)
       return fulfillWithValue(data)
     }catch (error){
       return rejectWithValue(error.response.data )
@@ -153,6 +153,12 @@ const productReducer = createSlice({
               state.product = payload.product  
             })
             .addCase(product_image_update.fulfilled, (state, { payload }) => {
+              state.successMessage = payload.message;
+              state.product = payload.product
+              state.errorMessage = payload.error;
+              state.successMessage = payload.message;  
+            })
+            .addCase(product_image_delete.fulfilled, (state, { payload }) => {
               state.successMessage = payload.message;
               state.product = payload.product
               state.errorMessage = payload.error;

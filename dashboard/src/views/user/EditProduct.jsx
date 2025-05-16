@@ -31,9 +31,11 @@ const EditProduct = () => {
     images: Array(6).fill(null)
   });
   console.log(formData.images)
+  
   const update = (e)=> {
     e.preventDefault()
-    const obj = {
+
+      const obj = {
       title: formData.title,
       description: formData.description,
       price: formData.price,
