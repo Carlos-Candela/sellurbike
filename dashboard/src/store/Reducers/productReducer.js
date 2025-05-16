@@ -99,7 +99,18 @@ const productReducer = createSlice({
             })
             .addCase(get_product.fulfilled, (state, { payload }) => {
               state.product = payload.product;
-               
+            })
+            .addCase(update_product.pending, (state, { payload }) => {
+              state.loader = true;
+            })
+            .addCase(update_product.rejected, (state, { payload }) => {
+              state.loader = false;
+              state.errorMessage = payload.error;
+            })
+            .addCase(update_product.fulfilled, (state, { payload }) => {
+              state.loader = false;
+              state.successMessage = payload.message;
+              state.product = payload.product  
             })
   },
 });

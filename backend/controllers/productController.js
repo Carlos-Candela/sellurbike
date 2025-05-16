@@ -118,7 +118,7 @@ product_update = async (req, res)=>{
 
   try {
     await productModel.findByIdAndUpdate(productId,{
-      name, category, description, price, state
+      name, category, description, price, state, slug
     })
     const product = await productModel.findById(productId)
     responseReturn(res, 201,{product,  message: "Producto actualizado con éxito." });
