@@ -89,12 +89,23 @@ class productController {
               responseReturn(res, 200, {products, totalProduct});
             } 
     } catch (error) {
-      
+              console.log(error.message)
+
     }
   }
 //End method
 
-
+product_get = async(req, res)=>{
+    const {productId} = req.params
+    
+    try {
+        const product = await productModel.findById(productId)
+        responseReturn(res, 200, {product});
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+//End method
 
 }
 

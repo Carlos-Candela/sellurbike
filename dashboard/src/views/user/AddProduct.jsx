@@ -9,10 +9,10 @@ import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
 import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+
 
 function AddProduct() {
-  const navigate = useNavigate();
+  
   const dispatch = useDispatch();
   // Accede a las categorías desde el estado global
   const categories = useSelector((state) => state.categories.categories);

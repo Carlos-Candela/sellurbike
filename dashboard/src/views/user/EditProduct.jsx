@@ -3,10 +3,18 @@ import UserHeader from "../../layout/UserHeader";
 import { FaRegPlusSquare } from "react-icons/fa";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {Link, useParams} from 'react-router-dom'
+import {get_category} from '../../store/Reducers/categoryReducer'
+import {get_product} from '../../store/Reducers/productReducer'
 
 const EditProduct = () => {
+  const dispatch = useDispatch();
+  const {productId}= useParams();
+  
   const { categories } = useSelector((state) => state.categories);
+
+  const {product} = useSelector((state)=>state.product)
 
   const [formData, setFormData] = useState({
     title: "",
@@ -14,17 +22,8 @@ const EditProduct = () => {
     price: "",
     category: "",
     state: "",
-    images: [],
+    images: Array(6).fill(null)
   });
-
-  const existingImages = [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg",
-    "https://example.com/image4.jpg",
-    "https://example.com/image5.jpg",
-    "https://example.com/image6.jpg",
-  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,15 +55,33 @@ const EditProduct = () => {
   };
 
   useEffect(() => {
-    setFormData({
-      title: "cannondale",
-      description: "jañkldjñalkjdgñalkdjgñlakjgñakl,djgñalkdg,mv",
-      price: "300",
-      category: "Carretera",
-      state: "",
-      images: existingImages,
-    });
-  }, []);
+          const obj = {
+            parPage: '',
+            page: '',
+            searchValue: ''
+          }
+          dispatch(get_category(obj))
+          
+      },[])
+
+  useEffect(()=>{
+    dispatch(get_product(productId))
+  },[productId])
+
+useEffect(() => {
+  // Asegura que siempre haya 6 posiciones en el array de imágenes
+  let imgs = Array.isArray(product.images) ? product.images.slice(0, 6) : [];
+  while (imgs.length < 6) imgs.push(null);
+  setFormData({
+    title: product.name || "",
+    description: product.description || "",
+    price: product.price || "",
+    category: product.category || "",
+    state: product.state || "",
+    images: imgs,
+  });
+}, [product]);
+
   return (
     <div>
       <UserHeader />
@@ -205,7 +222,7 @@ const EditProduct = () => {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
             >
-              Editar
+              Actualizar Producto
             </button>
           </form>
         </div>

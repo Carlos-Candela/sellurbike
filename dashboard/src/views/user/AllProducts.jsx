@@ -72,24 +72,24 @@ const AllProducts = () => {
       className="w-full h-40 object-cover"
     />
                 <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between">
-                  <Link to={`/user/edit-product/${product.id}`}>
+                  <Link to={`/user/edit-product/${product._id}`}>
                   <button
-                    onClick={() => handleEdit(product.id)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm hover:bg-blue-600"
+                    onClick={() => handleEdit(product._id)}
+                    className="px-3 py-1 bg-gradient-to-br from-indigo-200 to-indigo-500 text-black rounded-full text-sm hover:bg-blue-900"
                   >
                     Editar
                   </button>
                   </Link>
                   <button
                     onClick={() => handleDelete(product.id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded-full text-sm hover:bg-red-600"
+                    className="px-3 py-1 bg-red-500 text-black rounded-full text-sm hover:bg-red-600"
                   >
                     Eliminar
                   </button>
                 </div>
-                <div className="p-4">
+                <div className="p-4 bg-gray-200">
                   <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-gray-700 mb-4">{product.price}</p>
+                  <p className="text-gray-700 mb-4">{product.price} €</p>
                 </div>
               </div>
             ))}
