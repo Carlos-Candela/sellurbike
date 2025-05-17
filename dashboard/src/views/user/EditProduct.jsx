@@ -4,7 +4,7 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { get_category } from "../../store/Reducers/categoryReducer";
 import {
   get_product,
@@ -17,9 +17,11 @@ import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
 import { LiaExchangeAltSolid } from "react-icons/lia";
+import { MdArrowBack } from "react-icons/md";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
+   const navigate = useNavigate();
   const { productId } = useParams();
 
   const { categories } = useSelector((state) => state.categories);
@@ -136,10 +138,20 @@ const EditProduct = () => {
       <UserHeader />
 
       <div className="flex">
+        
         <div className="hidden sm:block">
           <UserSidebar />
         </div>
-        <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg pb-20">
+
+        <div className="mt-6 w-[89%] p-6 bg-white shadow-md rounded-lg pb-10">
+          {/* Botón para ir atrás */}
+                  <button
+                    onClick={() => navigate(-1)}
+                    className="self-start mb-4 px-4 py-2 bg-gray-400 hover:bg-gray-300 rounded-lg text-gray-700 font-medium transition"
+                  >
+                    <MdArrowBack />
+          
+                  </button>
           <h2 className="text-2xl font-bold mb-6 text-gray-800">
             Editar Producto
           </h2>
@@ -222,7 +234,7 @@ const EditProduct = () => {
               </div>
             </div>
 
-            <div>
+            <div className="w-full">
               <label className="block font-medium text-gray-700 mb-1">
                 Fotos del producto (máximo 6)
               </label>
@@ -301,10 +313,12 @@ const EditProduct = () => {
               )}
             </button>
           </form>
+          <UserMobileSidebar />
         </div>
+        
       </div>
 
-      <UserMobileSidebar />
+      
     </div>
   );
 };

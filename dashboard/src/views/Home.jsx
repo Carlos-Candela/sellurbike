@@ -1,77 +1,81 @@
-import React, { use } from "react";
-import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
+import React, { CSSProperties ,useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import UserHeader from "../layout/UserHeader";
-import { useNavigate } from "react-router-dom";
 import UserMobileSidebar from "../layout/UserMobileSidebar";
+import { GridLoader } from "react-spinners";
+import { get_products } from '../store/Reducers/productReducer';
 
 
-// Datos de ejemplo de productos
-const products = [
-  {
-    id: 1,
-    title: "Bicicleta Trekking",
-    price: 120,
-    location: "Madrid",
-    image: "https://picsum.photos/id/1074/400/300",
-  },
-  {
-    id: 2,
-    title: "iPhone 13 usado",
-    price: 400,
-    location: "Barcelona",
-    image: "https://picsum.photos/id/1075/400/300",
-  },
-  {
-    id: 3,
-    title: "Sofá de piel",
-    price: 250,
-    location: "Valencia",
-    image: "https://picsum.photos/id/1076/400/300",
-  },
-  {
-    id: 4,
-    title: "Portátil HP i7",
-    price: 600,
-    location: "Sevilla",
-    image: "https://picsum.photos/id/1077/400/300",
-  },
-  {
-    id: 5,
-    title: "Zapatillas Nike",
-    price: 50,
-    location: "Málaga",
-    image: "https://picsum.photos/id/1078/400/300",
-  },
-];
+const PRODUCTS_PER_PAGE = 12;
 
 const Home = () => {
-  
-  
+   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userInfo = useSelector((state) => state.auth.userInfo); // Accede al estado global del usuario
-  
-  const categories = useSelector((state) => state.categories.categories); // Accede a las categorías desde el estado global
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const categories = useSelector((state) => state.categories.categories);
+  const products = useSelector((state) => state.product.products);
+  const [currentPage, setCurrentPage] = useState(1);
+      const [searchValue, setSearchValue] = useState("");
+      const [parPage, setParpage] = useState(1000);
 
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [page, setPage] = useState(1);
+  const [visibleProducts, setVisibleProducts] = useState([]);
 
+
+  // Redirección según autenticación y rol
   useEffect(() => {
-  const token = localStorage.getItem("accessToken");
-
-  if (!token) {
-    navigate("/login"); // Redirige al login si no está logueado
-  } else if (userInfo) {
-    // Verifica el rol del usuario y redirige según corresponda
-    if (userInfo.role === "admin") {
-      navigate("/admin/dashboard");
-    } else if (userInfo.role === "seller") {
-      navigate("/");
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      navigate("/login");
+    } else if (userInfo) {
+      if (userInfo.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (userInfo.role === "seller") {
+        navigate("/");
+      }
     }
-  }
-}, [userInfo, navigate]);
+  }, [userInfo, navigate]);
+
+  // Filtrar productos por categoría
+  const filteredProducts = selectedCategory
+    ? products.filter((product) => product.category === selectedCategory)
+    : products;
+
+  // Actualizar productos visibles al cambiar filtro o página
+  useEffect(() => {
+    setVisibleProducts(filteredProducts.slice(0, page * PRODUCTS_PER_PAGE));
+  }, [filteredProducts, page]);
+
+  // Scroll infinito
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 &&
+        visibleProducts.length < filteredProducts.length
+      ) {
+        setPage((prev) => prev + 1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [visibleProducts, filteredProducts.length]);
+
+  // Resetear página al cambiar de categoría
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCategory]);
+
+      useEffect(() => {
+        const obj = {
+          parPage: '',
+          page: '',
+          searchValue: ''
+        }
+        dispatch(get_products(obj))
+        
+    },[searchValue, currentPage, parPage])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -93,7 +97,7 @@ const Home = () => {
         <div className="flex flex-wrap gap-2 justify-center">
           {categories.map((cat, index) => (
             <button
-              key={cat._id || index} // Usa `_id` como clave única, o el índice como respaldo
+              key={cat._id || index}
               className={`px-4 py-2 rounded-full text-sm border ${
                 selectedCategory === cat.name
                   ? "bg-indigo-500 text-white border-indigo-500"
@@ -105,7 +109,8 @@ const Home = () => {
                 } else {
                   setSelectedCategory(cat.name);
                 }
-              }}>
+              }}
+            >
               {cat.name}
             </button>
           ))}
@@ -113,38 +118,58 @@ const Home = () => {
       </section>
 
       {/* Product Grid */}
-      <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-gray-700 text-center transition-all duration-300">Productos recientes</h2>
+      <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-gray-700 text-center transition-all duration-300">
+        Productos recientes
+      </h2>
       <div className="flex justify-center ">
-        
-        <section className="w-[70%] py-10 px-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
+        <section className="w-full py-10 px-2 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-items-center">
+          {visibleProducts.map((product) => (
+            <Link
+              to={`/user/product-detail/${product._id}`}
+              key={product._id}
+              className="bg-white w-[90%] rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
             >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="font-semibold text-lg text-gray-800">
-                  {product.title}
+              <div className="w-full aspect-[4/3] bg-gray-100">
+                <img
+                  src={
+                    product.images && product.images.length > 0
+                      ? product.images[0]
+                      : "images/no-photos.png"
+                  }
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="bg-gray-300 p-3 h-8 flex flex-col flex-1 justify-between">
+                <h3 className="font-semibold text-base md:text-lg lg:text-2xl text-gray-800 line-clamp-1">
+                  {product.name}
                 </h3>
-                <p className="text-indigo-600 font-bold mt-1">
+                <p className="text-indigo-600 font-bold mt-1 text-sm md:text-base lg:text-xl">
                   {product.price} €
                 </p>
-                <p className="text-sm text-gray-500">{product.location}</p>
+                <p className="text-xs text-gray-500 mt-1">{product.location}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </section>
       </div>
+      {/* Loader */}
+      {visibleProducts.length < filteredProducts.length && (
+        <GridLoader
+        color={"#9b9b9b"}
+        loading={true}
+        
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+      )}
+
       {/* Footer */}
       <footer className="bg-gray-100 text-center text-gray-500 py-4 mt-auto">
         © {new Date().getFullYear()} SellURBike. Todos los derechos reservados.
       </footer>
-      <UserMobileSidebar/>
+      <UserMobileSidebar />
     </div>
   );
 };

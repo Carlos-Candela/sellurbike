@@ -45,7 +45,7 @@ const UserHeader = () => {
         <Link to="/user/profile">
           <div className="flex flex-col items-center justify-center">
             <img
-              src={`http://localhost:5173/images/${userInfo.image}`} // Reemplaza con la URL de la imagen del usuario
+              src={`http://localhost:5173/images/user.png`} // Reemplaza con la URL de la imagen del usuario
               alt={`${userInfo.name}`}
               className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
             />

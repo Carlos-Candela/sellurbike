@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 
-
+const ProductDetail = lazy(()=>import('../../views/user/ProductDetail'))
 const AddProduct = lazy(()=> import('../../views/user/AddProduct'))
 const AllProducts = lazy (()=> import('../../views/user/AllProducts'))
 const Orders = lazy (()=> import('../../views/user/Orders'))
@@ -22,6 +22,7 @@ const sellerRoutes = [
     {path: '/user/support', element: <Support />, role: 'seller', visibility: ['active', 'pending', 'deactive']},
     {path: '/user/profile', element: <Profile />, role: 'seller', status:'active'},
     {path: '/user/edit-product/:productId', element: <EditProduct />, role: 'seller', status:'active'},
+    {path: '/user/product-detail/:productId', element: <ProductDetail />, role: 'seller', status:'active'},
     {path: '/user/account-pending', element: <Pending />, ability: 'seller', status:'active'},
     {path: '/user/account-deactive', element: <Deactive />, ability: 'seller', status:'active'},
 ];

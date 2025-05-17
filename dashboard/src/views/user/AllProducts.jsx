@@ -3,13 +3,13 @@ import UserHeader from "../../layout/UserHeader";
 import Pagination from "../Pagination";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {get_products} from '../../store/Reducers/productReducer'
 
 const AllProducts = () => {
   const dispatch = useDispatch();
-  
+   const navigate = useNavigate();
     const { products, totalProduct } = useSelector((state) => state.product);
   
     
@@ -58,30 +58,37 @@ const AllProducts = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
             {products.map((product,i) => (
-              <div
+              <Link
+                to={`/user/product-detail/${product._id}`}
                 key={i}
                 className="relative bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition w-[80%] sm:w-[85%] md:w-[95%]"
               >
-             <img
-      src={
-        product.images && product.images.length > 0
-          ? product.images[0]
-          : "/images/no-photos.png" // Ruta de la imagen predeterminada
-      }
-      alt={product.name || "Imagen predeterminada"}
-      className="w-full h-40 object-cover"
-    />
-                <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between">
-                  <Link to={`/user/edit-product/${product._id}`}>
+                <img
+                  src={
+                    product.images && product.images.length > 0
+                      ? product.images[0]
+                      : "/images/no-photos.png"
+                  }
+                  alt={product.name || "Imagen predeterminada"}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between z-10">
                   <button
-                    
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate(`/user/edit-product/${product._id}`);
+                    }}
                     className="px-3 py-1 bg-gradient-to-br from-indigo-200 to-indigo-500 text-black rounded-full text-sm hover:bg-blue-900"
                   >
                     Editar
                   </button>
-                  </Link>
                   <button
-                    onClick={() => handleDelete(product.id)}
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDelete(product._id);
+                    }}
                     className="px-3 py-1 bg-red-500 text-black rounded-full text-sm hover:bg-red-600"
                   >
                     Eliminar
@@ -91,7 +98,7 @@ const AllProducts = () => {
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-gray-700 mb-4">{product.price} €</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <div className="w-full justify-end flex mt-4">

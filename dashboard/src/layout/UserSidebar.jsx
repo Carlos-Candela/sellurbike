@@ -15,7 +15,7 @@ const UserSidebar = () => {
         <div className="flex flex-col items-center justify-center">
           <Link>
             <img
-              src={`http://localhost:5173/images/${userInfo.image}`}
+              src={`http://localhost:5173/images/user.png`}
               alt="Usuario"
               className="w-24 h-24 rounded-full shadow-md mb-4"
             />
