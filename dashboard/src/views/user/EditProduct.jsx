@@ -4,23 +4,29 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { useDispatch, useSelector } from "react-redux";
-import {Link, useParams} from 'react-router-dom'
-import {get_category} from '../../store/Reducers/categoryReducer'
-import {get_product, update_product, messageClear, product_image_update, product_image_delete} from '../../store/Reducers/productReducer'
+import { Link, useParams } from "react-router-dom";
+import { get_category } from "../../store/Reducers/categoryReducer";
+import {
+  get_product,
+  update_product,
+  messageClear,
+  product_image_update,
+  product_image_delete,
+} from "../../store/Reducers/productReducer";
 import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
 import { LiaExchangeAltSolid } from "react-icons/lia";
 
-
-
 const EditProduct = () => {
   const dispatch = useDispatch();
-  const {productId}= useParams();
-  
+  const { productId } = useParams();
+
   const { categories } = useSelector((state) => state.categories);
 
-  const {product, loader, errorMessage, successMessage} = useSelector((state)=>state.product)
+  const { product, loader, errorMessage, successMessage } = useSelector(
+    (state) => state.product
+  );
 
   const [formData, setFormData] = useState({
     title: "",
@@ -28,27 +34,30 @@ const EditProduct = () => {
     price: "",
     category: "",
     state: "",
-    images: Array(6).fill(null)
+    images: Array(6).fill(null),
   });
-  
-  
-  const update = (e)=> {
-    e.preventDefault()
 
-      const obj = {
-      title: formData.title,
-      description: formData.description,
-      price: formData.price,
-      category: formData.category,
-      state: formData.state,
-      productId: productId,
-      images: formData.images
-    }
-    dispatch(update_product(obj))
-  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const update = (e) => {
+    e.preventDefault();
+
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("title", formData.title);
+    formDataToSubmit.append("description", formData.description);
+    formDataToSubmit.append("price", formData.price);
+    formDataToSubmit.append("category", formData.category);
+    formDataToSubmit.append("state", formData.state);
+    formDataToSubmit.append("productId", productId);
+
+    for (let i = 0; i < formData.images.length; i++) {
+      if (formData.images[i] instanceof File) {
+        formDataToSubmit.append("images", formData.images[i]);
+      }
+    }
+    dispatch(update_product(formDataToSubmit));
   };
 
   const handleImageUpload = (e, index) => {
@@ -56,15 +65,14 @@ const EditProduct = () => {
     if (file) {
       setFormData((prev) => {
         const updatedImages = [...prev.images];
-        updatedImages[index] = URL.createObjectURL(file); // Reemplaza la URL existente con la nueva imagen
+        updatedImages[index] = file; // Guarda el archivo, no la URL
         return { ...prev, images: updatedImages };
       });
     }
   };
-
   const handleRemoveImage = (index) => {
-    const imageUrl = formData.images[index]
-    dispatch(product_image_delete({imageUrl,productId}))
+    const imageUrl = formData.images[index];
+    dispatch(product_image_delete({ imageUrl, productId }));
 
     setFormData((prev) => {
       const updatedImages = [...prev.images];
@@ -74,45 +82,45 @@ const EditProduct = () => {
   };
 
   const changeImage = (img, files) => {
-    if(files.length > 0){
-      dispatch(product_image_update({
-        oldImage: img,
-        newImage: files[0],
-        productId
-      }))
+    if (files.length > 0) {
+      dispatch(
+        product_image_update({
+          oldImage: img,
+          newImage: files[0],
+          productId,
+        })
+      );
     }
-  }
+  };
 
-  
   useEffect(() => {
-          const obj = {
-            parPage: '',
-            page: '',
-            searchValue: ''
-          }
-          dispatch(get_category(obj))
-          
-      },[])
+    const obj = {
+      parPage: "",
+      page: "",
+      searchValue: "",
+    };
+    dispatch(get_category(obj));
+  }, []);
 
-  useEffect(()=>{
-    dispatch(get_product(productId))
-  },[productId])
+  useEffect(() => {
+    dispatch(get_product(productId));
+  }, [productId]);
 
-useEffect(() => {
-  // Asegura que siempre haya 6 posiciones en el array de imágenes
-  let imgs = Array.isArray(product.images) ? product.images.slice(0, 6) : [];
-  while (imgs.length < 6) imgs.push(null);
-  setFormData({
-    title: product.name || "",
-    description: product.description || "",
-    price: product.price || "",
-    category: product.category || "",
-    state: product.state || "",
-    images: imgs,
-  });
-}, [product]);
+  useEffect(() => {
+    // Asegura que siempre haya 6 posiciones en el array de imágenes
+    let imgs = Array.isArray(product.images) ? product.images.slice(0, 6) : [];
+    while (imgs.length < 6) imgs.push(null);
+    setFormData({
+      title: product.name || "",
+      description: product.description || "",
+      price: product.price || "",
+      category: product.category || "",
+      state: product.state || "",
+      images: imgs,
+    });
+  }, [product]);
 
-useEffect(() => {
+  useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
@@ -120,7 +128,6 @@ useEffect(() => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      
     }
   }, [errorMessage, successMessage]);
 
@@ -228,7 +235,11 @@ useEffect(() => {
                     {image ? (
                       <>
                         <img
-                          src={image}
+                          src={
+                            image instanceof File
+                              ? URL.createObjectURL(image)
+                              : image
+                          }
                           alt={`Imagen ${index + 1}`}
                           className="w-full h-full object-cover rounded-md"
                         />
@@ -240,18 +251,18 @@ useEffect(() => {
                           ✕
                         </button>
                         {/* Botón para cambiar imagen */}
-    <label
-      className="absolute w-[25px] h-[25px] top-1 left-1 bg-blue-500 text-white rounded-full p-1 text-xs hover:bg-blue-800 cursor-pointer flex items-center justify-center"
-      title="Cambiar imagen"
-    >
-      <LiaExchangeAltSolid/>
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={e => changeImage(image, e.target.files)}
-      />
-      </label>
+                        <label
+                          className="absolute w-[25px] h-[25px] top-1 left-1 bg-blue-500 text-white rounded-full p-1 text-xs hover:bg-blue-800 cursor-pointer flex items-center justify-center"
+                          title="Cambiar imagen"
+                        >
+                          <LiaExchangeAltSolid />
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => changeImage(image, e.target.files)}
+                          />
+                        </label>
                       </>
                     ) : (
                       <label

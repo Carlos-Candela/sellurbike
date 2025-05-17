@@ -123,24 +123,70 @@ class productController {
 
   //FALTARIA IMPLEMENTAR EL AÑADIR NUEVAS IMAGENES
   product_update = async (req, res) => {
-    
-    
+  const form = formidable({ multiples: true });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return responseReturn(res, 400, { error: "Error al procesar el formulario." });
+    }
+
     let {
       title: name,
       category,
       description,
       price,
       state,
-      productId,
-      images
-    } = req.body;
-    console.log(images)
+      productId
+    } = fields;
+
     name = name.trim();
     const slug = name.split(" ").join("-");
-    
-    
+
+    // Manejar imágenes nuevas si se suben
+    let { images: newImages } = files;
+    let newImageUrls = [];
+
+    cloudinary.config({
+      cloud_name: process.env.cloud_name,
+      api_key: process.env.api_key_cloud,
+      api_secret: process.env.api_secret_cloud,
+      secure: true,
+    });
 
     try {
+      // Subir nuevas imágenes si existen
+      if (newImages) {
+        const imageArray = Array.isArray(newImages) ? newImages : [newImages];
+        const uploadPromises = imageArray.map((image) =>
+          cloudinary.uploader.upload(image.filepath, { folder: "products" })
+        );
+        const results = await Promise.all(uploadPromises);
+        newImageUrls = results.map((result) => result.url);
+      }
+
+      // Obtener el producto actual
+      const product = await productModel.findById(productId);
+      if (!product) {
+        return responseReturn(res, 404, { error: "Producto no encontrado." });
+      }
+
+      // Combinar imágenes antiguas y nuevas, rellenando huecos (null) primero
+      let updatedImages = product.images || [];
+      if (newImageUrls.length > 0) {
+        let imgIndex = 0;
+        // Rellenar huecos null con nuevas imágenes
+        updatedImages = updatedImages.map(img => {
+          if (img === null && imgIndex < newImageUrls.length) {
+            return newImageUrls[imgIndex++];
+          }
+          return img;
+        });
+        // Si sobran imágenes nuevas, añádelas al final
+        while (imgIndex < newImageUrls.length) {
+          updatedImages.push(newImageUrls[imgIndex++]);
+        }
+      }
+
       await productModel.findByIdAndUpdate(productId, {
         name,
         category,
@@ -148,17 +194,20 @@ class productController {
         price,
         state,
         slug,
+        images: updatedImages,
       });
-      const product = await productModel.findById(productId);
+
+      const updatedProduct = await productModel.findById(productId);
       responseReturn(res, 201, {
-        product,
+        product: updatedProduct,
         message: "Producto actualizado con éxito.",
       });
     } catch (error) {
       responseReturn(res, 500, { error: error.message });
     }
-  };
-  //End method
+  });
+};
+//End method
 
   product_image_update = async (req, res) => {
     const form = formidable({ multiples: true });
