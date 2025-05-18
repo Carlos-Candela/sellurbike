@@ -37,7 +37,7 @@ const AllProducts = () => {
           
           <UserSidebar />
         </div>
-        <div className="w-full sm:w-[85%] md:w-[95%] px-4 py-6">
+        <div className="w-full sm:w-[85%] md:w-[95%] px-4 py-6 mb-20">
           <h2 className="text-2xl font-bold mb-4">Todos</h2>
           <div className="flex justify-center items-center gap-2 mb-6">
             <select

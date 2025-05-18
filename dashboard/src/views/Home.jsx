@@ -1,28 +1,26 @@
-import React, { CSSProperties ,useState, useEffect } from "react";
+import React, { CSSProperties, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import UserHeader from "../layout/UserHeader";
 import UserMobileSidebar from "../layout/UserMobileSidebar";
 import { GridLoader } from "react-spinners";
-import { get_products } from '../store/Reducers/productReducer';
-
+import { get_products } from "../store/Reducers/productReducer";
 
 const PRODUCTS_PER_PAGE = 12;
 
 const Home = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const categories = useSelector((state) => state.categories.categories);
   const products = useSelector((state) => state.product.products);
   const [currentPage, setCurrentPage] = useState(1);
-      const [searchValue, setSearchValue] = useState("");
-      const [parPage, setParpage] = useState(1000);
+  const [searchValue, setSearchValue] = useState("");
+  const [parPage, setParpage] = useState(1000);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [page, setPage] = useState(1);
   const [visibleProducts, setVisibleProducts] = useState([]);
-
 
   // Redirección según autenticación y rol
   useEffect(() => {
@@ -52,7 +50,8 @@ const Home = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 &&
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - 200 &&
         visibleProducts.length < filteredProducts.length
       ) {
         setPage((prev) => prev + 1);
@@ -67,15 +66,14 @@ const Home = () => {
     setPage(1);
   }, [selectedCategory]);
 
-      useEffect(() => {
-        const obj = {
-          parPage: '',
-          page: '',
-          searchValue: ''
-        }
-        dispatch(get_products(obj))
-        
-    },[searchValue, currentPage, parPage])
+  useEffect(() => {
+    const obj = {
+      parPage: "",
+      page: "",
+      searchValue: "",
+    };
+    dispatch(get_products(obj));
+  }, [searchValue, currentPage, parPage]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -83,13 +81,22 @@ const Home = () => {
       <UserHeader />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-indigo-300 to-indigo-700 text-center py-16 px-4">
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-900 transition-all">
-          Compra y vende tú bicicleta
-        </h2>
-        <p className="text-gray-600 mb-6">
-          Encuentra tú bicicleta idea sin pagar de más.
-        </p>
+      <section className="relative text-center py-16 px-4 overflow-hidden">
+        {/* Imagen de fondo */}
+        <img
+          src="/images/hero.jpg"
+          alt="Hero background"
+          className="absolute inset-0 w-full h-full object-cover opacity-40 z-0"
+        />
+        {/* Contenido por encima */}
+        <div className="relative z-10">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 text-black transition-all">
+            Compra y vende tú bicicleta
+          </h2>
+          <p className="text-gray-900 mb-6">
+            Encuentra tú bicicleta idea sin pagar de más.
+          </p>
+        </div>
       </section>
 
       {/* Categories */}
@@ -129,7 +136,7 @@ const Home = () => {
               key={product._id}
               className="bg-white w-[90%] rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
             >
-              <div className="w-full aspect-[4/3] bg-gray-100">
+              <div className="w-full aspect-[4/3] bg-gray-100 min-h-0 flex-shrink-0 overflow-hidden">
                 <img
                   src={
                     product.images && product.images.length > 0
@@ -140,7 +147,7 @@ const Home = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="bg-gray-300 p-3 h-8 flex flex-col flex-1 justify-between">
+              <div className="bg-gray-100 p-3 flex flex-col flex-1 justify-between min-h-[80px]">
                 <h3 className="font-semibold text-base md:text-lg lg:text-2xl text-gray-800 line-clamp-1">
                   {product.name}
                 </h3>
@@ -156,13 +163,12 @@ const Home = () => {
       {/* Loader */}
       {visibleProducts.length < filteredProducts.length && (
         <GridLoader
-        color={"#9b9b9b"}
-        loading={true}
-        
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
+          color={"#9b9b9b"}
+          loading={true}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       )}
 
       {/* Footer */}

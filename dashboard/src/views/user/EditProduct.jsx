@@ -143,7 +143,7 @@ const EditProduct = () => {
           <UserSidebar />
         </div>
 <div className="flex-1 flex items-center justify-center">
-        <div className="w-full max-w-2xl p-6 bg-white shadow-md rounded-lg pb-10">
+        <div className="w-full max-w-2xl p-6 bg-white shadow-md rounded-lg pb-10 mb-20">
           {/* Botón para ir atrás */}
                   <button
                     onClick={() => navigate(-1)}

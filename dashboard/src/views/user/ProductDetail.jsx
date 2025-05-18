@@ -50,7 +50,7 @@ const ProductDetail = () => {
         <div className="hidden sm:block">
           <UserSidebar />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
       <div className="flex flex-col items-center py-4 px-4 bg-gray-50">
         {/* Botón para ir atrás */}
         <button
@@ -62,14 +62,13 @@ const ProductDetail = () => {
         </button>
         {/* Imagen principal */}
         <div
-  className="bg-gray-100 rounded-xl overflow-hidden mb-4 flex items-center justify-center"
-  style={{ width: '600px', height: '400px', maxWidth: '100%' }}
+  className="w-full max-w-[600px] aspect-[3/2] bg-gray-100 rounded-xl overflow-hidden mb-4 flex items-center justify-center"
 >
   <img
     src={mainImage}
     alt={product.name}
     className="w-full h-full object-cover"
-    style={{ minWidth: '100%', minHeight: '100%', objectFit: 'cover' }}
+    style={{ objectFit: 'cover' }}
   />
 </div>
 

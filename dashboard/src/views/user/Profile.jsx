@@ -54,7 +54,7 @@ const Profile = () => {
           <UserSidebar />
         </div>
         <div className="w-full p-6 bg-gray-100 min-h-screen">
-            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md p-6">
+            <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md p-6 mb-20">
                 <h2 className="text-2xl font-bold mb-4">Perfil</h2>
 
                 {/* Profile Image Section */}
