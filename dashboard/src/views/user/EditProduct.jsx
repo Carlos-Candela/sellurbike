@@ -142,8 +142,8 @@ const EditProduct = () => {
         <div className="hidden sm:block">
           <UserSidebar />
         </div>
-
-        <div className="mt-6 w-[89%] p-6 bg-white shadow-md rounded-lg pb-10">
+<div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-2xl p-6 bg-white shadow-md rounded-lg pb-10">
           {/* Botón para ir atrás */}
                   <button
                     onClick={() => navigate(-1)}
@@ -318,7 +318,7 @@ const EditProduct = () => {
         
       </div>
 
-      
+      </div>
     </div>
   );
 };

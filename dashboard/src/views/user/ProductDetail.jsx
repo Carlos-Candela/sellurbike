@@ -40,8 +40,7 @@ const ProductDetail = () => {
 
   let isOwner = userInfo._id === product.sellerId;
 
-
-  
+ 
   return (
     <div>
       <UserHeader />
@@ -62,13 +61,17 @@ const ProductDetail = () => {
 
         </button>
         {/* Imagen principal */}
-        <div className="w-full max-w-xl aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden mb-4">
-          <img
-            src={mainImage}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <div
+  className="bg-gray-100 rounded-xl overflow-hidden mb-4 flex items-center justify-center"
+  style={{ width: '600px', height: '400px', maxWidth: '100%' }}
+>
+  <img
+    src={mainImage}
+    alt={product.name}
+    className="w-full h-full object-cover"
+    style={{ minWidth: '100%', minHeight: '100%', objectFit: 'cover' }}
+  />
+</div>
 
         {/* Miniaturas */}
         <div className="flex gap-2 mb-6">
