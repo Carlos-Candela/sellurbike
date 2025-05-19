@@ -13,12 +13,12 @@ const UserSidebar = () => {
       {/* Sección superior: Imagen, nombre y valoración del usuario */}
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center justify-center">
-          <Link>
+          <Link to = '/user/profile'>
             <img
-              src={`http://localhost:5173/images/user.png`}
-              alt="Usuario"
-              className="w-24 h-24 rounded-full shadow-md mb-4"
-            />
+  src={userInfo.image ? userInfo.image : "/images/user.png"}
+  alt="Usuario"
+  className="w-24 h-24 rounded-full shadow-md mb-4"
+/>
             <h2 className="text-lg font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </Link>
           {/* Valoración del vendedor */}

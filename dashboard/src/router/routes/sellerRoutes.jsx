@@ -20,7 +20,7 @@ const sellerRoutes = [
     {path: '/user/chat/:customerId', element: <ChatUsers />, role: 'seller', status:'active'},
     {path: '/user/chat', element: <ChatUsers />, role: 'seller', status:'active'},
     {path: '/user/support', element: <Support />, role: 'seller', visibility: ['active', 'pending', 'deactive']},
-    {path: '/user/profile', element: <Profile />, role: 'seller', status:'active'},
+    {path: '/user/profile', element: <Profile />, role: 'seller', visibility: ['active', 'pending', 'deactive']},
     {path: '/user/edit-product/:productId', element: <EditProduct />, role: 'seller', status:'active'},
     {path: '/user/product-detail/:productId', element: <ProductDetail />, role: 'seller', status:'active'},
     {path: '/user/account-pending', element: <Pending />, ability: 'seller', status:'active'},

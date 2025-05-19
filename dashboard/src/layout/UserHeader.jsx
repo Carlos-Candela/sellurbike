@@ -45,10 +45,10 @@ const UserHeader = () => {
         <Link to="/user/profile">
           <div className="flex flex-col items-center justify-center">
             <img
-              src={`http://localhost:5173/images/user.png`} // Reemplaza con la URL de la imagen del usuario
-              alt={`${userInfo.name}`}
-              className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
-            />
+  src={userInfo.image ? userInfo.image : "/images/user.png"}
+  alt={userInfo.name}
+  className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
+/>
             <h2 className="text-xs font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </div>
         </Link>

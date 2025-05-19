@@ -73,7 +73,7 @@ const Home = () => {
       searchValue: "",
     };
     dispatch(get_products(obj));
-  }, [searchValue, currentPage, parPage]);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

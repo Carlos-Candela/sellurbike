@@ -4,6 +4,8 @@ const userCustomerModel = require("../models/chat/userCustomerModel");
 const { responseReturn } = require("../utiles/response");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../utiles/tokenCreate");
+const formidable = require("formidable"); // Middleware para manejar formularios
+const cloudinary = require("cloudinary").v2; // Librería para manejar Cloudinary
 
 class authControllers {
   //Metodo login del administrador
@@ -126,5 +128,69 @@ class authControllers {
     }
   };
   //Fin del metodo getUser
+
+  profile_image_upload = async (req,res)=>{
+    const {userId} = req
+    const form = formidable();
+    form.parse(req, async(err,_ , files)=>{
+          cloudinary.config({
+          cloud_name: process.env.cloud_name,
+          api_key: process.env.api_key_cloud,
+          api_secret: process.env.api_secret_cloud,
+          secure: true,
+        });
+
+        const {image} = files
+
+        try {
+          const result = await cloudinary.uploader.upload(image.filepath, {folder: 'profile'})
+          if (result) {
+            await userModel.findByIdAndUpdate(userId,{
+              image: result.url
+            })
+            const userInfo = await userModel.findById(userId)
+            responseReturn(res, 201, {message: "Imagen de perfil actualizada con exito.",userInfo});
+          } else {
+            responseReturn(res, 404, { error: "Error al cargar la imagen." });
+          }
+        } catch (error) {
+          responseReturn(res, 500, { error: "Error interno del servidor" });
+        }
+    })
+
+  }
+  //End Method
+
+  profile_data_change = async (req, res)=>{
+    const {userId}= req
+    const form = formidable();
+    form.parse(req,async(err,fields,_)=>{
+      const{name,surname,address,province,postalCode,city,phone} = fields;
+      
+      try {
+        if (err) {
+          responseReturn(res, 404, {error: "Error al actualizar el perfil."});
+        
+        } else {
+          await userModel.findByIdAndUpdate(userId,{
+              name: name,
+              surname: surname,
+              address: address,
+              province: province,
+              postalCode: postalCode,
+              city: city,
+              phone: phone
+            })
+            const userInfo = await userModel.findById(userId)
+            responseReturn(res, 201, {message: "Datos del perfil actualizados con exito.",userInfo});
+        }
+        
+
+      } catch (error) {
+        responseReturn(res, 500, { error: "Error interno del servidor" });
+      }
+    })
+  }
+  //End method
 }
 module.exports = new authControllers();

@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
-import {jwtDecode} from "jwt-decode";
-
+import { jwtDecode } from "jwt-decode";
 
 export const admin_login = createAsyncThunk(
   "auth/admin_login",
@@ -10,7 +9,7 @@ export const admin_login = createAsyncThunk(
       const { data } = await api.post("/admin-login", info, {
         withCredentials: true,
       });
-      localStorage.setItem("accessToken", data.token)
+      localStorage.setItem("accessToken", data.token);
       //console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
@@ -28,11 +27,10 @@ export const user_login = createAsyncThunk(
         withCredentials: true,
       });
       //console.log(data)
-      localStorage.setItem("accessToken", data.token)
-      
+      localStorage.setItem("accessToken", data.token);
+
       return fulfillWithValue(data);
     } catch (error) {
-      
       return rejectWithValue(error.response.data);
     }
   }
@@ -45,10 +43,9 @@ export const get_user_info = createAsyncThunk(
       const { data } = await api.get("/get-user", {
         withCredentials: true,
       });
-      //console.log(data);      
+      //console.log(data);
       return fulfillWithValue(data);
     } catch (error) {
-      
       return rejectWithValue(error.response.data);
     }
   }
@@ -72,20 +69,51 @@ export const user_register = createAsyncThunk(
   }
 );
 
-const returnRole = (token)=>{
-  if(token){
+export const profile_image_upload = createAsyncThunk(
+  "auth/profile_image_upload",
+  async (image, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/profile-image-upload", image, {
+        withCredentials: true,
+      });
+      //console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+//End method
+
+export const profile_data_change = createAsyncThunk(
+  "auth/profile_data_change",
+  async (userData, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/profile-data-change", userData, {
+        withCredentials: true,
+      });
+      //console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+const returnRole = (token) => {
+  if (token) {
     const decodeToken = jwtDecode(token);
     const expireTime = new Date(decodeToken.exp * 1000);
-    if(new Date > expireTime){
-      localStorage.removeItem("accessToken")
-      return ''
-    }else{
-      return decodeToken.role
+    if (new Date() > expireTime) {
+      localStorage.removeItem("accessToken");
+      return "";
+    } else {
+      return decodeToken.role;
     }
-  }else{
-    return ''
+  } else {
+    return "";
   }
-}
+};
 
 export const authReducer = createSlice({
   name: "auth",
@@ -95,7 +123,7 @@ export const authReducer = createSlice({
     loader: false,
     userInfo: "",
     role: returnRole(localStorage.getItem("accessToken")),
-    token:localStorage.getItem("accessToken"),
+    token: localStorage.getItem("accessToken"),
   },
   reducers: {
     messageClear: (state, _) => {
@@ -135,7 +163,6 @@ export const authReducer = createSlice({
         state.loader = false;
         state.successMessage = payload.message;
         state.userInfo = payload.userInfo;
-        
       })
       .addCase(user_login.pending, (state, { payload }) => {
         state.loader = true;
@@ -149,9 +176,28 @@ export const authReducer = createSlice({
         state.successMessage = payload.message;
         state.token = payload.token;
         state.role = returnRole(payload.token);
-        
       })
-      
+      .addCase(profile_image_upload.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.userInfo = payload.userInfo;
+      })
+      .addCase(profile_image_upload.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+            .addCase(profile_data_change.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.userInfo = payload.userInfo;
+      })
+      .addCase(profile_data_change.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+            .addCase(profile_data_change.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+     
   },
 });
 export const { messageClear } = authReducer.actions;
