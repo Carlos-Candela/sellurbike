@@ -5,7 +5,7 @@ import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { useSelector, useDispatch } from "react-redux";
 import {profile_data_change,  profile_image_upload,  messageClear} from "../../store/Reducers/authReducer";
 import toast from "react-hot-toast";
-import { BeatLoader } from "react-spinners";
+import { FadeLoader } from "react-spinners";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -124,9 +124,9 @@ const Profile = () => {
   {loader && (
     <div
       className="absolute inset-0 flex items-center justify-center rounded-full pointer-events-none"
-      style={{ background: "rgba(255,255,255,0.15)" }}
+      style={{ background: "rgba(255,255,255,0.30)" }}
     >
-      <BeatLoader color="#9F9F9F" size={15} speedMultiplier={0.8} />
+      <FadeLoader color="#9F9F9F" size={5} speedMultiplier={0.8} />
     </div>
   )}
 </div>
