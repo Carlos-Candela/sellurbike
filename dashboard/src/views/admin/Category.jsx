@@ -29,7 +29,6 @@ const [state, setState]= useState({
   image: "",
 })
 
-
 const imageHandle = (e)=>{
   const files = e.target.files
   if(files.length > 0){
