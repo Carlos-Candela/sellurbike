@@ -5,36 +5,52 @@ import UserSidebar from "../../layout/UserSidebar";
 import UserMobileSidebar from "../../layout/UserMobileSidebar";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {get_products} from '../../store/Reducers/productReducer'
+import {
+  get_products,
+  product_delete,
+  messageClear,
+} from "../../store/Reducers/productReducer";
+import toast from "react-hot-toast";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
-   const navigate = useNavigate();
-    const { products, totalProduct } = useSelector((state) => state.product);
-  
-    
+  const navigate = useNavigate();
+  const { products, totalProduct, successMessage, errorMessage } = useSelector(
+    (state) => state.product
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(5);
 
-  
+  const handleDelete = async (id) => {
+    dispatch(product_delete(id));
+  };
   useEffect(() => {
-      const obj = {
-        parPage: parseInt(parPage),
-        page: parseInt(currentPage),
-        searchValue
-      }
-      dispatch(get_products(obj))
-      
-    },[dispatch,searchValue, currentPage, parPage])
-    //console.log(products)
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+    }
+  }, [errorMessage, successMessage]);
+
+  useEffect(() => {
+    const obj = {
+      parPage: parseInt(parPage),
+      page: parseInt(currentPage),
+      searchValue,
+    };
+    dispatch(get_products(obj));
+  }, [dispatch, searchValue, currentPage, parPage]);
 
   return (
     <div>
       <UserHeader />
       <div className="flex">
-      <div className="hidden sm:block">
-          
+        <div className="hidden sm:block">
           <UserSidebar />
         </div>
         <div className="w-full sm:w-[85%] md:w-[95%] px-4 py-6 mb-20">
@@ -57,7 +73,7 @@ const AllProducts = () => {
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-            {products.map((product,i) => (
+            {products.map((product, i) => (
               <Link
                 to={`/user/product-detail/${product._id}`}
                 key={i}
@@ -74,7 +90,7 @@ const AllProducts = () => {
                 />
                 <div className="absolute w-[90%] top-2 right-2 flex gap-2 justify-between z-10">
                   <button
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       navigate(`/user/edit-product/${product._id}`);
@@ -84,7 +100,7 @@ const AllProducts = () => {
                     Editar
                   </button>
                   <button
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       handleDelete(product._id);
@@ -102,7 +118,9 @@ const AllProducts = () => {
             ))}
           </div>
           <div className="w-full justify-end flex mt-4">
-            { totalProduct <= parPage ? '' :
+            {totalProduct <= parPage ? (
+              ""
+            ) : (
               <Pagination
                 pageNumber={currentPage} // Página actual
                 setPageNumber={setCurrentPage} // Función para cambiar la página
@@ -110,11 +128,11 @@ const AllProducts = () => {
                 parPage={parPage} // Productos por página
                 showItem={3} // Número de botones de página visibles
               />
-            }
+            )}
           </div>
         </div>
       </div>
-      <UserMobileSidebar/>
+      <UserMobileSidebar />
     </div>
   );
 };

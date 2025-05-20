@@ -315,6 +315,29 @@ class productController {
     responseReturn(res, 500, { error: error.message });
   }
 };
+//End Method
+
+// Eliminar un producto
+product_delete = async (req, res) => {
+  const {id}= req.params
+ 
+  try {
+    const deletedProduct = await productModel.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return responseReturn(res, 404, { error: "Producto no encontrado" });
+    }
+
+    return responseReturn(res, 200, {
+      message: "Producto eliminado con éxito",
+      id: deletedProduct._id, // Devuelve el id eliminado
+    });
+  } catch (error) {
+    return responseReturn(res, 500, { error: error.message });
+  }
+    
+};
+//End Method
 
 }
 

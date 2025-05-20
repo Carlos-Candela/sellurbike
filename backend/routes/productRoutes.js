@@ -12,6 +12,7 @@ router.post("/product-update", authMiddleware, productController.product_update)
 router.post("/product-image-update", authMiddleware, productController.product_image_update);
 router.post("/product-image-delete", authMiddleware, productController.product_image_delete);
 router.get("/get-all-products", authMiddleware, productController.get_all_products);
+router.delete("/product-delete/:id", authMiddleware, productController.product_delete )
 
 
 
