@@ -9,7 +9,7 @@ const UserSidebar = () => {
   const userInfo = useSelector((state)=> state.auth.userInfo)
 
   return (
-    <div className="w-[250px] h-full bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
+    <div className="w-[250px] h-screen bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
       {/* Sección superior: Imagen, nombre y valoración del usuario */}
       <div className="flex flex-col items-center">
         <div className="flex flex-col items-center justify-center">
