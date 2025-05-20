@@ -101,7 +101,7 @@ function AddProduct() {
           <UserSidebar />
         </div>
         <main className="flex-1 flex flex-col items-center justify-start px-2 sm:px-8 py-8">
-          <div className="w-full  bg-white shadow-md rounded-lg p-6 mb-10">
+          <div className="w-full max-w-lg bg-white shadow-md rounded-lg p-6 mb-10">
             <Link to='/user/products'>
               <button className="block sm:hidden w-auto mb-4 py-2 px-4 bg-gradient-to-br from-indigo-200 to-indigo-500 text-gray-800 
       font-bold rounded-md hover:bg-[#232342] focus:outline-none 
