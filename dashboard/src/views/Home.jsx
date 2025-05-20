@@ -4,7 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import UserHeader from "../layout/UserHeader";
 import UserMobileSidebar from "../layout/UserMobileSidebar";
 import { GridLoader } from "react-spinners";
-import { get_products } from "../store/Reducers/productReducer";
+import {  get_all_products, messageClear } from "../store/Reducers/productReducer";
+import toast from "react-hot-toast";
+import { useMemo } from "react";
+
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -13,7 +16,7 @@ const Home = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.auth.userInfo);
   const categories = useSelector((state) => state.categories.categories);
-  const products = useSelector((state) => state.product.products);
+  const {products, successMessage, errorMessage, loader} = useSelector((state) => state.product);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(1000);
@@ -37,10 +40,11 @@ const Home = () => {
   }, [userInfo, navigate]);
 
   // Filtrar productos por categoría
-  const filteredProducts = selectedCategory
+  const filteredProducts = useMemo(() => {
+  return selectedCategory
     ? products.filter((product) => product.category === selectedCategory)
     : products;
-
+}, [products, selectedCategory]);
   // Actualizar productos visibles al cambiar filtro o página
   useEffect(() => {
     setVisibleProducts(filteredProducts.slice(0, page * PRODUCTS_PER_PAGE));
@@ -66,14 +70,21 @@ const Home = () => {
     setPage(1);
   }, [selectedCategory]);
 
-  useEffect(() => {
-    const obj = {
-      parPage: "",
-      page: "",
-      searchValue: "",
-    };
-    dispatch(get_products(obj));
-  }, []);
+  useEffect(()=>{
+    dispatch(get_all_products())
+  },[])
+
+    useEffect(() => {
+            if (errorMessage) {
+              toast.error(errorMessage);
+              dispatch(messageClear());
+            }
+            if (successMessage) {
+              toast.success(successMessage);
+              dispatch(messageClear());
+              
+            }
+          }, [errorMessage, successMessage]);
 
   return (
     <div className="min-h-screen flex flex-col">

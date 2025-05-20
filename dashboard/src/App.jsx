@@ -35,17 +35,6 @@ function App() {
         
     },[searchValue, currentPage, parPage])
 
-      useEffect(() => {
-        const obj = {
-          parPage: '',
-          page: '',
-          searchValue: ''
-        }
-        dispatch(get_products(obj))
-        
-    },[searchValue, currentPage, parPage])
-
-
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);
   useEffect(() => {
     const privateRoutes = getRoutes();

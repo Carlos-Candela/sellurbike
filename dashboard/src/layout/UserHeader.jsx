@@ -47,7 +47,7 @@ const UserHeader = () => {
             <img
   src={userInfo.image ? userInfo.image : "/images/user.png"}
   alt={userInfo.name}
-  className="w-[40px] h-[40px] rounded-full shadow-lg mb-1"
+  className="w-[40px] h-[40px] rounded-full shadow-lg mb-1 object-cover"
 />
             <h2 className="text-xs font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </div>

@@ -307,6 +307,15 @@ class productController {
   };
   //End method
 
+  get_all_products = async (req, res) => {
+  try {
+    const products = await productModel.find({});
+    responseReturn(res, 200, { products , message: "Lista productos actualizada"});
+  } catch (error) {
+    responseReturn(res, 500, { error: error.message });
+  }
+};
+
 }
 
 module.exports = new productController();

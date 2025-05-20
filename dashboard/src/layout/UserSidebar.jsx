@@ -17,7 +17,7 @@ const UserSidebar = () => {
             <img
   src={userInfo.image ? userInfo.image : "/images/user.png"}
   alt="Usuario"
-  className="w-24 h-24 rounded-full shadow-md mb-4"
+  className="w-24 h-24 rounded-full shadow-md mb-4 object-cover"
 />
             <h2 className="text-lg font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </Link>

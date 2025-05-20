@@ -99,6 +99,22 @@ export const product_image_delete = createAsyncThunk(
     }
   }
 )
+//End Method
+
+export const get_all_products = createAsyncThunk(
+  "auth/get_all_products",
+  async (_, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("/get-all-products", {
+        withCredentials: true,
+      });
+      //console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 
 
@@ -163,6 +179,18 @@ const productReducer = createSlice({
               state.product = payload.product
               state.errorMessage = payload.error;
               state.successMessage = payload.message;  
+            })
+            .addCase(get_all_products.pending, (state, { payload }) => {
+              state.loader = true;
+            })
+            .addCase(get_all_products.rejected, (state, { payload }) => {
+              state.loader = false;
+              state.errorMessage = payload.error;
+            })
+            .addCase(get_all_products.fulfilled, (state, { payload }) => {
+              state.loader = false;
+              state.successMessage = payload.message;
+              state.products = payload.products;
             })
   },
 });
