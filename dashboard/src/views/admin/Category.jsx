@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { categoryAdd, get_category } from "../../store/Reducers/categoryReducer";
+import { categoryAdd, get_category,messageClear,category_delete } from "../../store/Reducers/categoryReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
-import api from "../../api/api"
 import toast from "react-hot-toast";
-import { messageClear } from '../../store/Reducers/categoryReducer';
 import Search from "../../components/Search"
 
 
@@ -47,11 +45,7 @@ const add_category = (e) => {
 
 
   const handleDelete = async (id) => {
-    try {
-      await api.delete(`/categories/${id}`);
-    } catch (error) {
-      console.error("Error al eliminar la categoría:", error);
-    }
+    dispatch(category_delete(id))
   };
 
   useEffect(() => {
@@ -119,7 +113,7 @@ const add_category = (e) => {
                   </tr>
                 ) : ( 
                   categories.map((category, i) => (
-                    <tr key={i}>
+                    <tr key={category._id}>
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
                         {i + 1}
                       </td>
@@ -135,9 +129,7 @@ const add_category = (e) => {
                       </td>
                       <td className="py-1 px-6 font-medium whitespace-nowrap">
                         <div className="flex justify-start items-center gap-2">
-                          <Link className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
-                            <FaEdit />
-                          </Link>
+                          
                           <button
                             onClick={() => handleDelete(category._id)}
                             className="p-[6px] bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50"

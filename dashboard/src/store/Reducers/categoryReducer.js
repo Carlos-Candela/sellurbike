@@ -1,40 +1,58 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-
 export const categoryAdd = createAsyncThunk(
   "categories/categoryAdd",
-  async ({name,image}, {rejectWithValue,fulfillWithValue}) => {
-    
+  async ({ name, image }, { rejectWithValue, fulfillWithValue }) => {
     try {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("image", image);
-      const {data}= await api.post('/category-add', formData, {withCredentials: true})
+      const { data } = await api.post("/category-add", formData, {
+        withCredentials: true,
+      });
       // console.log(data)
-      return fulfillWithValue(data)
-    }catch (error){
-      return rejectWithValue(error.response.data )
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
-)
+);
 //End method
-
-
 
 export const get_category = createAsyncThunk(
   "categories/get_category",
-  async ({parPage,page, searchValue}, {rejectWithValue,fulfillWithValue}) => {
+  async (
+    { parPage, page, searchValue },
+    { rejectWithValue, fulfillWithValue }
+  ) => {
     try {
-      const {data}= await api.get(`/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`, {withCredentials: true})
+      const { data } = await api.get(
+        `/category-get?page=${page}&&searchValue=${searchValue}&&parPage=${parPage}`,
+        { withCredentials: true }
+      );
       //console.log(data)
-      return fulfillWithValue(data)
-    }catch (error){
-      return rejectWithValue(error.response.data )
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
-)
+);
+//End Method
 
+export const category_delete = createAsyncThunk(
+  "categories/category_delete",
+  async (id, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.delete(`/category-delete/${id}`, {
+        withCredentials: true,
+      });
+      return fulfillWithValue({ ...data, id });
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // Slice para manejar el estado de las categorías
 const categoryReducer = createSlice({
@@ -43,7 +61,7 @@ const categoryReducer = createSlice({
     categories: [], // Lista de categorías
     loader: false, // Indicador de carga
     errorMessage: "", // Mensaje de error
-    successMessage:"", // Mensaje de éxito
+    successMessage: "", // Mensaje de éxito
     totalCategory: 0, // Total de categorías
   },
   reducers: {
@@ -54,22 +72,36 @@ const categoryReducer = createSlice({
   },
   extraReducers: (builder) => {
     builder
-            .addCase(categoryAdd.pending, (state, { payload }) => {
-              state.loader = true;
-            })
-            .addCase(categoryAdd.rejected, (state, { payload }) => {
-              state.loader = false;
-              state.errorMessage = payload.error;
-            })
-            .addCase(categoryAdd.fulfilled, (state, { payload }) => {
-              state.loader = false;
-              state.successMessage = payload.message;
-              state.categories = [...state.categories, payload.category];  
-            })
-            .addCase(get_category.fulfilled, (state, { payload }) => {
-              state.totalCategory = payload.totalCategory;
-              state.categories = payload.categories;  
-            })
+      .addCase(categoryAdd.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(categoryAdd.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+      .addCase(categoryAdd.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.categories = [...state.categories, payload.category];
+      })
+      .addCase(get_category.fulfilled, (state, { payload }) => {
+        state.totalCategory = payload.totalCategory;
+        state.categories = payload.categories;
+      })
+      .addCase(category_delete.pending, (state) => {
+        state.loader = true;
+      })
+      .addCase(category_delete.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+      .addCase(category_delete.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.categories = state.categories.filter(
+          (cat) => cat._id !== payload.id
+        );
+      });
   },
 });
 

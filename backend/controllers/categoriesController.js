@@ -16,14 +16,14 @@ class CategoriesController {
       if (searchValue && page && parPage) {
         const categories = await categoryModel
           .find({
-            $text: { $search: searchValue },
+            name: { $regex: searchValue, $options: "i" }
           })
           .skip(skipPage)
           .limit(parPage)
           .sort({ createAt: -1 });
         const totalCategory = await categoryModel
           .find({
-            $text: { $search: searchValue },
+            name: { $regex: searchValue, $options: "i" }
           })
           .countDocuments();
         responseReturn(res, 200, {
@@ -104,47 +104,27 @@ class CategoriesController {
     });
   };
 
-  // Actualizar una categoría
-  updateCategory = async (req, res) => {
-    const { id } = req.params;
-    const { name } = req.body;
-    try {
-      const updatedCategory = await Category.findByIdAndUpdate(
-        id,
-        { name },
-        { new: true } // Devuelve el documento actualizado
-      );
 
-      if (!updatedCategory) {
-        return responseReturn(res, 404, { error: "Categoría no encontrada" });
-      }
 
-      return responseReturn(res, 200, {
-        message: "Categoría actualizada con éxito",
-        category: updatedCategory,
-      });
-    } catch (error) {
-      return responseReturn(res, 500, { error: error.message });
+// Eliminar una categoría
+category_delete = async (req, res) => {
+  const {id}= req.params
+  try {
+    const deletedCategory = await categoryModel.findByIdAndDelete(id);
+
+    if (!deletedCategory) {
+      return responseReturn(res, 404, { error: "Categoría no encontrada" });
     }
-  };
 
-  // Eliminar una categoría
-  deleteCategory = async (req, res) => {
-    const { id } = req.params;
-    try {
-      const deletedCategory = await Category.findByIdAndDelete(id);
-
-      if (!deletedCategory) {
-        return responseReturn(res, 404, { error: "Categoría no encontrada" });
-      }
-
-      return responseReturn(res, 200, {
-        message: "Categoría eliminada con éxito",
-      });
-    } catch (error) {
-      return responseReturn(res, 500, { error: error.message });
-    }
-  };
+    return responseReturn(res, 200, {
+      message: "Categoría eliminada con éxito",
+      id: deletedCategory._id, // Devuelve el id eliminado
+    });
+  } catch (error) {
+    return responseReturn(res, 500, { error: error.message });
+  }
+};
+//End Method
 }
 
 module.exports = new CategoriesController();

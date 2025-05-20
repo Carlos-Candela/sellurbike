@@ -79,7 +79,7 @@ class productController {
       if (searchValue) {
         const products = await productModel
           .find({
-            $text: { $search: searchValue },
+             name: { $regex: searchValue, $options: "i" },
             sellerId: id,
           })
           .skip(skipPage)
@@ -87,7 +87,7 @@ class productController {
           .sort({ createAt: -1 });
         const totalProduct = await productModel
           .find({
-            $text: { $search: searchValue },
+             name: { $regex: searchValue, $options: "i" },
             sellerId: id,
           })
           .countDocuments();
