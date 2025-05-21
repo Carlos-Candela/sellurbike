@@ -4,7 +4,7 @@ import Router from './router/Router';
 import publicRoutes from './router/routes/publicRoutes';
 import { getRoutes } from './router/routes';
 import { get_user_info } from './store/Reducers/authReducer';
-import { get_category } from './store/Reducers/categoryReducer';
+
 import { get_products } from './store/Reducers/productReducer';
 
 
@@ -15,7 +15,7 @@ function App() {
     const [searchValue, setSearchValue] = useState("");
     const [parPage, setParpage] = useState(1000);
     
-    const { categories } = useSelector((state) => state.categories);
+ 
   const {token}= useSelector((state)=> state.auth)
   
 
@@ -25,15 +25,7 @@ function App() {
     }
   }, [token])
 
-  useEffect(() => {
-        const obj = {
-          parPage: '',
-          page: '',
-          searchValue: ''
-        }
-        dispatch(get_category(obj))
-        
-    },[searchValue, currentPage, parPage])
+
 
   const [allRoutes, setAllRoutes] = useState([...publicRoutes]);
   useEffect(() => {

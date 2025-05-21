@@ -4,8 +4,11 @@ import logo from "../assets/sellurbike.png";
 import { getNav } from "../navigation/index.js";
 import { IoMdLogOut } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {logout} from '../store/Reducers/authReducer.js'
 
 const Sidebar = ({ showSidebar, setShowSidebar }) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state.auth);
 
@@ -15,6 +18,11 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
     const navs = getNav(role);
     setAllNav(navs);
   }, [role]);
+
+  const handleLogout = () =>{
+    dispatch(logout());
+    navigate("/login")
+  }
   //console.log(allNav);
   return (
     <div>
@@ -54,7 +62,8 @@ const Sidebar = ({ showSidebar, setShowSidebar }) => {
             ))}
             <li>
               <button
-                className="text-[#030811] duration-200 font-bold
+                onClick={handleLogout}
+                className="text-[#030811] duration-200 font-bold cursor-pointer
                   px-[12px] py-[9px] flex items-center gap-2 p-2 rounded-md hover:bg-blue-200 transition-all hover:pl-4 transintion-all w-full mb-1"
               >
                 <span>

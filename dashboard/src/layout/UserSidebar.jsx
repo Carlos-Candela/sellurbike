@@ -1,24 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaShoppingCart, FaDollarSign, FaBox, FaComments, FaHeart, FaCog, FaStar, FaHome, FaCompass, FaPlus, FaUser } from "react-icons/fa";
-import { useSelector } from 'react-redux';
+import {
+  FaShoppingCart,
+  FaDollarSign,
+  FaBox,
+  FaComments,
+  FaHeart,
+  FaCog,
+  FaStar,
+  FaHome,
+  FaCompass,
+  FaPlus,
+  FaUser,
+} from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { User } from "lucide-react";
 
 const UserSidebar = () => {
-
-  const userInfo = useSelector((state)=> state.auth.userInfo)
+  const userInfo = useSelector((state) => state.auth.userInfo);
 
   return (
-    <div className="w-[250px] h-screen bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
+    <div className="w-[250px] h-full bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
       {/* Sección superior: Imagen, nombre y valoración del usuario */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col pt-6 items-center">
         <div className="flex flex-col items-center justify-center">
-          <Link to = '/user/profile'>
+          <Link to="/user/profile">
             <img
-  src={userInfo.image ? userInfo.image : "/images/user.png"}
-  alt="Usuario"
-  className="w-24 h-24 rounded-full shadow-md mb-4 object-cover"
-/>
+              src={userInfo.image ? userInfo.image : "/images/user.png"}
+              alt="Usuario"
+              className="w-24 h-24 rounded-full shadow-md mb-4 object-cover"
+            />
             <h2 className="text-lg font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </Link>
           {/* Valoración del vendedor */}

@@ -100,6 +100,22 @@ export const profile_data_change = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_,{ rejectWithValue, fulfillWithValue }) => {
+    try {
+      localStorage.removeItem("accessToken");
+      const { data } = await api.post("/logout",{}, {
+        withCredentials: true,
+      });
+      //console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const returnRole = (token) => {
   if (token) {
     const decodeToken = jwtDecode(token);

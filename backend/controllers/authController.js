@@ -192,5 +192,15 @@ class authControllers {
     })
   }
   //End method
+
+  logout = async (req, res) => {
+  res.cookie("accesToken", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  return responseReturn(res, 200, { message: "Logout exitoso" });
+};
+//End Method
+
 }
 module.exports = new authControllers();
