@@ -33,7 +33,7 @@ function App() {
     setAllRoutes([...publicRoutes, ...privateRoutes]);
   }, []);
 
-  return <Router allRoutes={allRoutes} categories={categories} />;
+  return <Router allRoutes={allRoutes} />;
 }
 
 export default App;

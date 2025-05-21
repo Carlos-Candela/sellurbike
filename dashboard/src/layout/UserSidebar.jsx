@@ -13,11 +13,20 @@ import {
   FaPlus,
   FaUser,
 } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../store/Reducers/authReducer.js";
 
 const UserSidebar = () => {
   const userInfo = useSelector((state) => state.auth.userInfo);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <div className="w-[250px] h-full bg-white shadow-md flex flex-col justify-between border-r-1 border-gray-300">
@@ -69,6 +78,13 @@ const UserSidebar = () => {
           <button className="flex items-center gap-3 text-gray-700 hover:bg-blue-200 p-2 rounded-md cursor-pointer">
             <FaCog className="text-lg" />
             <span>Configuración</span>
+          </button>
+          <button
+            className="flex items-center gap-3 text-gray-700 hover:bg-red-200 p-2 rounded-md cursor-pointer"
+            onClick={handleLogout}
+          >
+            <FaUser className="text-lg" />
+            <span>Cerrar sesión</span>
           </button>
         </div>
       </div>

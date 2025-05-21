@@ -6,12 +6,21 @@ import { useSelector, useDispatch } from "react-redux";
 import {profile_data_change,  profile_image_upload,  messageClear} from "../../store/Reducers/authReducer";
 import toast from "react-hot-toast";
 import { FadeLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../store/Reducers/authReducer";
+import {FaUser} from "react-icons/fa";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo, loader, successMessage, errorMessage } = useSelector(
     (state) => state.auth
   );
+
+    const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
 
   const [formData, setFormData] = useState({
     name: "",
@@ -262,6 +271,13 @@ const Profile = () => {
   >
     Cambiar Contraseña
   </button>
+  <button
+            className="flex items-center gap-3 mt-4 bg-red-500 text-white hover:bg-red-200 p-2 rounded-md cursor-pointer"
+            onClick={handleLogout}
+          >
+            <FaUser className="text-lg" />
+            <span>Cerrar sesión</span>
+          </button>
 </div>
           </div>
         </div>
