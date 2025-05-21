@@ -22,6 +22,8 @@ app.use(cookieParser());
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/categoriesRoutes"))
 app.use("/api", require("./routes/productRoutes"))
+app.use("/api", require('./routes/sellerRoutes'))
+
 const port = process.env.PORT;
 dbConnect();
 app.listen(port, () => console.log(`Server is running on port ${port}`));
