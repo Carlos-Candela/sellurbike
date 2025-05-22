@@ -2,7 +2,10 @@ import React from "react";
 import { FaList } from "react-icons/fa";
 
 
+
 const Header = ({ showSidebar, setShowSidebar }) => {
+  
+
   return (
     <div className="top-0 left-0 w-full ">
       <div className="ml-0 lg:ml-[260px]  h-[65px] flex justify-between items-center bg-[#303031] px-5 transition-all">

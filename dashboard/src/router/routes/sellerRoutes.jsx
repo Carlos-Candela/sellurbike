@@ -11,6 +11,7 @@ const EditProduct = lazy (()=> import('../../views/user/EditProduct'))
 const Pending = lazy (()=> import('../../views/Pending'))
 const Deactive = lazy (()=> import('../../views/Deactive'))
 const Support = lazy (()=> import('../../views/Support'))
+const SearchResults = lazy(()=> import ('../../views/user/SearchResults'))
 
 const sellerRoutes = [
     
@@ -25,6 +26,7 @@ const sellerRoutes = [
     {path: '/user/product-detail/:productId', element: <ProductDetail />, role: 'seller', status:'active'},
     {path: '/user/account-pending', element: <Pending />, ability: 'seller', status:'active'},
     {path: '/user/account-deactive', element: <Deactive />, ability: 'seller', status:'active'},
+    {path: '/user/search', element: <SearchResults />, ability: 'seller', status:'active'},
 ];
 
 export default sellerRoutes;

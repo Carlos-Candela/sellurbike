@@ -1,14 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import { Search } from "lucide-react";
 import logoApp from "../assets/AppLogoSellurbike.png";
 import logo from "../assets/sellurbike.png";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const UserHeader = () => {
-  
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/user/search?q=${encodeURIComponent(search)}`);
+      setSearch("");
+    }
+  };
 
   return (
     <header className=" bg-white shadow-md px-2 py-2 flex justify-between items-center">
@@ -28,16 +38,24 @@ const UserHeader = () => {
 
       {/* Search Bar */}
       <div className="flex-grow max-w-[200px] sm:max-w-[500px] mx-auto ml-2 mr-2">
-        <div className="flex items-center bg-white rounded-full shadow-md p-1 w-full">
+        <form
+          className="flex items-center bg-white rounded-full shadow-md p-1 w-full"
+          onSubmit={handleSearch}
+        >
           <input
             type="text"
             placeholder="Buscar productos..."
             className="flex-grow px-2 py-1 rounded-l-full focus:outline-none text-sm"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
-          <button className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700">
+          <button
+            type="submit"
+            className="bg-gray-400 text-white p-2 rounded-full hover:bg-gray-700"
+          >
             <Search className="w-4 h-4" />
           </button>
-        </div>
+        </form>
       </div>
 
       {/* Navigation */}
@@ -45,10 +63,10 @@ const UserHeader = () => {
         <Link to="/user/profile">
           <div className="flex flex-col items-center justify-center">
             <img
-  src={userInfo.image ? userInfo.image : "/images/user.png"}
-  alt={userInfo.name}
-  className="w-[40px] h-[40px] rounded-full shadow-lg mb-1 object-cover"
-/>
+              src={userInfo.image ? userInfo.image : "/images/user.png"}
+              alt={userInfo.name}
+              className="w-[40px] h-[40px] rounded-full shadow-lg mb-1 object-cover"
+            />
             <h2 className="text-xs font-semibold text-gray-800 text-center">{`${userInfo.name}`}</h2>
           </div>
         </Link>
