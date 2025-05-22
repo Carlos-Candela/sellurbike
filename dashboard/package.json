@@ -12,6 +12,8 @@
   "dependencies": {
     "@redux-devtools/core": "^4.1.1",
     "@reduxjs/toolkit": "^2.6.1",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.0",
     "@tailwindcss/vite": "^4.0.17",
     "axios": "^1.8.4",
     "formidable": "^3.5.4",

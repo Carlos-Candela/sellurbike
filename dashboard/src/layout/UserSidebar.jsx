@@ -75,10 +75,12 @@ const UserSidebar = () => {
             <FaHeart className="text-lg" />
             <span>Favoritos</span>
           </button>
+          <Link to="/user/profile">
           <button className="flex items-center gap-3 text-gray-700 hover:bg-blue-200 p-2 rounded-md cursor-pointer">
             <FaCog className="text-lg" />
             <span>Configuración</span>
           </button>
+          </Link>
           <button
             className="flex items-center gap-3 text-gray-700 hover:bg-red-200 p-2 rounded-md cursor-pointer"
             onClick={handleLogout}

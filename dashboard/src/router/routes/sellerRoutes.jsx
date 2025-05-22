@@ -12,6 +12,8 @@ const Pending = lazy (()=> import('../../views/Pending'))
 const Deactive = lazy (()=> import('../../views/Deactive'))
 const Support = lazy (()=> import('../../views/Support'))
 const SearchResults = lazy(()=> import ('../../views/user/SearchResults'))
+const Checkout = lazy(()=>import('../../views/user/Checkout'))
+const PaymentSuccess = lazy(()=>import('../../views/user/PaymentSuccess'))
 
 const sellerRoutes = [
     
@@ -27,6 +29,8 @@ const sellerRoutes = [
     {path: '/user/account-pending', element: <Pending />, ability: 'seller', status:'active'},
     {path: '/user/account-deactive', element: <Deactive />, ability: 'seller', status:'active'},
     {path: '/user/search', element: <SearchResults />, ability: 'seller', status:'active'},
+    {path: '/user/checkout', element: <Checkout />, ability: 'seller', status:'active'},
+    {path: '/user/payment-success', element: <PaymentSuccess />, ability: 'seller', status:'active'},
 ];
 
 export default sellerRoutes;

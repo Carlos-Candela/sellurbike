@@ -8,6 +8,7 @@ const { dbConnect } = require("./utiles/db");
 
 
 
+
 app.use(
   cors({
     origin: ["http://localhost:5173"],
@@ -23,6 +24,7 @@ app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/categoriesRoutes"))
 app.use("/api", require("./routes/productRoutes"))
 app.use("/api", require('./routes/sellerRoutes'))
+app.use("/api", require("./routes/orderRoutes"))
 
 const port = process.env.PORT;
 dbConnect();

@@ -26,6 +26,7 @@ const AllProducts = () => {
   const handleDelete = async (id) => {
     dispatch(product_delete(id));
   };
+  
   useEffect(() => {
     if (errorMessage) {
       toast.error(errorMessage);

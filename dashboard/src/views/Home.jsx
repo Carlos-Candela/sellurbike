@@ -22,9 +22,10 @@ const Home = () => {
   const { products, successMessage, errorMessage, loader } = useSelector(
     (state) => state.product
   );
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-  const [parPage, setParpage] = useState(1000);
+  const [parPage, setParpage] = useState(100);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [page, setPage] = useState(1);
@@ -153,7 +154,7 @@ const Home = () => {
       </h2>
       <div className="flex justify-center ">
         <section className="w-full py-10 px-2 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-items-center">
-          {visibleProducts.map((product) => (
+          {visibleProducts.slice(0,100).map((product) => (
             <Link
               to={`/user/product-detail/${product._id}`}
               key={product._id}

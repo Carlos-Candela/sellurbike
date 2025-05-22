@@ -9,6 +9,7 @@ import { PropagateLoader } from "react-spinners";
 import { loaderStyleOverride } from "../../../utils/utils";
 import toast from "react-hot-toast";
 import { Link } from 'react-router-dom';
+import { get_category } from "../../store/Reducers/categoryReducer"; 
 
 function AddProduct() {
   const dispatch = useDispatch();
@@ -16,6 +17,9 @@ function AddProduct() {
   const { loader, successMessage, errorMessage } = useSelector(
     (state) => state.product
   );
+   const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState("");
+    const [parPage, setParpage] = useState(5);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -59,6 +63,7 @@ function AddProduct() {
   };
 
   useEffect(() => {
+    
     if (errorMessage) {
       toast.error(errorMessage);
       dispatch(messageClear());
@@ -76,6 +81,15 @@ function AddProduct() {
       });
     }
   }, [errorMessage, successMessage, dispatch]);
+
+  useEffect(() => {
+      const obj = {
+        parPage: "",
+        page: "",
+        searchValue: "",
+      };
+      dispatch(get_category(obj));
+    }, [searchValue, currentPage, parPage]);
 
   const add = (e) => {
     e.preventDefault();
