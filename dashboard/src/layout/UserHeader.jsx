@@ -27,7 +27,7 @@ const UserHeader = () => {
         <img
           src={logo}
           alt="SellURBike"
-          className="w-full h-full hidden md:block" // Logo principal visible en pantallas medianas y grandes
+          className="w-full h-full hidden md:block " // Logo principal visible en pantallas medianas y grandes
         />
         <img
           src={logoApp}

@@ -181,6 +181,10 @@ const productReducer = createSlice({
       })
       .addCase(get_product.fulfilled, (state, { payload }) => {
         state.product = payload.product;
+        state.loader = false;
+      })
+      .addCase(get_product.pending, (state, { payload }) => {
+        state.loader = true;
       })
       .addCase(update_product.pending, (state, { payload }) => {
         state.loader = true;
