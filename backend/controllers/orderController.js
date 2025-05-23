@@ -4,12 +4,13 @@ const formidable = require("formidable"); // Middleware para manejar formularios
 const productModel = require("../models/productModel");
 const Stripe = require("stripe");
 const userModel = require("../models/userModel");
+require("dotenv").config();
 
 class OrderController {
   // Obtener categoria buscada
   checkout = async (req, res) => {
     const stripe = new Stripe(
-      "sk_test_51RRbGII6bE6kqxLh59sWHe74i5c7bH6uTaBJGJpWcFWJ0kWYTKdEu6l8p0sqLdGoaoY7qEIeeiJJhunreSTdkmvQ00APdDYnbh"
+      process.env.api_secret_stripe
     );
     const { buyerId, sellerId, productId, amount, platformCalcInsurance } =
       req.body;

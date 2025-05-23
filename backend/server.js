@@ -11,7 +11,7 @@ const { dbConnect } = require("./utiles/db");
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: [process.env.CORS_URL],
     credentials: true,
   }
   )
