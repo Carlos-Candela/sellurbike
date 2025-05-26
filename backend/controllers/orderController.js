@@ -95,11 +95,45 @@ class OrderController {
   };
   // End method
 
-  get_orders_user = async (req, res ) => {
-    const userId = req.body
+  get_orders_user = async (req, res) => {
+  try {
+    const {userId} = req.body
     
+    if (!userId) {
+      return res.status(400).json({ error: "No user ID provided" });
+    }
 
+
+    const orders = await orderModel.find({
+      $or: [
+        { buyerId: userId },
+        { sellerId: userId }
+      ]
+    }).populate('productId');
+
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ error: "No orders found for this user" });
+    }
+    
+    const ordersWithRole = orders.map(order => {
+  let role = "";
+  if (order.buyerId.toString() === userId) role = "buyer";
+  else if (order.sellerId.toString() === userId) role = "seller";
+
+  return {
+    ...order.toObject(),
+    role,
+  };
+});
+console.log("User ID:", userId);
+console.log("Orders length:", orders.length);
+console.log("Orders found:", orders.map(o => o._id));
+return res.status(200).json(ordersWithRole);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
   }
+};
 
 
 }

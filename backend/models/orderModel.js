@@ -16,7 +16,7 @@ const orderSchema = new Schema(
   {
     buyerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     sellerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    productId: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+    productId: { type: Schema.Types.ObjectId, ref: "products", required: true },
     paymentIntentId: { type: String, required: true },
     sendStatus: {
       type: String,

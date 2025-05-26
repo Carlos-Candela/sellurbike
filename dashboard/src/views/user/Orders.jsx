@@ -9,55 +9,20 @@ import { get_orders_user } from "../../store/Reducers/orderReducer";
 
 const AllOrders = () => {
   const dispatch = useDispatch();
-  const userId = useSelector(state=>state.auth.userInfo._id)
-  useEffect(() => {
-     dispatch(get_orders_user(userId));
-   }, []);
+  const userId = useSelector((state) => state.auth.userInfo._id);
 
-  const sampleOrders = [
-    {
-      id: 101,
-      product: "Bicicleta de montaña",
-      price: "150€",
-      image: "https://placehold.co/150x150",
-      date: "2025-04-01",
-    },
-    {
-      id: 102,
-      product: "iPhone 12",
-      price: "500€",
-      image: "https://placehold.co/150x150",
-      date: "2025-04-03",
-    },
-    {
-      id: 103,
-      product: "Mesa de comedor",
-      price: "120€",
-      image: "https://placehold.co/150x150",
-      date: "2025-04-05",
-    },
-    {
-      id: 104,
-      product: "Zapatos Nike Air",
-      price: "60€",
-      image: "https://placehold.co/150x150",
-      date: "2025-04-07",
-    },
-    {
-      id: 105,
-      product: "Cámara réflex Canon",
-      price: "300€",
-      image: "https://placehold.co/150x150",
-      date: "2025-04-10",
-    },
-  ];
+  useEffect(() => {
+    dispatch(get_orders_user(userId));
+  }, [dispatch, userId]);
+
+  const orders = useSelector((state) => state.order.orders);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [parPage, setParpage] = useState(5);
 
-  const filteredOrders = sampleOrders.filter((order) =>
-    order.product.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrders = orders.filter((order) =>
+    order.productId.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleViewDetails = (id) => {
@@ -97,25 +62,47 @@ const AllOrders = () => {
           <div className="flex flex-col gap-6 items-center">
             {filteredOrders.map((order) => (
               <div
-                key={order.id}
+                key={order._id}
                 className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition w-full flex"
               >
                 <div className="w-40 h-40 flex-shrink-0">
                   <img
-                    src={order.image}
-                    alt={order.product}
+                    src={order.productId.images[0]}
+                    alt={order.productId.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-4 flex justify-between flex-grow">
                   <div className="w-[90%]">
-                    <h3 className="text-lg font-semibold">{order.product}</h3>
-                    <p className="text-gray-700">{order.price}</p>
-                    <p className="text-sm text-gray-500">Fecha: {order.date}</p>
+                    <h3 className="text-lg font-semibold">
+                      {order.productId.name}
+                    </h3>
+                    <p className="text-indigo-700 font-bold">
+                      {order.productId.price} €
+                    </p>
+                    <p className="text-sm text-gray-500 font-bold">
+                      Fecha:{" "}
+                      {new Date(order.purchaseDate).toLocaleString("es-ES", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <p className="mt-2">
+                      <span
+                        className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                          order.role === "buyer"
+                            ? "bg-green-200 text-green-800"
+                            : "bg-red-200 text-red-800"
+                        }`}
+                      >
+                        {order.role === "buyer" ? "Comprado" : "Vendido"}
+                      </span>
+                    </p>
                   </div>
                   <div className="mt-4">
                     <button
-                      onClick={() => handleViewDetails(order.id)}
+                      onClick={() => handleViewDetails(order._id)}
                       className="px-4 py-2 bg-indigo-500 text-white rounded-full text-sm hover:bg-indigo-600"
                     >
                       <FaRegEye />
@@ -127,11 +114,11 @@ const AllOrders = () => {
           </div>
 
           <div className="w-full justify-end flex mt-4">
-            {sampleOrders.length > parPage && (
+            {orders.length > parPage && (
               <Pagination
                 pageNumber={currentPage}
                 setPageNumber={setCurrentPage}
-                totalItems={sampleOrders.length}
+                totalItems={orders.length}
                 parPage={parPage}
                 showItem={3}
               />
@@ -147,5 +134,3 @@ const AllOrders = () => {
 };
 
 export default AllOrders;
-
-

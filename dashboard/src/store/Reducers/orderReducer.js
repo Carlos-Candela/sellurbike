@@ -67,7 +67,18 @@ const orderReducer = createSlice({
         state.loader = false;
         state.successMessage = payload.message;
         state.order = payload.order
-        
+      })
+      .addCase(get_orders_user.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(get_orders_user.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+      .addCase(get_orders_user.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+        state.orders = payload
       })
       
   },
