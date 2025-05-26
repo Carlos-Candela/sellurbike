@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaArchive, FaComments, FaHome, FaPlus, FaUser } from "react-icons/fa";
+import { FaArchive, FaComments, FaHome, FaPlus, FaUser, FaProductHunt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const UserMobileSidebar = () => {
@@ -23,9 +23,9 @@ const UserMobileSidebar = () => {
     <FaComments className="text-xl" />
     <span className="text-xs">Chat</span>
   </button>
-  <button className="flex flex-col items-center text-gray-700 hover:text-indigo-500 cursor-pointer w-1/5" onClick={() => navigate("/user/profile")}>
-    <FaUser className="text-xl" />
-    <span className="text-xs">Perfil</span>
+  <button className="flex flex-col items-center text-gray-700 hover:text-indigo-500 cursor-pointer w-1/5" onClick={() => navigate("/user/orders")}>
+    <FaProductHunt className="text-xl" />
+    <span className="text-xs">Pedidos</span>
   </button>
 </div>
     );

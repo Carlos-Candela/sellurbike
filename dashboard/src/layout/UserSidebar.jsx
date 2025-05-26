@@ -51,14 +51,12 @@ const UserSidebar = () => {
         </div>
 
         <div className="mt-6 flex flex-col gap-4 px-4">
-          <button className="flex items-center gap-3 text-gray-700 hover:bg-blue-200 p-2 rounded-md cursor-pointer">
-            <FaShoppingCart className="text-lg" />
-            <span>Compras</span>
-          </button>
+          <Link to= "/user/orders">
           <button className="flex items-center gap-3 text-gray-700 hover:bg-blue-200 p-2 rounded-md cursor-pointer">
             <FaDollarSign className="text-lg" />
-            <span>Ventas</span>
+            <span>Mis Pedidos</span>
           </button>
+          </Link>
           <Link to="/user/products">
             <button className="flex items-center gap-3 text-gray-700 hover:bg-blue-200 p-2 rounded-md cursor-pointer">
               <FaBox className="text-lg" />
