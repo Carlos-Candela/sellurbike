@@ -9,9 +9,7 @@ require("dotenv").config();
 class OrderController {
   // Obtener categoria buscada
   checkout = async (req, res) => {
-    const stripe = new Stripe(
-      process.env.api_secret_stripe
-    );
+    const stripe = new Stripe(process.env.api_secret_stripe);
     const { buyerId, sellerId, productId, amount, platformCalcInsurance } =
       req.body;
     const { id } = req.body.paymentMethod;
@@ -51,10 +49,10 @@ class OrderController {
       });
       if (!payment) {
         return responseReturn(res, 404, {
-          error: "algo salio mal con el pago",
+          error: "Algo salio mal con el pago",
         });
       }
-      
+
       const order = await orderModel.create({
         buyerId,
         sellerId,
@@ -73,20 +71,24 @@ class OrderController {
         },
       });
 
+      await productModel.findByIdAndUpdate(productId, {
+        state: "reserved",
+      });
+
       responseReturn(res, 201, {
         order,
         message: "Pago realizado con exito",
       });
     } catch (error) {
       if (error.type === "StripeCardError") {
-    // Tarjeta rechazada (fondos insuficientes, vencida, etc.)
-    return responseReturn(res, 402, { error: error.message });
-  }
+        // Tarjeta rechazada (fondos insuficientes, vencida, etc.)
+        return responseReturn(res, 402, { error: error.message });
+      }
 
-  if (error.type === "StripeInvalidRequestError") {
-    // Error de parámetros malformados (por ejemplo, ID incorrecto)
-    return responseReturn(res, 400, { error: error.message });
-  }
+      if (error.type === "StripeInvalidRequestError") {
+        // Error de parámetros malformados (por ejemplo, ID incorrecto)
+        return responseReturn(res, 400, { error: error.message });
+      }
 
       responseReturn(res, 500, { error: "error interno del servidor" });
     }

@@ -33,12 +33,12 @@ const ProductDetail = () => {
   }, [productId]);
 
   useEffect(() => {
-  if (product && product.images && product.images.length > 0) {
-    setMainImage(product.images[0]);
-  } else if (product) {
-    setMainImage("/images/no-photos.png");
-  }
-}, [product]);
+    if (product && product.images && product.images.length > 0) {
+      setMainImage(product.images[0]);
+    } else if (product) {
+      setMainImage("/images/no-photos.png");
+    }
+  }, [product]);
 
   if (!product) {
     return <div className="text-center py-10">Cargando producto...</div>;
@@ -65,28 +65,36 @@ const ProductDetail = () => {
             </button>
             {/* Imagen principal */}
             <div className="w-full max-w-[600px] aspect-[3/2] bg-gray-100 rounded-xl overflow-hidden mb-4 flex items-center justify-center relative">
+              {product.state === "reserved" && (
+                <div className="absolute top-2 left-2 bg-indigo-600 text-white text-xs md:text-sm font-bold px-2 py-1 rounded shadow z-10">
+                  Reservado
+                </div>
+              )}
               {mainImageLoading && (
                 <span className="absolute inset-0 flex items-center justify-center z-10 bg-gray-100">
                   <FaSpinner className="animate-spin text-3xl text-indigo-500" />
                 </span>
               )}
               {mainImage && (
-  <img
-    src={
-      mainImage === "/images/no-photos.png"
-        ? mainImage
-        : getCloudinaryUrl(mainImage, { width: 1080, height: 720 })
-    }
-    alt={product.name}
-    className={`w-full h-full object-cover transition-opacity duration-300 ${
-      mainImageLoading ? "opacity-0" : "opacity-100"
-    }`}
-    style={{ objectFit: "cover" }}
-    onLoad={() => setMainImageLoading(false)}
-    onLoadStart={() => setMainImageLoading(true)}
-    loading="lazy"
-  />
-)}
+                <img
+                  src={
+                    mainImage === "/images/no-photos.png"
+                      ? mainImage
+                      : getCloudinaryUrl(mainImage, {
+                          width: 1080,
+                          height: 720,
+                        })
+                  }
+                  alt={product.name}
+                  className={`w-full h-full object-cover transition-opacity duration-300 ${
+                    mainImageLoading ? "opacity-0" : "opacity-100"
+                  }`}
+                  style={{ objectFit: "cover" }}
+                  onLoad={() => setMainImageLoading(false)}
+                  onLoadStart={() => setMainImageLoading(true)}
+                  loading="lazy"
+                />
+              )}
             </div>
 
             <div className="flex gap-2 mb-6">
@@ -128,10 +136,11 @@ const ProductDetail = () => {
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
                 {product.name}
               </h1>
-              {!isOwner && (
+              {!isOwner && product.state !== "reserved" && (
                 <button
-                onClick={handleBuy} 
-                className="bg-gradient-to-br from-indigo-200 to-indigo-500 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-indigo-700 transition-all cursor-pointer">
+                  onClick={handleBuy}
+                  className="bg-gradient-to-br from-indigo-200 to-indigo-500 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-indigo-700 transition-all cursor-pointer"
+                >
                   Comprar
                 </button>
               )}

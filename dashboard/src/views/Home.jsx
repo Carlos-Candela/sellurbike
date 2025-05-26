@@ -10,7 +10,7 @@ import {
 } from "../store/Reducers/productReducer";
 import toast from "react-hot-toast";
 import { useMemo } from "react";
-import { get_category } from '../store/Reducers/categoryReducer';
+import { get_category } from "../store/Reducers/categoryReducer";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -22,7 +22,7 @@ const Home = () => {
   const { products, successMessage, errorMessage, loader } = useSelector(
     (state) => state.product
   );
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParpage] = useState(100);
@@ -86,7 +86,6 @@ const Home = () => {
       dispatch(messageClear());
     }
     if (successMessage) {
-      
       dispatch(messageClear());
     }
   }, [errorMessage, successMessage]);
@@ -154,13 +153,18 @@ const Home = () => {
       </h2>
       <div className="flex justify-center ">
         <section className="w-full py-10 px-2 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-items-center">
-          {visibleProducts.slice(0,100).map((product) => (
+          {visibleProducts.slice(0, 100).map((product) => (
             <Link
               to={`/user/product-detail/${product._id}`}
               key={product._id}
               className="bg-white w-[90%] rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col"
             >
-              <div className="w-full aspect-[4/3] bg-gray-100 min-h-0 flex-shrink-0 overflow-hidden">
+              <div className="w-full relative aspect-[4/3] bg-gray-100 min-h-0 flex-shrink-0 overflow-hidden">
+                {product.state === "reserved" && (
+                  <div className="absolute top-2 left-2 bg-indigo-600 text-white text-xs md:text-sm font-bold px-2 py-1 rounded shadow z-10">
+                    Reservado
+                  </div>
+                )}
                 <img
                   src={
                     product.images && product.images.length > 0

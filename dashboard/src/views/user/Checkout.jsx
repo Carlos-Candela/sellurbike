@@ -39,9 +39,15 @@ const Checkout = () => {
     (product.price * PLATFORM_INSURANCE_PERCENTAGE) / 100;
 
   const total = product.price + SHIPPING_COST + platformCalcInsurance;
-  const amount = total*100
- 
-  const dataToSend = { buyerId, sellerId, productId, amount, platformCalcInsurance };
+  const amount = total * 100;
+
+  const dataToSend = {
+    buyerId,
+    sellerId,
+    productId,
+    amount,
+    platformCalcInsurance,
+  };
 
   return (
     <div>
@@ -64,7 +70,8 @@ const Checkout = () => {
             </div>
           ) : (
             <>
-              <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl p-8 mb-10 border border-gray-200">
+            <div className="flex flex-col-reverse transition-all">
+              <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-8 mb-10 border border-gray-200 transition-all">
                 <div className="flex items-center gap-3 mb-6">
                   <FaReceipt className="text-3xl text-indigo-500" />
                   <h2 className="text-2xl font-bold text-gray-800">
@@ -130,8 +137,8 @@ const Checkout = () => {
                   Realizar la compra
                 </button>
               </div>
-              {showPaymentForm && (
-                <div className="w-[500px]">
+                   {showPaymentForm && (
+                <div className="w-full">
                   <Elements stripe={stripePromise}>
                     <PaymentForm
                       setLoading={setLoading}
@@ -140,6 +147,9 @@ const Checkout = () => {
                   </Elements>
                 </div>
               )}
+              </div>
+              
+         
             </>
           )}
         </main>
