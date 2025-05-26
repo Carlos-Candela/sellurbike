@@ -136,12 +136,17 @@ const ProductDetail = () => {
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
                 {product.name}
               </h1>
-              {!isOwner && product.state !== "reserved" && (
+              {!isOwner && (
                 <button
                   onClick={handleBuy}
-                  className="bg-gradient-to-br from-indigo-200 to-indigo-500 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-indigo-700 transition-all cursor-pointer"
+                  disabled={product.state === "reserved"}
+                  className={`px-6 py-2 rounded-full font-semibold transition-all cursor-pointer ${
+                    product.state === "reserved"
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-gradient-to-br from-indigo-200 to-indigo-500 text-gray-800 hover:bg-indigo-700"
+                  }`}
                 >
-                  Comprar
+                  {product.state === "reserved" ? "Reservado" : "Comprar"}
                 </button>
               )}
               <h2>Descripción:</h2>

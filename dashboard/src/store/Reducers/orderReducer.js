@@ -21,7 +21,23 @@ export const checkout_pay = createAsyncThunk(
 );
 //End method
 
-// Slice para manejar el estado de las categorías
+export const get_orders_user = createAsyncThunk(
+  "user/get_orders_user",
+  async (userId, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post(`/get-orders`, {userId}, {
+        withCredentials: true,
+      });
+      console.log(data);
+      return fulfillWithValue(data);
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+// Slice para manejar el estado de las ordenes
 const orderReducer = createSlice({
   name: "order",
   initialState: {

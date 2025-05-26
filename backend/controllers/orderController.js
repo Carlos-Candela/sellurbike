@@ -94,6 +94,14 @@ class OrderController {
     }
   };
   // End method
+
+  get_orders_user = async (req, res ) => {
+    const userId = req.body
+    
+
+  }
+
+
 }
 
 module.exports = new OrderController();
