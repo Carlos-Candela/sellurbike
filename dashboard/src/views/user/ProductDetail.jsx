@@ -44,7 +44,7 @@ const ProductDetail = () => {
     return <div className="text-center py-10">Cargando producto...</div>;
   }
 
-  let isOwner = userInfo._id === product.sellerId;
+const isOwner = userInfo?._id === product?.sellerId;
 
   return (
     <div>
