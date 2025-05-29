@@ -6,9 +6,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { dbConnect } = require("./utiles/db");
 
-
-
-
 app.use(
   cors({
     origin: [process.env.CORS_URL],
